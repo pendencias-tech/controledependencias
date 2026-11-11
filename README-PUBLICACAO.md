@@ -1,7 +1,7 @@
 # Sistema de Pendências — publicação e nuvem
 
-**Site publicado:** https://daianypenha-tech.github.io/controledependencias/
-**Repositório:** https://github.com/daianypenha-tech/controledependencias
+**Site publicado:** https://pendencias-tech.github.io/controledependencias/
+**Repositório:** https://github.com/pendencias-tech/controledependencias
 
 Guia curto para colocar o sistema no ar com **GitHub Pages** e **Supabase**.
 
@@ -27,7 +27,7 @@ No Supabase, em **Authentication → Providers → Email**:
   em **Site URL** e **Redirect URLs**:
 
   ```
-  https://daianypenha-tech.github.io/controledependencias/
+  https://pendencias-tech.github.io/controledependencias/
   ```
 
 ## 2. GitHub Pages
