@@ -1,1 +1,618 @@
-Ly8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Ci8vICBOVVZFTSAoU1VQQUJBU0UpCi8vICBMb2dpbiBwb3IgZS1tYWlsL3NlbmhhIGUgc2luY3Jvbml6YcOnw6NvIGRvcyBkYWRvcy4KLy8KLy8gIFJlZ3JhIGRlIG91cm86IG8gbmF2ZWdhZG9yIChsb2NhbFN0b3JhZ2UpIGNvbnRpbnVhIHNlbmRvIG8KLy8gIGFybWF6ZW5hbWVudG8gaW1lZGlhdG8uIEEgbnV2ZW0gZnVuY2lvbmEgY29tbyBlc3BlbGhvOgovLyAgIC0gYW8gZW50cmFyLCBvcyBkYWRvcyBkYSBudXZlbSBzw6NvIGJhaXhhZG9zOwovLyAgIC0gYSBjYWRhIGFsdGVyYcOnw6NvLCB0dWRvIMOpIHJlZW52aWFkbyBwYXJhIGEgbnV2ZW0uCi8vICBTZW0gaW50ZXJuZXQsIG8gYXBwIHNlZ3VlIGZ1bmNpb25hbmRvIGNvbSBvcyBkYWRvcyBsb2NhaXMuCi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoKKGZ1bmN0aW9uICgpIHsKICAndXNlIHN0cmljdCc7CgogIGNvbnN0IGNvbmZpZyA9IHdpbmRvdy5TVVBBQkFTRV9DT05GSUcgfHwge307CiAgY29uc3QgY29uZmlndXJhZGEgPSBCb29sZWFuKAogICAgdHlwZW9mIGNvbmZpZy51cmwgPT09ICdzdHJpbmcnICYmIC9eaHR0cHM/OlwvXC8vLnRlc3QoY29uZmlnLnVybC50cmltKCkpICYmCiAgICB0eXBlb2YgY29uZmlnLmFub25LZXkgPT09ICdzdHJpbmcnICYmIGNvbmZpZy5hbm9uS2V5LnRyaW0oKS5sZW5ndGggPiA0MAogICk7CgogIGxldCBjbGllbnRlID0gbnVsbDsKICBsZXQgdXN1YXJpbyA9IG51bGw7CiAgbGV0IG1vZG9DYWRhc3RybyA9IGZhbHNlOwogIGxldCBwcm9jZXNzYW5kbyA9IGZhbHNlOwogIGxldCB1c3VhcmlvU2luY3Jvbml6YWRvID0gbnVsbDsKICBsZXQgc2luY3Jvbml6YW5kbyA9IGZhbHNlOwoKICAvLyBGaWxhIGRvcyBlbnZpb3M6IGV2aXRhIHF1ZSBkdWFzIHNpbmNyb25pemHDp8O1ZXMgc2UgYXRyb3BlbGVtCiAgbGV0IGZpbGEgPSBQcm9taXNlLnJlc29sdmUoKTsKICBsZXQgcGVuZGVuY2lhc1BlbmRlbnRlcyA9IG51bGw7CiAgbGV0IG9wY29lc1BlbmRlbnRlcyA9IG51bGw7CgogIC8vIElkcyBxdWUgasOhIGV4aXN0ZW0gbmEgbnV2ZW0gKHBhcmEgZGV0ZWN0YXIgZXhjbHVzw7VlcykKICBsZXQgaWRzTmFOdXZlbSA9IG5ldyBTZXQoKTsKCiAgbGV0IHN0YXR1c0VudmlvID0gJ2luYXRpdm8nOyAvLyBpbmF0aXZvIHwgZW52aWFuZG8gfCBvayB8IGVycm8KICBsZXQgdGVtcG9yaXphZG9yQXZpc28gPSBudWxsOwoKICAvLyAtLS0tLS0tLS0tIFV0aWxpdMOhcmlvcyAtLS0tLS0tLS0tCgogIGZ1bmN0aW9uIGNyaWFyQ2xpZW50ZSgpIHsKICAgIGlmICghY29uZmlndXJhZGEpIHJldHVybiBudWxsOwogICAgaWYgKCF3aW5kb3cuc3VwYWJhc2UgfHwgdHlwZW9mIHdpbmRvdy5zdXBhYmFzZS5jcmVhdGVDbGllbnQgIT09ICdmdW5jdGlvbicpIHsKICAgICAgY29uc29sZS5lcnJvcignW251dmVtXSBCaWJsaW90ZWNhIGRvIFN1cGFiYXNlIG7Do28gY2FycmVnYWRhLicpOwogICAgICByZXR1cm4gbnVsbDsKICAgIH0KICAgIGlmICghY2xpZW50ZSkgewogICAgICBjbGllbnRlID0gd2luZG93LnN1cGFiYXNlLmNyZWF0ZUNsaWVudChjb25maWcudXJsLnRyaW0oKSwgY29uZmlnLmFub25LZXkudHJpbSgpLCB7CiAgICAgICAgYXV0aDogewogICAgICAgICAgcGVyc2lzdFNlc3Npb246IHRydWUsCiAgICAgICAgICBhdXRvUmVmcmVzaFRva2VuOiB0cnVlLAogICAgICAgICAgZGV0ZWN0U2Vzc2lvbkluVXJsOiB0cnVlLAogICAgICAgIH0sCiAgICAgIH0pOwogICAgfQogICAgcmV0dXJuIGNsaWVudGU7CiAgfQoKICBmdW5jdGlvbiBwYXJhQXBwKGxpbmhhKSB7CiAgICByZXR1cm4gewogICAgICBpZDogbGluaGEuaWQsCiAgICAgIG51bWVybzogbGluaGEubnVtZXJvID09PSBudWxsIHx8IGxpbmhhLm51bWVybyA9PT0gdW5kZWZpbmVkID8gMCA6IE51bWJlcihsaW5oYS5udW1lcm8pLAogICAgICBudW1lcm9Ob3RhOiBsaW5oYS5udW1lcm9fbm90YSA/PyAnJywKICAgICAgYWY6IGxpbmhhLmFmID8/ICcnLAogICAgICBmb3JuZWNlZG9yOiBsaW5oYS5mb3JuZWNlZG9yID8/ICcnLAogICAgICBkYXRhUGFnYW1lbnRvOiBsaW5oYS5kYXRhX3BhZ2FtZW50byA/PyAnJywKICAgICAgdmFsb3JPcmlnaW5hbDogbGluaGEudmFsb3Jfb3JpZ2luYWwgPT09IG51bGwgfHwgbGluaGEudmFsb3Jfb3JpZ2luYWwgPT09IHVuZGVmaW5lZCA/IDAgOiBOdW1iZXIobGluaGEudmFsb3Jfb3JpZ2luYWwpLAogICAgICB2YWxvckxpcXVpZG86IGxpbmhhLnZhbG9yX2xpcXVpZG8gPT09IG51bGwgfHwgbGluaGEudmFsb3JfbGlxdWlkbyA9PT0gdW5kZWZpbmVkID8gMCA6IE51bWJlcihsaW5oYS52YWxvcl9saXF1aWRvKSwKICAgICAgbW90aXZvUGVuZGVuY2lhOiBsaW5oYS5tb3Rpdm9fcGVuZGVuY2lhID8/ICcnLAogICAgICBzZXRvcjogbGluaGEuc2V0b3IgPz8gJycsCiAgICAgIHJlc3BvbnNhdmVsOiBsaW5oYS5yZXNwb25zYXZlbCA/PyAnJywKICAgICAgYmFuY286IGxpbmhhLmJhbmNvID8/ICcnLAogICAgICBzdGF0dXM6IGxpbmhhLnN0YXR1cyA/PyAnJywKICAgIH07CiAgfQoKICBmdW5jdGlvbiBwYXJhQmFuY28ocCkgewogICAgcmV0dXJuIHsKICAgICAgaWQ6IHAuaWQsCiAgICAgIHVzZXJfaWQ6IHVzdWFyaW8uaWQsCiAgICAgIG51bWVybzogTnVtYmVyKHAubnVtZXJvKSA+IDAgPyBNYXRoLnRydW5jKE51bWJlcihwLm51bWVybykpIDogbnVsbCwKICAgICAgbnVtZXJvX25vdGE6IHAubnVtZXJvTm90YSA/PyAnJywKICAgICAgYWY6IHAuYWYgPz8gJycsCiAgICAgIGZvcm5lY2Vkb3I6IHAuZm9ybmVjZWRvciA/PyAnJywKICAgICAgZGF0YV9wYWdhbWVudG86IHAuZGF0YVBhZ2FtZW50byB8fCBudWxsLAogICAgICB2YWxvcl9vcmlnaW5hbDogTnVtYmVyKHAudmFsb3JPcmlnaW5hbCkgfHwgMCwKICAgICAgdmFsb3JfbGlxdWlkbzogTnVtYmVyKHAudmFsb3JMaXF1aWRvKSB8fCAwLAogICAgICBtb3Rpdm9fcGVuZGVuY2lhOiBwLm1vdGl2b1BlbmRlbmNpYSA/PyAnJywKICAgICAgc2V0b3I6IHAuc2V0b3IgPz8gJycsCiAgICAgIHJlc3BvbnNhdmVsOiBwLnJlc3BvbnNhdmVsID8/ICcnLAogICAgICBiYW5jbzogcC5iYW5jbyA/PyAnJywKICAgICAgc3RhdHVzOiBwLnN0YXR1cyA/PyAnJywKICAgICAgYXR1YWxpemFkb19lbTogbmV3IERhdGUoKS50b0lTT1N0cmluZygpLAogICAgfTsKICB9CgogIGZ1bmN0aW9uIGRlZmluaXJTdGF0dXMobm92bykgewogICAgc3RhdHVzRW52aW8gPSBub3ZvOwogICAgYXR1YWxpemFySW50ZXJmYWNlKCk7CiAgfQoKICBmdW5jdGlvbiBhdHVhbGl6YXJUZWxhcygpIHsKICAgIGlmICh0eXBlb2YgYXR1YWxpemFyU2VsZWN0c0ZpbHRyb3MgPT09ICdmdW5jdGlvbicpIGF0dWFsaXphclNlbGVjdHNGaWx0cm9zKCk7CiAgICBpZiAodHlwZW9mIGF0dWFsaXphclNlbGVjdHNNb2RhbCA9PT0gJ2Z1bmN0aW9uJykgYXR1YWxpemFyU2VsZWN0c01vZGFsKCk7CiAgICBpZiAodHlwZW9mIHJlbmRlcml6YXJMaXN0YU9wY29lcyA9PT0gJ2Z1bmN0aW9uJykgcmVuZGVyaXphckxpc3RhT3Bjb2VzKCk7CiAgICBpZiAodHlwZW9mIHJlbmRlcml6YXIgPT09ICdmdW5jdGlvbicpIHJlbmRlcml6YXIoKTsKICB9CgogIGZ1bmN0aW9uIG1vc3RyYXJBdmlzbyh0ZXh0bywgdGlwbykgewogICAgbGV0IGVsID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2F2aXNvTnV2ZW0nKTsKICAgIGlmICghZWwpIHsKICAgICAgZWwgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTsKICAgICAgZWwuaWQgPSAnYXZpc29OdXZlbSc7CiAgICAgIGVsLnNldEF0dHJpYnV0ZSgncm9sZScsICdzdGF0dXMnKTsKICAgICAgZWwuc2V0QXR0cmlidXRlKCdhcmlhLWxpdmUnLCAncG9saXRlJyk7CiAgICAgIGRvY3VtZW50LmJvZHkuYXBwZW5kQ2hpbGQoZWwpOwogICAgfQogICAgZWwudGV4dENvbnRlbnQgPSB0ZXh0bzsKICAgIGVsLmNsYXNzTmFtZSA9ICdhdmlzby1udXZlbSBhdmlzby0nICsgKHRpcG8gfHwgJ29rJyk7CiAgICAvLyBGb3LDp2EgbyBuYXZlZ2Fkb3IgYSBwZXJjZWJlciBhIG11ZGFuw6dhIGFudGVzIGRlIGFuaW1hcgogICAgdm9pZCBlbC5vZmZzZXRXaWR0aDsKICAgIGVsLmNsYXNzTGlzdC5hZGQoJ3Zpc2l2ZWwnKTsKCiAgICBjbGVhclRpbWVvdXQodGVtcG9yaXphZG9yQXZpc28pOwogICAgdGVtcG9yaXphZG9yQXZpc28gPSBzZXRUaW1lb3V0KCgpID0+IGVsLmNsYXNzTGlzdC5yZW1vdmUoJ3Zpc2l2ZWwnKSwgNDUwMCk7CiAgfQoKICBmdW5jdGlvbiB0cmFkdXppckVycm8oZXJybykgewogICAgY29uc3QgdGV4dG8gPSBTdHJpbmcoKGVycm8gJiYgKGVycm8ubWVzc2FnZSB8fCBlcnJvLmVycm9yX2Rlc2NyaXB0aW9uKSkgfHwgZXJybyB8fCAnJyk7CiAgICBjb25zdCBtaW51c2N1bG8gPSB0ZXh0by50b0xvd2VyQ2FzZSgpOwoKICAgIGlmIChtaW51c2N1bG8uaW5jbHVkZXMoJ2ludmFsaWQgbG9naW4gY3JlZGVudGlhbHMnKSkgcmV0dXJuICdFLW1haWwgb3Ugc2VuaGEgaW5jb3JyZXRvcy4nOwogICAgaWYgKG1pbnVzY3Vsby5pbmNsdWRlcygnZW1haWwgbm90IGNvbmZpcm1lZCcpKSByZXR1cm4gJ0NvbmZpcm1lIHNldSBlLW1haWwgYW50ZXMgZGUgZW50cmFyLiBWZXJpZmlxdWUgc3VhIGNhaXhhIGRlIGVudHJhZGEuJzsKICAgIGlmIChtaW51c2N1bG8uaW5jbHVkZXMoJ3VzZXIgYWxyZWFkeSByZWdpc3RlcmVkJykpIHJldHVybiAnRXN0YSBjb250YSBqw6EgZXhpc3RlLiBVc2UgYSBvcMOnw6NvICJFbnRyYXIiLic7CiAgICBpZiAobWludXNjdWxvLmluY2x1ZGVzKCdwYXNzd29yZCBzaG91bGQgYmUgYXQgbGVhc3QnKSkgcmV0dXJuICdBIHNlbmhhIHByZWNpc2EgdGVyIHBlbG8gbWVub3MgNiBjYXJhY3RlcmVzLic7CiAgICBpZiAobWludXNjdWxvLmluY2x1ZGVzKCd1bmFibGUgdG8gdmFsaWRhdGUgZW1haWwnKSB8fCBtaW51c2N1bG8uaW5jbHVkZXMoJ2ludmFsaWQgZW1haWwnKSkgcmV0dXJuICdJbmZvcm1lIHVtIGUtbWFpbCB2w6FsaWRvLic7CiAgICBpZiAobWludXNjdWxvLmluY2x1ZGVzKCdmYWlsZWQgdG8gZmV0Y2gnKSB8fCBtaW51c2N1bG8uaW5jbHVkZXMoJ25ldHdvcmtlcnJvcicpKSByZXR1cm4gJ1NlbSBjb25leMOjbyBjb20gYSBpbnRlcm5ldC4gVGVudGUgbm92YW1lbnRlLic7CiAgICBpZiAobWludXNjdWxvLmluY2x1ZGVzKCdpbnZhbGlkIGFwaSBrZXknKSB8fCBtaW51c2N1bG8uaW5jbHVkZXMoJ3N1cGFiYXNla2V5JykpIHJldHVybiAnQ29uZmlndXJhw6fDo28gZG8gU3VwYWJhc2UgaW52w6FsaWRhLiBDb25maXJhIGEgUHJvamVjdCBVUkwgZSBhIGNoYXZlIGFub24gZW0gc3VwYWJhc2UtY29uZmlnLmpzLic7CiAgICBpZiAobWludXNjdWxvLmluY2x1ZGVzKCdyYXRlIGxpbWl0JykgfHwgbWludXNjdWxvLmluY2x1ZGVzKCd0b28gbWFueSByZXF1ZXN0cycpKSByZXR1cm4gJ011aXRhcyB0ZW50YXRpdmFzLiBBZ3VhcmRlIGFsZ3VucyBtaW51dG9zLic7CiAgICBpZiAobWludXNjdWxvLmluY2x1ZGVzKCdyZWxhdGlvbicpICYmIG1pbnVzY3Vsby5pbmNsdWRlcygnZG9lcyBub3QgZXhpc3QnKSkgcmV0dXJuICdBcyB0YWJlbGFzIGFpbmRhIG7Do28gZm9yYW0gY3JpYWRhcyBubyBTdXBhYmFzZS4gUm9kZSBvIGFycXVpdm8gc3VwYWJhc2Utc2NoZW1hLnNxbCBubyBTUUwgRWRpdG9yLic7CiAgICBpZiAobWludXNjdWxvLmluY2x1ZGVzKCdyb3ctbGV2ZWwgc2VjdXJpdHknKSkgcmV0dXJuICdTZW0gcGVybWlzc8OjbyBubyBiYW5jby4gQ29uZmlyYSBhcyByZWdyYXMgKFJMUykgY3JpYWRhcyBwZWxvIHN1cGFiYXNlLXNjaGVtYS5zcWwuJzsKCiAgICByZXR1cm4gdGV4dG8gfHwgJ07Do28gZm9pIHBvc3PDrXZlbCBjb25jbHVpciBhIG9wZXJhw6fDo28uIFRlbnRlIG5vdmFtZW50ZS4nOwogIH0KCiAgLy8gLS0tLS0tLS0tLSBJbnRlcmZhY2UgLS0tLS0tLS0tLQoKICBmdW5jdGlvbiBhdHVhbGl6YXJJbnRlcmZhY2UoKSB7CiAgICBjb25zdCBlbnRyYXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbWVudUVudHJhck51dmVtJyk7CiAgICBjb25zdCBzaW5jcm9uaXphciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdtZW51U2luY3Jvbml6YXJOdXZlbScpOwogICAgY29uc3Qgc2FpciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdtZW51U2Fpck51dmVtJyk7CiAgICBjb25zdCBpbmZvID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ21lbnVVc3VhcmlvTnV2ZW0nKTsKCiAgICBpZiAoZW50cmFyKSB7CiAgICAgIGVudHJhci5oaWRkZW4gPSBCb29sZWFuKHVzdWFyaW8pOwogICAgICBpZiAoIWNvbmZpZ3VyYWRhKSB7CiAgICAgICAgZW50cmFyLnRleHRDb250ZW50ID0gJ+KYgSBOdXZlbSBuw6NvIGNvbmZpZ3VyYWRhJzsKICAgICAgfSBlbHNlIHsKICAgICAgICBlbnRyYXIudGV4dENvbnRlbnQgPSAn4piBIEVudHJhciBuYSBudXZlbSc7CiAgICAgIH0KICAgIH0KCiAgICBpZiAoc2luY3Jvbml6YXIpIHsKICAgICAgc2luY3Jvbml6YXIuaGlkZGVuID0gIXVzdWFyaW87CiAgICAgIGNvbnN0IHJvdHVsb3MgPSB7CiAgICAgICAgZW52aWFuZG86ICfij7MgU2luY3Jvbml6YW5kby4uLicsCiAgICAgICAgZXJybzogJ+KaoCBGYWxoYSBhbyBzaW5jcm9uaXphciDigJQgdGVudGFyIGRlIG5vdm8nLAogICAgICAgIG9rOiAn4piBIFNpbmNyb25pemFkbyDigJQgYmFpeGFyIGRhIG51dmVtJywKICAgICAgICBpbmF0aXZvOiAn4piBIFNpbmNyb25pemFyIGFnb3JhJywKICAgICAgfTsKICAgICAgc2luY3Jvbml6YXIudGV4dENvbnRlbnQgPSByb3R1bG9zW3N0YXR1c0VudmlvXSB8fCByb3R1bG9zLmluYXRpdm87CiAgICB9CgogICAgaWYgKHNhaXIpIHNhaXIuaGlkZGVuID0gIXVzdWFyaW87CgogICAgaWYgKGluZm8pIHsKICAgICAgaW5mby5oaWRkZW4gPSAhdXN1YXJpbzsKICAgICAgaW5mby50ZXh0Q29udGVudCA9IHVzdWFyaW8gPyAn8J+RpCAnICsgKHVzdWFyaW8uZW1haWwgfHwgJ2NvbmVjdGFkbycpIDogJyc7CiAgICB9CiAgfQoKICBmdW5jdGlvbiBhYnJpckxvZ2luKHBhcmFDYWRhc3RybykgewogICAgaWYgKCFjb25maWd1cmFkYSkgewogICAgICBhbGVydCgKICAgICAgICAnQSBudXZlbSBhaW5kYSBuw6NvIGVzdMOhIGNvbmZpZ3VyYWRhLlxuXG4nICsKICAgICAgICAnQWJyYSBvIGFycXVpdm8gc3VwYWJhc2UtY29uZmlnLmpzIGUgY29sZSBhICJQcm9qZWN0IFVSTCIgZSBhIGNoYXZlICJhbm9uIHB1YmxpYyIgZG8gc2V1IHByb2pldG8gU3VwYWJhc2UuXG5cbicgKwogICAgICAgICdEZXBvaXMsIHJvZGUgbyBhcnF1aXZvIHN1cGFiYXNlLXNjaGVtYS5zcWwgbm8gU1FMIEVkaXRvciBkbyBTdXBhYmFzZS4nCiAgICAgICk7CiAgICAgIHJldHVybjsKICAgIH0KICAgIGlmICh1c3VhcmlvKSByZXR1cm47CgogICAgYWx0ZXJuYXJNb2RvKEJvb2xlYW4ocGFyYUNhZGFzdHJvKSk7CiAgICBjb25zdCBmb3JtID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2Zvcm1Mb2dpbk51dmVtJyk7CiAgICBpZiAoZm9ybSkgZm9ybS5yZXNldCgpOwogICAgY29uc3QgZXJybyA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdsb2dpbkVycm8nKTsKICAgIGlmIChlcnJvKSB7IGVycm8uaGlkZGVuID0gdHJ1ZTsgZXJyby50ZXh0Q29udGVudCA9ICcnOyB9CgogICAgY29uc3QgbW9kYWwgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbW9kYWxOdXZlbScpOwogICAgaWYgKG1vZGFsKSBtb2RhbC5jbGFzc0xpc3QuYWRkKCdhYmVydG8nKTsKICAgIHNldFRpbWVvdXQoKCkgPT4gewogICAgICBjb25zdCBjYW1wbyA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdsb2dpbkVtYWlsJyk7CiAgICAgIGlmIChjYW1wbykgY2FtcG8uZm9jdXMoKTsKICAgIH0sIDYwKTsKICB9CgogIGZ1bmN0aW9uIGZlY2hhckxvZ2luKCkgewogICAgY29uc3QgbW9kYWwgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbW9kYWxOdXZlbScpOwogICAgaWYgKG1vZGFsKSBtb2RhbC5jbGFzc0xpc3QucmVtb3ZlKCdhYmVydG8nKTsKICB9CgogIGZ1bmN0aW9uIGZlY2hhckxvZ2luT3ZlcmxheShldmVudG8pIHsKICAgIGlmIChldmVudG8gJiYgZXZlbnRvLnRhcmdldCA9PT0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ21vZGFsTnV2ZW0nKSkgZmVjaGFyTG9naW4oKTsKICB9CgogIGZ1bmN0aW9uIGFsdGVybmFyTW9kbyhwYXJhQ2FkYXN0cm8pIHsKICAgIG1vZG9DYWRhc3RybyA9IEJvb2xlYW4ocGFyYUNhZGFzdHJvKTsKCiAgICBjb25zdCB0aXR1bG8gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgndGl0dWxvTG9naW5OdXZlbScpOwogICAgY29uc3QgYWp1ZGEgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYWp1ZGFMb2dpbk51dmVtJyk7CiAgICBjb25zdCBncnVwbyA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdncnVwb0NvbmZpcm1hclNlbmhhJyk7CiAgICBjb25zdCBzZW5oYTIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbG9naW5TZW5oYTInKTsKICAgIGNvbnN0IHNlbmhhID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xvZ2luU2VuaGEnKTsKICAgIGNvbnN0IGJvdGFvID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2J0bkxvZ2luTnV2ZW0nKTsKICAgIGNvbnN0IGFsdGVybmFyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2J0bkFsdGVybmFyTW9kbycpOwoKICAgIGlmICh0aXR1bG8pIHRpdHVsby50ZXh0Q29udGVudCA9IG1vZG9DYWRhc3RybyA/ICfimIEgQ3JpYXIgY29udGEgbmEgbnV2ZW0nIDogJ+KYgSBFbnRyYXIgbmEgbnV2ZW0nOwogICAgaWYgKGFqdWRhKSB7CiAgICAgIGFqdWRhLnRleHRDb250ZW50ID0gbW9kb0NhZGFzdHJvCiAgICAgICAgPyAnQ3JpZSB1bWEgY29udGEgcGFyYSBhY2Vzc2FyIHNldXMgZGFkb3MgZW0gcXVhbHF1ZXIgZGlzcG9zaXRpdm8uIFZvY8OqIHJlY2ViZXLDoSB1bSBlLW1haWwgZGUgY29uZmlybWHDp8Ojby4nCiAgICAgICAgOiAnRW50cmUgY29tIHNldSBlLW1haWwgZSBzZW5oYSBwYXJhIGNhcnJlZ2FyIHNldXMgZGFkb3MgZGEgbnV2ZW0uJzsKICAgIH0KICAgIGlmIChncnVwbykgZ3J1cG8uaGlkZGVuID0gIW1vZG9DYWRhc3RybzsKICAgIGlmIChzZW5oYTIpIHNlbmhhMi5yZXF1aXJlZCA9IG1vZG9DYWRhc3RybzsKICAgIGlmIChzZW5oYSkgc2VuaGEuYXV0b2NvbXBsZXRlID0gbW9kb0NhZGFzdHJvID8gJ25ldy1wYXNzd29yZCcgOiAnY3VycmVudC1wYXNzd29yZCc7CiAgICBpZiAoYm90YW8pIGJvdGFvLnRleHRDb250ZW50ID0gbW9kb0NhZGFzdHJvID8gJ0NyaWFyIGNvbnRhJyA6ICdFbnRyYXInOwogICAgaWYgKGFsdGVybmFyKSBhbHRlcm5hci50ZXh0Q29udGVudCA9IG1vZG9DYWRhc3RybyA/ICdKw6EgdGVuaG8gY29udGEg4oCUIGVudHJhcicgOiAnQWluZGEgbsOjbyB0ZW5obyBjb250YSDigJQgY3JpYXInOwoKICAgIGNvbnN0IGVycm8gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbG9naW5FcnJvJyk7CiAgICBpZiAoZXJybykgeyBlcnJvLmhpZGRlbiA9IHRydWU7IGVycm8udGV4dENvbnRlbnQgPSAnJzsgfQogIH0KCiAgYXN5bmMgZnVuY3Rpb24gZW52aWFyRm9ybXVsYXJpbyhldmVudG8pIHsKICAgIGlmIChldmVudG8pIGV2ZW50by5wcmV2ZW50RGVmYXVsdCgpOwogICAgaWYgKHByb2Nlc3NhbmRvKSByZXR1cm47CgogICAgY29uc3QgZXJyb0VsID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xvZ2luRXJybycpOwogICAgY29uc3QgYm90YW8gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYnRuTG9naW5OdXZlbScpOwogICAgY29uc3QgZW1haWwgPSBTdHJpbmcoKGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdsb2dpbkVtYWlsJykgfHwge30pLnZhbHVlIHx8ICcnKS50cmltKCk7CiAgICBjb25zdCBzZW5oYSA9IFN0cmluZygoZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xvZ2luU2VuaGEnKSB8fCB7fSkudmFsdWUgfHwgJycpOwogICAgY29uc3Qgc2VuaGEyRWwgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbG9naW5TZW5oYTInKTsKCiAgICBjb25zdCBmYWxoYXIgPSAobWVuc2FnZW0pID0+IHsKICAgICAgaWYgKGVycm9FbCkgeyBlcnJvRWwudGV4dENvbnRlbnQgPSBtZW5zYWdlbTsgZXJyb0VsLmhpZGRlbiA9IGZhbHNlOyB9CiAgICB9OwoKICAgIGlmIChlcnJvRWwpIHsgZXJyb0VsLmhpZGRlbiA9IHRydWU7IGVycm9FbC50ZXh0Q29udGVudCA9ICcnOyB9CgogICAgaWYgKCFlbWFpbCB8fCAhc2VuaGEpIHJldHVybiBmYWxoYXIoJ1ByZWVuY2hhIGUtbWFpbCBlIHNlbmhhLicpOwogICAgaWYgKG1vZG9DYWRhc3RybyAmJiBzZW5oYTJFbCAmJiBzZW5oYSAhPT0gc2VuaGEyRWwudmFsdWUpIHJldHVybiBmYWxoYXIoJ0FzIHNlbmhhcyBuw6NvIGNvbmZlcmVtLicpOwoKICAgIHByb2Nlc3NhbmRvID0gdHJ1ZTsKICAgIGlmIChib3RhbykgewogICAgICBib3Rhby5kaXNhYmxlZCA9IHRydWU7CiAgICAgIGJvdGFvLnRleHRDb250ZW50ID0gbW9kb0NhZGFzdHJvID8gJ0NyaWFuZG8gY29udGEuLi4nIDogJ0VudHJhbmRvLi4uJzsKICAgIH0KCiAgICB0cnkgewogICAgICBpZiAoIWNvbmZpZ3VyYWRhKSB0aHJvdyBuZXcgRXJyb3IoJ0EgbnV2ZW0gYWluZGEgbsOjbyBlc3TDoSBjb25maWd1cmFkYS4nKTsKICAgICAgY29uc3QgYyA9IGNyaWFyQ2xpZW50ZSgpOwogICAgICBpZiAoIWMpIHRocm93IG5ldyBFcnJvcignTsOjbyBmb2kgcG9zc8OtdmVsIGluaWNpYXIgYSBjb25leMOjbyBjb20gYSBudXZlbS4nKTsKCiAgICAgIGlmIChtb2RvQ2FkYXN0cm8pIHsKICAgICAgICBjb25zdCB7IGRhdGEsIGVycm9yIH0gPSBhd2FpdCBjLmF1dGguc2lnblVwKHsKICAgICAgICAgIGVtYWlsLAogICAgICAgICAgcGFzc3dvcmQ6IHNlbmhhLAogICAgICAgICAgb3B0aW9uczogewogICAgICAgICAgICAvLyBEZXBvaXMgZGUgY29uZmlybWFyIG8gZS1tYWlsLCB2b2x0YSBwYXJhIGVzdGEgbWVzbWEgcMOhZ2luYQogICAgICAgICAgICBlbWFpbFJlZGlyZWN0VG86IHdpbmRvdy5sb2NhdGlvbi5ocmVmLnNwbGl0KCcjJylbMF0sCiAgICAgICAgICB9LAogICAgICAgIH0pOwogICAgICAgIGlmIChlcnJvcikgdGhyb3cgZXJyb3I7CgogICAgICAgIGlmIChkYXRhICYmIGRhdGEuc2Vzc2lvbikgewogICAgICAgICAgZmVjaGFyTG9naW4oKTsKICAgICAgICAgIG1vc3RyYXJBdmlzbygnQ29udGEgY3JpYWRhIGUgY29uZWN0YWRhIMOgIG51dmVtLicsICdvaycpOwogICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAvLyBPIFN1cGFiYXNlIGV4aWdlIGNvbmZpcm1hw6fDo28gcG9yIGUtbWFpbAogICAgICAgICAgYWx0ZXJuYXJNb2RvKGZhbHNlKTsKICAgICAgICAgIGNvbnN0IGFqdWRhID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2FqdWRhTG9naW5OdXZlbScpOwogICAgICAgICAgaWYgKGFqdWRhKSB7CiAgICAgICAgICAgIGFqdWRhLnRleHRDb250ZW50ID0gJ0NvbnRhIGNyaWFkYSEgQWJyYSBvIGUtbWFpbCBkZSBjb25maXJtYcOnw6NvIGVudmlhZG8gcGVsbyBTdXBhYmFzZSwgY29uZmlybWUgZSBkZXBvaXMgdm9sdGUgYXF1aSBwYXJhIGVudHJhci4nOwogICAgICAgICAgfQogICAgICAgICAgaWYgKGVycm9FbCkgewogICAgICAgICAgICBlcnJvRWwudGV4dENvbnRlbnQgPSAnVmVyaWZpcXVlIHN1YSBjYWl4YSBkZSBlbnRyYWRhIChlIG8gc3BhbSkgcGFyYSBjb25maXJtYXIgbyBlLW1haWwuJzsKICAgICAgICAgICAgZXJyb0VsLmNsYXNzTmFtZSA9ICdsb2dpbi1lcnJvIGxvZ2luLWF2aXNvJzsKICAgICAgICAgICAgZXJyb0VsLmhpZGRlbiA9IGZhbHNlOwogICAgICAgICAgfQogICAgICAgIH0KICAgICAgfSBlbHNlIHsKICAgICAgICBjb25zdCB7IGVycm9yIH0gPSBhd2FpdCBjLmF1dGguc2lnbkluV2l0aFBhc3N3b3JkKHsgZW1haWwsIHBhc3N3b3JkOiBzZW5oYSB9KTsKICAgICAgICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogICAgICAgIGZlY2hhckxvZ2luKCk7CiAgICAgIH0KICAgIH0gY2F0Y2ggKGVycm8pIHsKICAgICAgY29uc29sZS5lcnJvcignW251dmVtXSBsb2dpbicsIGVycm8pOwogICAgICBpZiAoZXJyb0VsKSBlcnJvRWwuY2xhc3NOYW1lID0gJ2xvZ2luLWVycm8nOwogICAgICBmYWxoYXIodHJhZHV6aXJFcnJvKGVycm8pKTsKICAgIH0gZmluYWxseSB7CiAgICAgIHByb2Nlc3NhbmRvID0gZmFsc2U7CiAgICAgIGlmIChib3RhbykgewogICAgICAgIGJvdGFvLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgYm90YW8udGV4dENvbnRlbnQgPSBtb2RvQ2FkYXN0cm8gPyAnQ3JpYXIgY29udGEnIDogJ0VudHJhcic7CiAgICAgIH0KICAgIH0KICB9CgogIGFzeW5jIGZ1bmN0aW9uIHNhaXIoKSB7CiAgICBpZiAoIXVzdWFyaW8pIHJldHVybjsKICAgIGlmICghY29uZmlybSgnU2FpciBkYSBjb250YSBuYSBudXZlbT9cblxuT3MgZGFkb3MgY29udGludWFtIHNhbHZvcyBuZXN0ZSBuYXZlZ2Fkb3IuJykpIHJldHVybjsKCiAgICBjb25zdCBjID0gY3JpYXJDbGllbnRlKCk7CiAgICBpZiAoYykgewogICAgICB0cnkgeyBhd2FpdCBjLmF1dGguc2lnbk91dCgpOyB9IGNhdGNoIChlcnJvKSB7IGNvbnNvbGUud2FybignW251dmVtXSBzYWlyJywgZXJybyk7IH0KICAgIH0KCiAgICB1c3VhcmlvID0gbnVsbDsKICAgIHVzdWFyaW9TaW5jcm9uaXphZG8gPSBudWxsOwogICAgaWRzTmFOdXZlbSA9IG5ldyBTZXQoKTsKICAgIHN0YXR1c0VudmlvID0gJ2luYXRpdm8nOwogICAgYXR1YWxpemFySW50ZXJmYWNlKCk7CiAgICBtb3N0cmFyQXZpc28oJ1ZvY8OqIHNhaXUgZGEgbnV2ZW0uIE8gYXBwIGNvbnRpbnVhIGZ1bmNpb25hbmRvIGNvbSBvcyBkYWRvcyBkZXN0ZSBuYXZlZ2Fkb3IuJywgJ29rJyk7CiAgfQoKICAvLyAtLS0tLS0tLS0tIERhZG9zIC0tLS0tLS0tLS0KCiAgYXN5bmMgZnVuY3Rpb24gYmFpeGFyUGVuZGVuY2lhc1JlbW90YXMoKSB7CiAgICBjb25zdCBjID0gY3JpYXJDbGllbnRlKCk7CiAgICBjb25zdCB7IGRhdGEsIGVycm9yIH0gPSBhd2FpdCBjCiAgICAgIC5mcm9tKCdwZW5kZW5jaWFzJykKICAgICAgLnNlbGVjdCgnKicpCiAgICAgIC5vcmRlcignbnVtZXJvJywgeyBhc2NlbmRpbmc6IHRydWUgfSk7CiAgICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogICAgcmV0dXJuIEFycmF5LmlzQXJyYXkoZGF0YSkgPyBkYXRhIDogW107CiAgfQoKICBhc3luYyBmdW5jdGlvbiBiYWl4YXJPcGNvZXNSZW1vdGFzKCkgewogICAgY29uc3QgYyA9IGNyaWFyQ2xpZW50ZSgpOwogICAgY29uc3QgeyBkYXRhLCBlcnJvciB9ID0gYXdhaXQgYwogICAgICAuZnJvbSgnb3Bjb2VzJykKICAgICAgLnNlbGVjdCgnKicpCiAgICAgIC5lcSgndXNlcl9pZCcsIHVzdWFyaW8uaWQpCiAgICAgIC5tYXliZVNpbmdsZSgpOwogICAgaWYgKGVycm9yKSB0aHJvdyBlcnJvcjsKICAgIHJldHVybiBkYXRhIHx8IG51bGw7CiAgfQoKICBhc3luYyBmdW5jdGlvbiBlbnZpYXJPcGNvZXNBZ29yYShsaXN0YU9wY29lcykgewogICAgY29uc3QgYXR1YWwgPSBsaXN0YU9wY29lcyB8fCBvcGNvZXM7CiAgICBpZiAoIWF0dWFsKSByZXR1cm47CiAgICBjb25zdCBjID0gY3JpYXJDbGllbnRlKCk7CiAgICBjb25zdCB7IGVycm9yIH0gPSBhd2FpdCBjLmZyb20oJ29wY29lcycpLnVwc2VydCh7CiAgICAgIHVzZXJfaWQ6IHVzdWFyaW8uaWQsCiAgICAgIHNldG9yZXM6IGF0dWFsLnNldG9yZXMgfHwgW10sCiAgICAgIGJhbmNvczogYXR1YWwuYmFuY29zIHx8IFtdLAogICAgICBzdGF0dXM6IGF0dWFsLnN0YXR1cyB8fCBbXSwKICAgICAgYXR1YWxpemFkb19lbTogbmV3IERhdGUoKS50b0lTT1N0cmluZygpLAogICAgfSwgeyBvbkNvbmZsaWN0OiAndXNlcl9pZCcgfSk7CiAgICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogIH0KCiAgYXN5bmMgZnVuY3Rpb24gZW52aWFyQWdvcmEobGlzdGEpIHsKICAgIGlmICghdXN1YXJpbykgdGhyb3cgbmV3IEVycm9yKCdTZW0gc2Vzc8OjbyBuYSBudXZlbS4nKTsKICAgIGNvbnN0IGMgPSBjcmlhckNsaWVudGUoKTsKICAgIGNvbnN0IGlkcyA9IG5ldyBTZXQoKGxpc3RhIHx8IFtdKS5tYXAocCA9PiBwICYmIHAuaWQpLmZpbHRlcihCb29sZWFuKSk7CgogICAgLy8gRXhjbHVzw7VlczogdHVkbyBxdWUgZXN0YXZhIG5hIG51dmVtIGUgbsOjbyBlc3TDoSBtYWlzIG5hIGxpc3RhCiAgICBjb25zdCByZW1vdmlkb3MgPSBbLi4uaWRzTmFOdXZlbV0uZmlsdGVyKGlkID0+ICFpZHMuaGFzKGlkKSk7CiAgICBpZiAocmVtb3ZpZG9zLmxlbmd0aCkgewogICAgICBjb25zdCB7IGVycm9yIH0gPSBhd2FpdCBjLmZyb20oJ3BlbmRlbmNpYXMnKS5kZWxldGUoKS5pbignaWQnLCByZW1vdmlkb3MpOwogICAgICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogICAgfQoKICAgIGlmIChsaXN0YSAmJiBsaXN0YS5sZW5ndGgpIHsKICAgICAgY29uc3QgbGluaGFzID0gbGlzdGEubWFwKHBhcmFCYW5jbyk7CiAgICAgIGNvbnN0IHRhbWFuaG9Mb3RlID0gNDAwOwogICAgICBmb3IgKGxldCBpID0gMDsgaSA8IGxpbmhhcy5sZW5ndGg7IGkgKz0gdGFtYW5ob0xvdGUpIHsKICAgICAgICBjb25zdCB7IGVycm9yIH0gPSBhd2FpdCBjCiAgICAgICAgICAuZnJvbSgncGVuZGVuY2lhcycpCiAgICAgICAgICAudXBzZXJ0KGxpbmhhcy5zbGljZShpLCBpICsgdGFtYW5ob0xvdGUpLCB7IG9uQ29uZmxpY3Q6ICdpZCcgfSk7CiAgICAgICAgaWYgKGVycm9yKSB0aHJvdyBlcnJvcjsKICAgICAgfQogICAgfQoKICAgIGlkc05hTnV2ZW0gPSBpZHM7CiAgfQoKICBmdW5jdGlvbiBlbmZpbGVpcmFyKHRhcmVmYSkgewogICAgZmlsYSA9IGZpbGEudGhlbih0YXJlZmEpLmNhdGNoKGVycm8gPT4gewogICAgICBjb25zb2xlLmVycm9yKCdbbnV2ZW1dIGVudmlvJywgZXJybyk7CiAgICAgIGRlZmluaXJTdGF0dXMoJ2Vycm8nKTsKICAgIH0pOwogICAgcmV0dXJuIGZpbGE7CiAgfQoKICAvLyBDaGFtYWRvIHBlbG8gYXBwLmpzIHNlbXByZSBxdWUgb3MgZGFkb3MgbG9jYWlzIG11ZGFtCiAgZnVuY3Rpb24gZW52aWFyUGVuZGVuY2lhcyhsaXN0YSkgewogICAgaWYgKCF1c3VhcmlvKSByZXR1cm47CiAgICBwZW5kZW5jaWFzUGVuZGVudGVzID0gQXJyYXkuaXNBcnJheShsaXN0YSkgPyBsaXN0YS5zbGljZSgpIDogW107CiAgICBkZWZpbmlyU3RhdHVzKCdlbnZpYW5kbycpOwogICAgZW5maWxlaXJhcihhc3luYyAoKSA9PiB7CiAgICAgIGlmICghdXN1YXJpbykgcmV0dXJuOwogICAgICBjb25zdCBkYWRvcyA9IHBlbmRlbmNpYXNQZW5kZW50ZXM7CiAgICAgIHBlbmRlbmNpYXNQZW5kZW50ZXMgPSBudWxsOwogICAgICBpZiAoIWRhZG9zKSByZXR1cm47CiAgICAgIGF3YWl0IGVudmlhckFnb3JhKGRhZG9zKTsKICAgICAgZGVmaW5pclN0YXR1cygnb2snKTsKICAgIH0pOwogIH0KCiAgLy8gQ2hhbWFkbyBwZWxvIGFwcC5qcyBzZW1wcmUgcXVlIGFzIG9ww6fDtWVzIG11ZGFtCiAgZnVuY3Rpb24gZW52aWFyT3Bjb2VzKGxpc3RhT3Bjb2VzKSB7CiAgICBpZiAoIXVzdWFyaW8pIHJldHVybjsKICAgIG9wY29lc1BlbmRlbnRlcyA9IGxpc3RhT3Bjb2VzCiAgICAgID8gewogICAgICAgICAgc2V0b3JlczogWy4uLihsaXN0YU9wY29lcy5zZXRvcmVzIHx8IFtdKV0sCiAgICAgICAgICBiYW5jb3M6IFsuLi4obGlzdGFPcGNvZXMuYmFuY29zIHx8IFtdKV0sCiAgICAgICAgICBzdGF0dXM6IFsuLi4obGlzdGFPcGNvZXMuc3RhdHVzIHx8IFtdKV0sCiAgICAgICAgfQogICAgICA6IG51bGw7CiAgICBlbmZpbGVpcmFyKGFzeW5jICgpID0+IHsKICAgICAgaWYgKCF1c3VhcmlvKSByZXR1cm47CiAgICAgIGNvbnN0IGRhZG9zID0gb3Bjb2VzUGVuZGVudGVzOwogICAgICBvcGNvZXNQZW5kZW50ZXMgPSBudWxsOwogICAgICBpZiAoIWRhZG9zKSByZXR1cm47CiAgICAgIGF3YWl0IGVudmlhck9wY29lc0Fnb3JhKGRhZG9zKTsKICAgIH0pOwogIH0KCiAgZnVuY3Rpb24gYXBsaWNhclBlbmRlbmNpYXNSZW1vdGFzKGxpbmhhcykgewogICAgY29uc3QgbGlzdGEgPSBsaW5oYXMubWFwKHBhcmFBcHApLm1hcChub3JtYWxpemFyUGVuZGVuY2lhKTsKICAgIHBlbmRlbmNpYXMgPSBsaXN0YTsgLy8gdmFyacOhdmVsIGdsb2JhbCBkbyBhcHAuanMKICAgIHRyeSB7CiAgICAgIGxvY2FsU3RvcmFnZS5zZXRJdGVtKCdwZW5kZW5jaWFzX3YxJywgSlNPTi5zdHJpbmdpZnkobGlzdGEpKTsKICAgIH0gY2F0Y2ggKGVycm8pIHsKICAgICAgY29uc29sZS53YXJuKCdbbnV2ZW1dIG7Do28gZm9pIHBvc3PDrXZlbCBncmF2YXIgbyBjYWNoZSBsb2NhbCcsIGVycm8pOwogICAgfQogICAgaWRzTmFOdXZlbSA9IG5ldyBTZXQobGlzdGEubWFwKHAgPT4gcC5pZCkpOwogICAgYXR1YWxpemFyVGVsYXMoKTsKICB9CgogIGZ1bmN0aW9uIGFwbGljYXJPcGNvZXNSZW1vdGFzKGRhZG9zKSB7CiAgICBvcGNvZXMgPSB7CiAgICAgIHNldG9yZXM6IG5vcm1hbGl6YXJMaXN0YU9wY29lcyhkYWRvcy5zZXRvcmVzLCBPUENPRVNfUEFEUkFPLnNldG9yZXMpLAogICAgICBiYW5jb3M6IG5vcm1hbGl6YXJMaXN0YU9wY29lcyhkYWRvcy5iYW5jb3MsIE9QQ09FU19QQURSQU8uYmFuY29zKSwKICAgICAgc3RhdHVzOiBub3JtYWxpemFyTGlzdGFPcGNvZXMoZGFkb3Muc3RhdHVzLCBPUENPRVNfUEFEUkFPLnN0YXR1cyksCiAgICB9OwogICAgdHJ5IHsKICAgICAgbG9jYWxTdG9yYWdlLnNldEl0ZW0oQ0hBVkVfT1BDT0VTLCBKU09OLnN0cmluZ2lmeShvcGNvZXMpKTsKICAgIH0gY2F0Y2ggKGVycm8pIHsKICAgICAgY29uc29sZS53YXJuKCdbbnV2ZW1dIG7Do28gZm9pIHBvc3PDrXZlbCBncmF2YXIgYXMgb3DDp8O1ZXMgbG9jYWlzJywgZXJybyk7CiAgICB9CiAgICBhdHVhbGl6YXJUZWxhcygpOwogIH0KCiAgYXN5bmMgZnVuY3Rpb24gc2luY3Jvbml6YXJBcG9zTG9naW4oKSB7CiAgICBpZiAoIXVzdWFyaW8gfHwgc2luY3Jvbml6YW5kbykgcmV0dXJuOwogICAgaWYgKHVzdWFyaW9TaW5jcm9uaXphZG8gPT09IHVzdWFyaW8uaWQpIHJldHVybjsKCiAgICBzaW5jcm9uaXphbmRvID0gdHJ1ZTsKICAgIGRlZmluaXJTdGF0dXMoJ2VudmlhbmRvJyk7CgogICAgdHJ5IHsKICAgICAgY29uc3QgcmVtb3RhcyA9IGF3YWl0IGJhaXhhclBlbmRlbmNpYXNSZW1vdGFzKCk7CiAgICAgIGNvbnN0IGxvY2FpcyA9IEFycmF5LmlzQXJyYXkocGVuZGVuY2lhcykgPyBwZW5kZW5jaWFzIDogW107CgogICAgICBpZiAoIXJlbW90YXMubGVuZ3RoICYmIGxvY2Fpcy5sZW5ndGgpIHsKICAgICAgICAvLyBQcmltZWlyYSBjb25leMOjbzogc29iZSBvIHF1ZSBqw6EgZXhpc3RlIG5lc3RlIG5hdmVnYWRvcgogICAgICAgIGlkc05hTnV2ZW0gPSBuZXcgU2V0KCk7CiAgICAgICAgYXdhaXQgZW52aWFyQWdvcmEobG9jYWlzKTsKICAgICAgICBjb25zdCBvcGMgPSBhd2FpdCBiYWl4YXJPcGNvZXNSZW1vdGFzKCk7CiAgICAgICAgaWYgKCFvcGMpIGF3YWl0IGVudmlhck9wY29lc0Fnb3JhKCk7CiAgICAgICAgdXN1YXJpb1NpbmNyb25pemFkbyA9IHVzdWFyaW8uaWQ7CiAgICAgICAgbW9zdHJhckF2aXNvKGAke2xvY2Fpcy5sZW5ndGh9IHBlbmTDqm5jaWEocykgZGVzdGUgbmF2ZWdhZG9yIGVudmlhZGEocykgcGFyYSBhIG51dmVtLmAsICdvaycpOwogICAgICB9IGVsc2UgaWYgKHJlbW90YXMubGVuZ3RoKSB7CiAgICAgICAgLy8gQSBudXZlbSDDqSBhIGZvbnRlIGRhIHZlcmRhZGUKICAgICAgICBpZiAobG9jYWlzLmxlbmd0aCkgewogICAgICAgICAgdHJ5IHsKICAgICAgICAgICAgbG9jYWxTdG9yYWdlLnNldEl0ZW0oJ3BlbmRlbmNpYXNfYmFja3VwX2xvY2FsJywgSlNPTi5zdHJpbmdpZnkobG9jYWlzKSk7CiAgICAgICAgICB9IGNhdGNoIHsgLyogc2VtIGVzcGHDp286IHNlZ3VlICovIH0KICAgICAgICB9CiAgICAgICAgYXBsaWNhclBlbmRlbmNpYXNSZW1vdGFzKHJlbW90YXMpOwogICAgICAgIGNvbnN0IG9wYyA9IGF3YWl0IGJhaXhhck9wY29lc1JlbW90YXMoKTsKICAgICAgICBpZiAob3BjKSB7CiAgICAgICAgICBhcGxpY2FyT3Bjb2VzUmVtb3RhcyhvcGMpOwogICAgICAgIH0gZWxzZSB7CiAgICAgICAgICBhd2FpdCBlbnZpYXJPcGNvZXNBZ29yYSgpOwogICAgICAgIH0KICAgICAgICB1c3VhcmlvU2luY3Jvbml6YWRvID0gdXN1YXJpby5pZDsKICAgICAgICBtb3N0cmFyQXZpc28oYCR7cmVtb3Rhcy5sZW5ndGh9IHBlbmTDqm5jaWEocykgY2FycmVnYWRhKHMpIGRhIG51dmVtLmAsICdvaycpOwogICAgICB9IGVsc2UgewogICAgICAgIC8vIE51dmVtIGUgbmF2ZWdhZG9yIHZhemlvcwogICAgICAgIGNvbnN0IG9wYyA9IGF3YWl0IGJhaXhhck9wY29lc1JlbW90YXMoKTsKICAgICAgICBpZiAoIW9wYykgYXdhaXQgZW52aWFyT3Bjb2VzQWdvcmEoKTsKICAgICAgICB1c3VhcmlvU2luY3Jvbml6YWRvID0gdXN1YXJpby5pZDsKICAgICAgfQoKICAgICAgZGVmaW5pclN0YXR1cygnb2snKTsKICAgIH0gY2F0Y2ggKGVycm8pIHsKICAgICAgY29uc29sZS5lcnJvcignW251dmVtXSBzaW5jcm9uaXphw6fDo28gaW5pY2lhbCcsIGVycm8pOwogICAgICBkZWZpbmlyU3RhdHVzKCdlcnJvJyk7CiAgICAgIG1vc3RyYXJBdmlzbyh0cmFkdXppckVycm8oZXJybyksICdlcnJvJyk7CiAgICB9IGZpbmFsbHkgewogICAgICBzaW5jcm9uaXphbmRvID0gZmFsc2U7CiAgICAgIGF0dWFsaXphckludGVyZmFjZSgpOwogICAgfQogIH0KCiAgYXN5bmMgZnVuY3Rpb24gYmFpeGFyRGFOdXZlbShjb21Db25maXJtYWNhbykgewogICAgaWYgKCF1c3VhcmlvKSB7CiAgICAgIGFicmlyTG9naW4oKTsKICAgICAgcmV0dXJuOwogICAgfQogICAgaWYgKGNvbUNvbmZpcm1hY2FvKSB7CiAgICAgIGNvbnN0IG9rID0gY29uZmlybSgKICAgICAgICAnQmFpeGFyIG9zIGRhZG9zIGRhIG51dmVtIGUgc3Vic3RpdHVpciBvcyBkYWRvcyBkZXN0ZSBuYXZlZ2Fkb3I/XG5cbicgKwogICAgICAgICdVbWEgY8OzcGlhIGRvcyBkYWRvcyBhdHVhaXMgc2Vyw6EgZ3VhcmRhZGEgbmVzdGUgbmF2ZWdhZG9yLicKICAgICAgKTsKICAgICAgaWYgKCFvaykgcmV0dXJuOwogICAgfQoKICAgIHRyeSB7CiAgICAgIGRlZmluaXJTdGF0dXMoJ2VudmlhbmRvJyk7CiAgICAgIGNvbnN0IHJlbW90YXMgPSBhd2FpdCBiYWl4YXJQZW5kZW5jaWFzUmVtb3RhcygpOwogICAgICB0cnkgewogICAgICAgIGxvY2FsU3RvcmFnZS5zZXRJdGVtKCdwZW5kZW5jaWFzX2JhY2t1cF9sb2NhbCcsIEpTT04uc3RyaW5naWZ5KHBlbmRlbmNpYXMpKTsKICAgICAgfSBjYXRjaCB7IC8qIHNlbSBlc3Bhw6dvOiBzZWd1ZSAqLyB9CiAgICAgIGFwbGljYXJQZW5kZW5jaWFzUmVtb3RhcyhyZW1vdGFzKTsKCiAgICAgIGNvbnN0IG9wYyA9IGF3YWl0IGJhaXhhck9wY29lc1JlbW90YXMoKTsKICAgICAgaWYgKG9wYykgYXBsaWNhck9wY29lc1JlbW90YXMob3BjKTsKCiAgICAgIHVzdWFyaW9TaW5jcm9uaXphZG8gPSB1c3VhcmlvLmlkOwogICAgICBkZWZpbmlyU3RhdHVzKCdvaycpOwogICAgICBtb3N0cmFyQXZpc28oJ0RhZG9zIGF0dWFsaXphZG9zIGEgcGFydGlyIGRhIG51dmVtLicsICdvaycpOwogICAgfSBjYXRjaCAoZXJybykgewogICAgICBjb25zb2xlLmVycm9yKCdbbnV2ZW1dIGRvd25sb2FkJywgZXJybyk7CiAgICAgIGRlZmluaXJTdGF0dXMoJ2Vycm8nKTsKICAgICAgbW9zdHJhckF2aXNvKHRyYWR1emlyRXJybyhlcnJvKSwgJ2Vycm8nKTsKICAgIH0KICB9CgogIC8vIC0tLS0tLS0tLS0gSW5pY2lhbGl6YcOnw6NvIC0tLS0tLS0tLS0KCiAgYXN5bmMgZnVuY3Rpb24gaW5pY2lhcigpIHsKICAgIGF0dWFsaXphckludGVyZmFjZSgpOwoKICAgIGlmICghY29uZmlndXJhZGEpIHsKICAgICAgY29uc29sZS5pbmZvKCdbbnV2ZW1dIFN1cGFiYXNlIG7Do28gY29uZmlndXJhZG8g4oCUIHVzYW5kbyBhcGVuYXMgZGFkb3MgbG9jYWlzLicpOwogICAgICByZXR1cm47CiAgICB9CgogICAgY29uc3QgYyA9IGNyaWFyQ2xpZW50ZSgpOwogICAgaWYgKCFjKSByZXR1cm47CgogICAgYy5hdXRoLm9uQXV0aFN0YXRlQ2hhbmdlKChldmVudG8sIHNlc3NhbykgPT4gewogICAgICB1c3VhcmlvID0gc2Vzc2FvID8gc2Vzc2FvLnVzZXIgOiBudWxsOwoKICAgICAgaWYgKGV2ZW50byA9PT0gJ1NJR05FRF9PVVQnKSB7CiAgICAgICAgdXN1YXJpb1NpbmNyb25pemFkbyA9IG51bGw7CiAgICAgICAgaWRzTmFOdXZlbSA9IG5ldyBTZXQoKTsKICAgICAgICBzdGF0dXNFbnZpbyA9ICdpbmF0aXZvJzsKICAgICAgfQoKICAgICAgYXR1YWxpemFySW50ZXJmYWNlKCk7CgogICAgICBpZiAoc2Vzc2FvICYmIChldmVudG8gPT09ICdTSUdORURfSU4nIHx8IGV2ZW50byA9PT0gJ0lOSVRJQUxfU0VTU0lPTicgfHwgZXZlbnRvID09PSAnVE9LRU5fUkVGUkVTSEVEJykpIHsKICAgICAgICBzZXRUaW1lb3V0KCgpID0+IHsgc2luY3Jvbml6YXJBcG9zTG9naW4oKTsgfSwgMCk7CiAgICAgIH0KICAgIH0pOwoKICAgIHRyeSB7CiAgICAgIGNvbnN0IHsgZGF0YSB9ID0gYXdhaXQgYy5hdXRoLmdldFNlc3Npb24oKTsKICAgICAgdXN1YXJpbyA9IGRhdGEgJiYgZGF0YS5zZXNzaW9uID8gZGF0YS5zZXNzaW9uLnVzZXIgOiBudWxsOwogICAgICBhdHVhbGl6YXJJbnRlcmZhY2UoKTsKICAgICAgaWYgKHVzdWFyaW8pIGF3YWl0IHNpbmNyb25pemFyQXBvc0xvZ2luKCk7CiAgICB9IGNhdGNoIChlcnJvKSB7CiAgICAgIGNvbnNvbGUuZXJyb3IoJ1tudXZlbV0gc2Vzc8OjbycsIGVycm8pOwogICAgfQogIH0KCiAgLy8gRVNDIGZlY2hhIGEgamFuZWxhIGRlIGxvZ2luCiAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigna2V5ZG93bicsIGV2ZW50byA9PiB7CiAgICBpZiAoZXZlbnRvLmtleSAhPT0gJ0VzY2FwZScpIHJldHVybjsKICAgIGNvbnN0IG1vZGFsID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ21vZGFsTnV2ZW0nKTsKICAgIGlmIChtb2RhbCAmJiBtb2RhbC5jbGFzc0xpc3QuY29udGFpbnMoJ2FiZXJ0bycpKSBmZWNoYXJMb2dpbigpOwogIH0pOwoKICB3aW5kb3cuTnV2ZW0gPSB7CiAgICBpbmljaWFyLAogICAgZXN0YUNvbmZpZ3VyYWRhOiAoKSA9PiBjb25maWd1cmFkYSwKICAgIHVzdWFyaW9BdHVhbDogKCkgPT4gdXN1YXJpbywKICAgIGFicmlyTG9naW4sCiAgICBmZWNoYXJMb2dpbiwKICAgIGZlY2hhckxvZ2luT3ZlcmxheSwKICAgIGFsdGVybmFyTW9kbywKICAgIGVudmlhckZvcm11bGFyaW8sCiAgICBzYWlyLAogICAgYmFpeGFyRGFOdXZlbSwKICAgIGVudmlhclBlbmRlbmNpYXMsCiAgICBlbnZpYXJPcGNvZXMsCiAgICBhdHVhbGl6YXJJbnRlcmZhY2UsCiAgICBtb3N0cmFyQXZpc28sCiAgfTsKCiAgLy8gSW5pY2lhIHNvemluaG87IGFwcC5qcyBqw6EgZm9pIGNhcnJlZ2FkbyBhbnRlcyBkZXN0ZSBhcnF1aXZvLgogIGluaWNpYXIoKTsKfSkoKTsK
+// ============================================================
+//  NUVEM (SUPABASE)
+//  Login por e-mail/senha e sincronização dos dados.
+//
+//  Regra de ouro: o navegador (localStorage) continua sendo o
+//  armazenamento imediato. A nuvem funciona como espelho:
+//   - ao entrar, os dados da nuvem são baixados;
+//   - a cada alteração, tudo é reenviado para a nuvem.
+//  Sem internet, o app segue funcionando com os dados locais.
+// ============================================================
+
+(function () {
+  'use strict';
+
+  const config = window.SUPABASE_CONFIG || {};
+  const configurada = Boolean(
+    typeof config.url === 'string' && /^https?:\/\//.test(config.url.trim()) &&
+    typeof config.anonKey === 'string' && config.anonKey.trim().length > 40
+  );
+
+  let cliente = null;
+  let usuario = null;
+  let modoCadastro = false;
+  let processando = false;
+  let usuarioSincronizado = null;
+  let sincronizando = false;
+
+  // Fila dos envios: evita que duas sincronizações se atropelem
+  let fila = Promise.resolve();
+  let pendenciasPendentes = null;
+  let opcoesPendentes = null;
+
+  // Ids que já existem na nuvem (para detectar exclusões)
+  let idsNaNuvem = new Set();
+
+  let statusEnvio = 'inativo'; // inativo | enviando | ok | erro
+  let temporizadorAviso = null;
+
+  // ---------- Utilitários ----------
+
+  function criarCliente() {
+    if (!configurada) return null;
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+      console.error('[nuvem] Biblioteca do Supabase não carregada.');
+      return null;
+    }
+    if (!cliente) {
+      cliente = window.supabase.createClient(config.url.trim(), config.anonKey.trim(), {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+        },
+      });
+    }
+    return cliente;
+  }
+
+  function paraApp(linha) {
+    return {
+      id: linha.id,
+      numero: linha.numero === null || linha.numero === undefined ? 0 : Number(linha.numero),
+      numeroNota: linha.numero_nota ?? '',
+      af: linha.af ?? '',
+      fornecedor: linha.fornecedor ?? '',
+      dataPagamento: linha.data_pagamento ?? '',
+      valorOriginal: linha.valor_original === null || linha.valor_original === undefined ? 0 : Number(linha.valor_original),
+      valorLiquido: linha.valor_liquido === null || linha.valor_liquido === undefined ? 0 : Number(linha.valor_liquido),
+      motivoPendencia: linha.motivo_pendencia ?? '',
+      setor: linha.setor ?? '',
+      responsavel: linha.responsavel ?? '',
+      banco: linha.banco ?? '',
+      status: linha.status ?? '',
+    };
+  }
+
+  function paraBanco(p) {
+    return {
+      id: p.id,
+      user_id: usuario.id,
+      numero: Number(p.numero) > 0 ? Math.trunc(Number(p.numero)) : null,
+      numero_nota: p.numeroNota ?? '',
+      af: p.af ?? '',
+      fornecedor: p.fornecedor ?? '',
+      data_pagamento: p.dataPagamento || null,
+      valor_original: Number(p.valorOriginal) || 0,
+      valor_liquido: Number(p.valorLiquido) || 0,
+      motivo_pendencia: p.motivoPendencia ?? '',
+      setor: p.setor ?? '',
+      responsavel: p.responsavel ?? '',
+      banco: p.banco ?? '',
+      status: p.status ?? '',
+      atualizado_em: new Date().toISOString(),
+    };
+  }
+
+  function definirStatus(novo) {
+    statusEnvio = novo;
+    atualizarInterface();
+  }
+
+  function atualizarTelas() {
+    if (typeof atualizarSelectsFiltros === 'function') atualizarSelectsFiltros();
+    if (typeof atualizarSelectsModal === 'function') atualizarSelectsModal();
+    if (typeof renderizarListaOpcoes === 'function') renderizarListaOpcoes();
+    if (typeof renderizar === 'function') renderizar();
+  }
+
+  function mostrarAviso(texto, tipo) {
+    let el = document.getElementById('avisoNuvem');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'avisoNuvem';
+      el.setAttribute('role', 'status');
+      el.setAttribute('aria-live', 'polite');
+      document.body.appendChild(el);
+    }
+    el.textContent = texto;
+    el.className = 'aviso-nuvem aviso-' + (tipo || 'ok');
+    // Força o navegador a perceber a mudança antes de animar
+    void el.offsetWidth;
+    el.classList.add('visivel');
+
+    clearTimeout(temporizadorAviso);
+    temporizadorAviso = setTimeout(() => el.classList.remove('visivel'), 4500);
+  }
+
+  function traduzirErro(erro) {
+    const texto = String((erro && (erro.message || erro.error_description)) || erro || '');
+    const minusculo = texto.toLowerCase();
+
+    if (minusculo.includes('invalid login credentials')) return 'E-mail ou senha incorretos.';
+    if (minusculo.includes('email not confirmed')) return 'Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada.';
+    if (minusculo.includes('user already registered')) return 'Esta conta já existe. Use a opção "Entrar".';
+    if (minusculo.includes('password should be at least')) return 'A senha precisa ter pelo menos 6 caracteres.';
+    if (minusculo.includes('unable to validate email') || minusculo.includes('invalid email')) return 'Informe um e-mail válido.';
+    if (minusculo.includes('failed to fetch') || minusculo.includes('networkerror')) return 'Sem conexão com a internet. Tente novamente.';
+    if (minusculo.includes('invalid api key') || minusculo.includes('supabasekey')) return 'Configuração do Supabase inválida. Confira a Project URL e a chave anon em supabase-config.js.';
+    if (minusculo.includes('rate limit') || minusculo.includes('too many requests')) return 'Muitas tentativas. Aguarde alguns minutos.';
+    if (minusculo.includes('relation') && minusculo.includes('does not exist')) return 'As tabelas ainda não foram criadas no Supabase. Rode o arquivo supabase-schema.sql no SQL Editor.';
+    if (minusculo.includes('row-level security')) return 'Sem permissão no banco. Confira as regras (RLS) criadas pelo supabase-schema.sql.';
+
+    return texto || 'Não foi possível concluir a operação. Tente novamente.';
+  }
+
+  // ---------- Interface ----------
+
+  function atualizarInterface() {
+    const entrar = document.getElementById('menuEntrarNuvem');
+    const sincronizar = document.getElementById('menuSincronizarNuvem');
+    const sair = document.getElementById('menuSairNuvem');
+    const info = document.getElementById('menuUsuarioNuvem');
+
+    if (entrar) {
+      entrar.hidden = Boolean(usuario);
+      if (!configurada) {
+        entrar.textContent = '☁ Nuvem não configurada';
+      } else {
+        entrar.textContent = '☁ Entrar na nuvem';
+      }
+    }
+
+    if (sincronizar) {
+      sincronizar.hidden = !usuario;
+      const rotulos = {
+        enviando: '⏳ Sincronizando...',
+        erro: '⚠ Falha ao sincronizar — tentar de novo',
+        ok: '☁ Sincronizado — baixar da nuvem',
+        inativo: '☁ Sincronizar agora',
+      };
+      sincronizar.textContent = rotulos[statusEnvio] || rotulos.inativo;
+    }
+
+    if (sair) sair.hidden = !usuario;
+
+    if (info) {
+      info.hidden = !usuario;
+      info.textContent = usuario ? '👤 ' + (usuario.email || 'conectado') : '';
+    }
+  }
+
+  function abrirLogin(paraCadastro) {
+    if (!configurada) {
+      alert(
+        'A nuvem ainda não está configurada.\n\n' +
+        'Abra o arquivo supabase-config.js e cole a "Project URL" e a chave "anon public" do seu projeto Supabase.\n\n' +
+        'Depois, rode o arquivo supabase-schema.sql no SQL Editor do Supabase.'
+      );
+      return;
+    }
+    if (usuario) return;
+
+    alternarModo(Boolean(paraCadastro));
+    const form = document.getElementById('formLoginNuvem');
+    if (form) form.reset();
+    const erro = document.getElementById('loginErro');
+    if (erro) { erro.hidden = true; erro.textContent = ''; }
+
+    const modal = document.getElementById('modalNuvem');
+    if (modal) modal.classList.add('aberto');
+    setTimeout(() => {
+      const campo = document.getElementById('loginEmail');
+      if (campo) campo.focus();
+    }, 60);
+  }
+
+  function fecharLogin() {
+    const modal = document.getElementById('modalNuvem');
+    if (modal) modal.classList.remove('aberto');
+  }
+
+  function fecharLoginOverlay(evento) {
+    if (evento && evento.target === document.getElementById('modalNuvem')) fecharLogin();
+  }
+
+  function alternarModo(paraCadastro) {
+    modoCadastro = Boolean(paraCadastro);
+
+    const titulo = document.getElementById('tituloLoginNuvem');
+    const ajuda = document.getElementById('ajudaLoginNuvem');
+    const grupo = document.getElementById('grupoConfirmarSenha');
+    const senha2 = document.getElementById('loginSenha2');
+    const senha = document.getElementById('loginSenha');
+    const botao = document.getElementById('btnLoginNuvem');
+    const alternar = document.getElementById('btnAlternarModo');
+
+    if (titulo) titulo.textContent = modoCadastro ? '☁ Criar conta na nuvem' : '☁ Entrar na nuvem';
+    if (ajuda) {
+      ajuda.textContent = modoCadastro
+        ? 'Crie uma conta para acessar seus dados em qualquer dispositivo. Você receberá um e-mail de confirmação.'
+        : 'Entre com seu e-mail e senha para carregar seus dados da nuvem.';
+    }
+    if (grupo) grupo.hidden = !modoCadastro;
+    if (senha2) senha2.required = modoCadastro;
+    if (senha) senha.autocomplete = modoCadastro ? 'new-password' : 'current-password';
+    if (botao) botao.textContent = modoCadastro ? 'Criar conta' : 'Entrar';
+    if (alternar) alternar.textContent = modoCadastro ? 'Já tenho conta — entrar' : 'Ainda não tenho conta — criar';
+
+    const erro = document.getElementById('loginErro');
+    if (erro) { erro.hidden = true; erro.textContent = ''; }
+  }
+
+  async function enviarFormulario(evento) {
+    if (evento) evento.preventDefault();
+    if (processando) return;
+
+    const erroEl = document.getElementById('loginErro');
+    const botao = document.getElementById('btnLoginNuvem');
+    const email = String((document.getElementById('loginEmail') || {}).value || '').trim();
+    const senha = String((document.getElementById('loginSenha') || {}).value || '');
+    const senha2El = document.getElementById('loginSenha2');
+
+    const falhar = (mensagem) => {
+      if (erroEl) { erroEl.textContent = mensagem; erroEl.hidden = false; }
+    };
+
+    if (erroEl) { erroEl.hidden = true; erroEl.textContent = ''; }
+
+    if (!email || !senha) return falhar('Preencha e-mail e senha.');
+    if (modoCadastro && senha2El && senha !== senha2El.value) return falhar('As senhas não conferem.');
+
+    processando = true;
+    if (botao) {
+      botao.disabled = true;
+      botao.textContent = modoCadastro ? 'Criando conta...' : 'Entrando...';
+    }
+
+    try {
+      if (!configurada) throw new Error('A nuvem ainda não está configurada.');
+      const c = criarCliente();
+      if (!c) throw new Error('Não foi possível iniciar a conexão com a nuvem.');
+
+      if (modoCadastro) {
+        const { data, error } = await c.auth.signUp({
+          email,
+          password: senha,
+          options: {
+            // Depois de confirmar o e-mail, volta para esta mesma página
+            emailRedirectTo: window.location.href.split('#')[0],
+          },
+        });
+        if (error) throw error;
+
+        if (data && data.session) {
+          fecharLogin();
+          mostrarAviso('Conta criada e conectada à nuvem.', 'ok');
+        } else {
+          // O Supabase exige confirmação por e-mail
+          alternarModo(false);
+          const ajuda = document.getElementById('ajudaLoginNuvem');
+          if (ajuda) {
+            ajuda.textContent = 'Conta criada! Abra o e-mail de confirmação enviado pelo Supabase, confirme e depois volte aqui para entrar.';
+          }
+          if (erroEl) {
+            erroEl.textContent = 'Verifique sua caixa de entrada (e o spam) para confirmar o e-mail.';
+            erroEl.className = 'login-erro login-aviso';
+            erroEl.hidden = false;
+          }
+        }
+      } else {
+        const { error } = await c.auth.signInWithPassword({ email, password: senha });
+        if (error) throw error;
+        fecharLogin();
+      }
+    } catch (erro) {
+      console.error('[nuvem] login', erro);
+      if (erroEl) erroEl.className = 'login-erro';
+      falhar(traduzirErro(erro));
+    } finally {
+      processando = false;
+      if (botao) {
+        botao.disabled = false;
+        botao.textContent = modoCadastro ? 'Criar conta' : 'Entrar';
+      }
+    }
+  }
+
+  async function sair() {
+    if (!usuario) return;
+    if (!confirm('Sair da conta na nuvem?\n\nOs dados continuam salvos neste navegador.')) return;
+
+    const c = criarCliente();
+    if (c) {
+      try { await c.auth.signOut(); } catch (erro) { console.warn('[nuvem] sair', erro); }
+    }
+
+    usuario = null;
+    usuarioSincronizado = null;
+    idsNaNuvem = new Set();
+    statusEnvio = 'inativo';
+    atualizarInterface();
+    mostrarAviso('Você saiu da nuvem. O app continua funcionando com os dados deste navegador.', 'ok');
+  }
+
+  // ---------- Dados ----------
+
+  async function baixarPendenciasRemotas() {
+    const c = criarCliente();
+    const { data, error } = await c
+      .from('pendencias')
+      .select('*')
+      .order('numero', { ascending: true });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  }
+
+  async function baixarOpcoesRemotas() {
+    const c = criarCliente();
+    const { data, error } = await c
+      .from('opcoes')
+      .select('*')
+      .eq('user_id', usuario.id)
+      .maybeSingle();
+    if (error) throw error;
+    return data || null;
+  }
+
+  async function enviarOpcoesAgora(listaOpcoes) {
+    const atual = listaOpcoes || opcoes;
+    if (!atual) return;
+    const c = criarCliente();
+    const { error } = await c.from('opcoes').upsert({
+      user_id: usuario.id,
+      setores: atual.setores || [],
+      bancos: atual.bancos || [],
+      status: atual.status || [],
+      atualizado_em: new Date().toISOString(),
+    }, { onConflict: 'user_id' });
+    if (error) throw error;
+  }
+
+  async function enviarAgora(lista) {
+    if (!usuario) throw new Error('Sem sessão na nuvem.');
+    const c = criarCliente();
+    const ids = new Set((lista || []).map(p => p && p.id).filter(Boolean));
+
+    // Exclusões: tudo que estava na nuvem e não está mais na lista
+    const removidos = [...idsNaNuvem].filter(id => !ids.has(id));
+    if (removidos.length) {
+      const { error } = await c.from('pendencias').delete().in('id', removidos);
+      if (error) throw error;
+    }
+
+    if (lista && lista.length) {
+      const linhas = lista.map(paraBanco);
+      const tamanhoLote = 400;
+      for (let i = 0; i < linhas.length; i += tamanhoLote) {
+        const { error } = await c
+          .from('pendencias')
+          .upsert(linhas.slice(i, i + tamanhoLote), { onConflict: 'id' });
+        if (error) throw error;
+      }
+    }
+
+    idsNaNuvem = ids;
+  }
+
+  function enfileirar(tarefa) {
+    fila = fila.then(tarefa).catch(erro => {
+      console.error('[nuvem] envio', erro);
+      definirStatus('erro');
+    });
+    return fila;
+  }
+
+  // Chamado pelo app.js sempre que os dados locais mudam
+  function enviarPendencias(lista) {
+    if (!usuario) return;
+    pendenciasPendentes = Array.isArray(lista) ? lista.slice() : [];
+    definirStatus('enviando');
+    enfileirar(async () => {
+      if (!usuario) return;
+      const dados = pendenciasPendentes;
+      pendenciasPendentes = null;
+      if (!dados) return;
+      await enviarAgora(dados);
+      definirStatus('ok');
+    });
+  }
+
+  // Chamado pelo app.js sempre que as opções mudam
+  function enviarOpcoes(listaOpcoes) {
+    if (!usuario) return;
+    opcoesPendentes = listaOpcoes
+      ? {
+          setores: [...(listaOpcoes.setores || [])],
+          bancos: [...(listaOpcoes.bancos || [])],
+          status: [...(listaOpcoes.status || [])],
+        }
+      : null;
+    enfileirar(async () => {
+      if (!usuario) return;
+      const dados = opcoesPendentes;
+      opcoesPendentes = null;
+      if (!dados) return;
+      await enviarOpcoesAgora(dados);
+    });
+  }
+
+  function aplicarPendenciasRemotas(linhas) {
+    const lista = linhas.map(paraApp).map(normalizarPendencia);
+    pendencias = lista; // variável global do app.js
+    try {
+      localStorage.setItem('pendencias_v1', JSON.stringify(lista));
+    } catch (erro) {
+      console.warn('[nuvem] não foi possível gravar o cache local', erro);
+    }
+    idsNaNuvem = new Set(lista.map(p => p.id));
+    atualizarTelas();
+  }
+
+  function aplicarOpcoesRemotas(dados) {
+    opcoes = {
+      setores: normalizarListaOpcoes(dados.setores, OPCOES_PADRAO.setores),
+      bancos: normalizarListaOpcoes(dados.bancos, OPCOES_PADRAO.bancos),
+      status: normalizarListaOpcoes(dados.status, OPCOES_PADRAO.status),
+    };
+    try {
+      localStorage.setItem(CHAVE_OPCOES, JSON.stringify(opcoes));
+    } catch (erro) {
+      console.warn('[nuvem] não foi possível gravar as opções locais', erro);
+    }
+    atualizarTelas();
+  }
+
+  async function sincronizarAposLogin() {
+    if (!usuario || sincronizando) return;
+    if (usuarioSincronizado === usuario.id) return;
+
+    sincronizando = true;
+    definirStatus('enviando');
+
+    try {
+      const remotas = await baixarPendenciasRemotas();
+      const locais = Array.isArray(pendencias) ? pendencias : [];
+
+      if (!remotas.length && locais.length) {
+        // Primeira conexão: sobe o que já existe neste navegador
+        idsNaNuvem = new Set();
+        await enviarAgora(locais);
+        const opc = await baixarOpcoesRemotas();
+        if (!opc) await enviarOpcoesAgora();
+        usuarioSincronizado = usuario.id;
+        mostrarAviso(`${locais.length} pendência(s) deste navegador enviada(s) para a nuvem.`, 'ok');
+      } else if (remotas.length) {
+        // A nuvem é a fonte da verdade
+        if (locais.length) {
+          try {
+            localStorage.setItem('pendencias_backup_local', JSON.stringify(locais));
+          } catch { /* sem espaço: segue */ }
+        }
+        aplicarPendenciasRemotas(remotas);
+        const opc = await baixarOpcoesRemotas();
+        if (opc) {
+          aplicarOpcoesRemotas(opc);
+        } else {
+          await enviarOpcoesAgora();
+        }
+        usuarioSincronizado = usuario.id;
+        mostrarAviso(`${remotas.length} pendência(s) carregada(s) da nuvem.`, 'ok');
+      } else {
+        // Nuvem e navegador vazios
+        const opc = await baixarOpcoesRemotas();
+        if (!opc) await enviarOpcoesAgora();
+        usuarioSincronizado = usuario.id;
+      }
+
+      definirStatus('ok');
+    } catch (erro) {
+      console.error('[nuvem] sincronização inicial', erro);
+      definirStatus('erro');
+      mostrarAviso(traduzirErro(erro), 'erro');
+    } finally {
+      sincronizando = false;
+      atualizarInterface();
+    }
+  }
+
+  async function baixarDaNuvem(comConfirmacao) {
+    if (!usuario) {
+      abrirLogin();
+      return;
+    }
+    if (comConfirmacao) {
+      const ok = confirm(
+        'Baixar os dados da nuvem e substituir os dados deste navegador?\n\n' +
+        'Uma cópia dos dados atuais será guardada neste navegador.'
+      );
+      if (!ok) return;
+    }
+
+    try {
+      definirStatus('enviando');
+      const remotas = await baixarPendenciasRemotas();
+      try {
+        localStorage.setItem('pendencias_backup_local', JSON.stringify(pendencias));
+      } catch { /* sem espaço: segue */ }
+      aplicarPendenciasRemotas(remotas);
+
+      const opc = await baixarOpcoesRemotas();
+      if (opc) aplicarOpcoesRemotas(opc);
+
+      usuarioSincronizado = usuario.id;
+      definirStatus('ok');
+      mostrarAviso('Dados atualizados a partir da nuvem.', 'ok');
+    } catch (erro) {
+      console.error('[nuvem] download', erro);
+      definirStatus('erro');
+      mostrarAviso(traduzirErro(erro), 'erro');
+    }
+  }
+
+  // ---------- Inicialização ----------
+
+  async function iniciar() {
+    atualizarInterface();
+
+    if (!configurada) {
+      console.info('[nuvem] Supabase não configurado — usando apenas dados locais.');
+      return;
+    }
+
+    const c = criarCliente();
+    if (!c) return;
+
+    c.auth.onAuthStateChange((evento, sessao) => {
+      usuario = sessao ? sessao.user : null;
+
+      if (evento === 'SIGNED_OUT') {
+        usuarioSincronizado = null;
+        idsNaNuvem = new Set();
+        statusEnvio = 'inativo';
+      }
+
+      atualizarInterface();
+
+      if (sessao && (evento === 'SIGNED_IN' || evento === 'INITIAL_SESSION' || evento === 'TOKEN_REFRESHED')) {
+        setTimeout(() => { sincronizarAposLogin(); }, 0);
+      }
+    });
+
+    try {
+      const { data } = await c.auth.getSession();
+      usuario = data && data.session ? data.session.user : null;
+      atualizarInterface();
+      if (usuario) await sincronizarAposLogin();
+    } catch (erro) {
+      console.error('[nuvem] sessão', erro);
+    }
+  }
+
+  // ESC fecha a janela de login
+  document.addEventListener('keydown', evento => {
+    if (evento.key !== 'Escape') return;
+    const modal = document.getElementById('modalNuvem');
+    if (modal && modal.classList.contains('aberto')) fecharLogin();
+  });
+
+  window.Nuvem = {
+    iniciar,
+    estaConfigurada: () => configurada,
+    usuarioAtual: () => usuario,
+    abrirLogin,
+    fecharLogin,
+    fecharLoginOverlay,
+    alternarModo,
+    enviarFormulario,
+    sair,
+    baixarDaNuvem,
+    enviarPendencias,
+    enviarOpcoes,
+    atualizarInterface,
+    mostrarAviso,
+  };
+
+  // Inicia sozinho; app.js já foi carregado antes deste arquivo.
+  iniciar();
+})();

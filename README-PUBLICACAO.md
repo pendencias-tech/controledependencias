@@ -1,1 +1,52 @@
-IyBTaXN0ZW1hIGRlIFBlbmTDqm5jaWFzIOKAlCBwdWJsaWNhw6fDo28gZSBudXZlbQoKR3VpYSBjdXJ0byBwYXJhIGNvbG9jYXIgbyBzaXN0ZW1hIG5vIGFyIGNvbSAqKkdpdEh1YiBQYWdlcyoqIGUgKipTdXBhYmFzZSoqLgoKIyMgMS4gU3VwYWJhc2UgKGJhbmNvIGRlIGRhZG9zIG5hIG51dmVtKQoKMS4gRW50cmUgZW0gPGh0dHBzOi8vc3VwYWJhc2UuY29tL2Rhc2hib2FyZD4gZSBhYnJhIG8gcHJvamV0by4KMi4gTWVudSBsYXRlcmFsIOKGkiAqKlNRTCBFZGl0b3IqKiDihpIgKipOZXcgcXVlcnkqKi4KMy4gQ29sZSB0b2RvIG8gY29udGXDumRvIGRlIGBzdXBhYmFzZS1zY2hlbWEuc3FsYCBlIGNsaXF1ZSBlbSAqKlJ1bioqLgo0LiBNZW51IGxhdGVyYWwg4oaSICoqUHJvamVjdCBTZXR0aW5ncyoqIChlbmdyZW5hZ2VtKSDihpIgKipBUEkqKi4KNS4gQ29waWU6CiAgIC0gKipQcm9qZWN0IFVSTCoqIChleC46IGBodHRwczovL2FiY2RlZmdoaWprLnN1cGFiYXNlLmNvYCkKICAgLSAqKmFub24gcHVibGljKiogKGEgY2hhdmUgbG9uZ2EgcXVlIGNvbWXDp2EgY29tIGBleUouLi5gKQo2LiBBYnJhIG8gYXJxdWl2byBgc3VwYWJhc2UtY29uZmlnLmpzYCBlIGNvbGUgb3MgZG9pcyB2YWxvcmVzIGVudHJlIGFzIGFzcGFzLgogICAtIFVzZSAqKnNvbWVudGUqKiBhIGNoYXZlIGBhbm9uIHB1YmxpY2AuIE51bmNhIGEgYHNlcnZpY2Vfcm9sZWAuCgojIyMgQ29uZmlybWHDp8OjbyBkZSBlLW1haWwKCk5vIFN1cGFiYXNlLCBlbSAqKkF1dGhlbnRpY2F0aW9uIOKGkiBQcm92aWRlcnMg4oaSIEVtYWlsKio6CgotICoqT3DDp8OjbyBmw6FjaWw6KiogZGVzbGlndWUgKipDb25maXJtIGVtYWlsKiouIE8gY2FkYXN0cm8gZW50cmEgZGlyZXRvLgotICoqT3DDp8OjbyBjb20gY29uZmlybWHDp8OjbzoqKiBtYW50ZW5oYSBsaWdhZG8gZSwgZW0KICAqKkF1dGhlbnRpY2F0aW9uIOKGkiBVUkwgQ29uZmlndXJhdGlvbioqLCBhZGljaW9uZSBhIFVSTCBkbyBzaXRlIHB1YmxpY2FkbwogIChleC46IGBodHRwczovL3NldS11c3VhcmlvLmdpdGh1Yi5pby9zaXN0ZW1hLXBlbmRlbmNpYXMvYCkgZW0KICAqKlNpdGUgVVJMKiogZSAqKlJlZGlyZWN0IFVSTHMqKi4KCiMjIDIuIEdpdEh1YiBQYWdlcwoKTyByZXBvc2l0w7NyaW8gZGV2ZSBzZSBjaGFtYXIgYHNpc3RlbWEtcGVuZGVuY2lhc2AuCgoxLiBFbnZpZSB0b2RvcyBvcyBhcnF1aXZvcyBkZXN0YSBwYXN0YSBwYXJhIG8gcmVwb3NpdMOzcmlvIChicmFuY2ggYG1haW5gKS4KMi4gTm8gcmVwb3NpdMOzcmlvOiAqKlNldHRpbmdzIOKGkiBQYWdlcyoqLgozLiBFbSAqKlNvdXJjZSoqLCBlc2NvbGhhICoqRGVwbG95IGZyb20gYSBicmFuY2gqKi4KNC4gQnJhbmNoOiBgbWFpbmA7IHBhc3RhOiBgLyAocm9vdClgLiBDbGlxdWUgZW0gKipTYXZlKiouCjUuIEFndWFyZGUgYWxndW5zIG1pbnV0b3MuIE8gZW5kZXJlw6dvIHNlcsOhOgogICBgaHR0cHM6Ly9TRVUtVVNVQVJJTy5naXRodWIuaW8vc2lzdGVtYS1wZW5kZW5jaWFzL2AKCiMjIDMuIENvbW8gbyBzaXN0ZW1hIGZ1bmNpb25hCgotIE9zIGRhZG9zIHPDo28gc2Fsdm9zICoqaW1lZGlhdGFtZW50ZSBubyBuYXZlZ2Fkb3IqKiAoZnVuY2lvbmEgYXTDqSBzZW0gaW50ZXJuZXQpLgotIEFvICoqZW50cmFyIG5hIG51dmVtKiogKG1lbnUgKirimLAgQcOnw7VlcyDihpIg4piBIEVudHJhciBuYSBudXZlbSoqKSwgbyBzaXN0ZW1hOgogIC0gbmEgcHJpbWVpcmEgdmV6LCBlbnZpYSBvcyBkYWRvcyBkZXN0ZSBuYXZlZ2Fkb3IgcGFyYSBhIG51dmVtOwogIC0gbm9zIHByw7N4aW1vcyBhY2Vzc29zIChtZXNtbyBlbSBvdXRybyBjb21wdXRhZG9yKSwgYmFpeGEgb3MgZGFkb3MgZGEgbnV2ZW0uCi0gQ2FkYSBhbHRlcmHDp8OjbyDDqSByZWVudmlhZGEgYXV0b21hdGljYW1lbnRlIHBhcmEgYSBudXZlbS4KLSAqKuKYgSBTaW5jcm9uaXphciBhZ29yYSoqIGJhaXhhIG9zIGRhZG9zIGRhIG51dmVtIGUgc3Vic3RpdHVpIG9zIGRlc3RlIG5hdmVnYWRvcgogICh1bWEgY8OzcGlhIGxvY2FsIMOpIGd1YXJkYWRhIGFudGVzKS4KLSBDYWRhIGNvbnRhIHbDqiAqKmFwZW5hcyBvcyBwcsOzcHJpb3MgZGFkb3MqKiAocHJvdGXDp8OjbyBSTFMgZG8gU3VwYWJhc2UpLgoKIyMgNC4gQXR1YWxpemFyIG8gc2l0ZSBkZXBvaXMKCkJhc3RhIHN1YnN0aXR1aXIgb3MgYXJxdWl2b3MgYWx0ZXJhZG9zIG5vIHJlcG9zaXTDs3JpbyBlIGFndWFyZGFyIGEgcHVibGljYcOnw6NvCmF1dG9tw6F0aWNhIGRvIEdpdEh1YiBQYWdlcy4K
+# Sistema de Pendências — publicação e nuvem
+
+Guia curto para colocar o sistema no ar com **GitHub Pages** e **Supabase**.
+
+## 1. Supabase (banco de dados na nuvem)
+
+1. Entre em <https://supabase.com/dashboard> e abra o projeto.
+2. Menu lateral → **SQL Editor** → **New query**.
+3. Cole todo o conteúdo de `supabase-schema.sql` e clique em **Run**.
+4. Menu lateral → **Project Settings** (engrenagem) → **API**.
+5. Copie:
+   - **Project URL** (ex.: `https://abcdefghijk.supabase.co`)
+   - **anon public** (a chave longa que começa com `eyJ...`)
+6. Abra o arquivo `supabase-config.js` e cole os dois valores entre as aspas.
+   - Use **somente** a chave `anon public`. Nunca a `service_role`.
+
+### Confirmação de e-mail
+
+No Supabase, em **Authentication → Providers → Email**:
+
+- **Opção fácil:** desligue **Confirm email**. O cadastro entra direto.
+- **Opção com confirmação:** mantenha ligado e, em
+  **Authentication → URL Configuration**, adicione a URL do site publicado
+  (ex.: `https://seu-usuario.github.io/sistema-pendencias/`) em
+  **Site URL** e **Redirect URLs**.
+
+## 2. GitHub Pages
+
+O repositório deve se chamar `sistema-pendencias`.
+
+1. Envie todos os arquivos desta pasta para o repositório (branch `main`).
+2. No repositório: **Settings → Pages**.
+3. Em **Source**, escolha **Deploy from a branch**.
+4. Branch: `main`; pasta: `/ (root)`. Clique em **Save**.
+5. Aguarde alguns minutos. O endereço será:
+   `https://SEU-USUARIO.github.io/sistema-pendencias/`
+
+## 3. Como o sistema funciona
+
+- Os dados são salvos **imediatamente no navegador** (funciona até sem internet).
+- Ao **entrar na nuvem** (menu **☰ Ações → ☁ Entrar na nuvem**), o sistema:
+  - na primeira vez, envia os dados deste navegador para a nuvem;
+  - nos próximos acessos (mesmo em outro computador), baixa os dados da nuvem.
+- Cada alteração é reenviada automaticamente para a nuvem.
+- **☁ Sincronizar agora** baixa os dados da nuvem e substitui os deste navegador
+  (uma cópia local é guardada antes).
+- Cada conta vê **apenas os próprios dados** (proteção RLS do Supabase).
+
+## 4. Atualizar o site depois
+
+Basta substituir os arquivos alterados no repositório e aguardar a publicação
+automática do GitHub Pages.

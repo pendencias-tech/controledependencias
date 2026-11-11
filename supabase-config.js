@@ -1,1 +1,20 @@
-Ly8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Ci8vICBDT05GSUdVUkHDh8ODTyBETyBTVVBBQkFTRQovLyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KLy8gIENPTU8gUFJFRU5DSEVSOgovLyAgIDEuIEFicmEgaHR0cHM6Ly9zdXBhYmFzZS5jb20vZGFzaGJvYXJkIGUgZXNjb2xoYSBzZXUgcHJvamV0by4KLy8gICAyLiBObyBtZW51IGxhdGVyYWwsIGNsaXF1ZSBlbSAiUHJvamVjdCBTZXR0aW5ncyIgKGVuZ3JlbmFnZW0pLgovLyAgIDMuIENsaXF1ZSBlbSAiQVBJIi4KLy8gICA0LiBDb3BpZSBvIHZhbG9yIGRlICJQcm9qZWN0IFVSTCIgZSBjb2xlIGVtIHVybCwgYWJhaXhvLgovLyAgIDUuIENvcGllIGEgY2hhdmUgImFub24gcHVibGljIiBlIGNvbGUgZW0gYW5vbktleSwgYWJhaXhvLgovLyAgIDYuIFNhbHZlIGVzdGUgYXJxdWl2by4KLy8KLy8gIEEgY2hhdmUgImFub24gcHVibGljIiBwb2RlIGZpY2FyIG5vIHNpdGU6IGVsYSBzw7MgcGVybWl0ZSBvIHF1ZQovLyAgYXMgcmVncmFzIGRlIHNlZ3VyYW7Dp2EgKFJMUykgZG8gYmFuY28gYXV0b3JpemFyZW0uCi8vICBOVU5DQSB1c2UgYXF1aSBhIGNoYXZlICJzZXJ2aWNlX3JvbGUiLgovLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KCndpbmRvdy5TVVBBQkFTRV9DT05GSUcgPSB7CiAgdXJsOiAnaHR0cHM6Ly9zZmZicHB5dGN5Z3F2Z3dvdmZ2cS5zdXBhYmFzZS5jbycsCiAgYW5vbktleTogJ3NiX3B1Ymxpc2hhYmxlX1N3TGF3Q0ZPeWNpVllBUUdKMWw1dXdfcjMyQUFuUDEnLAp9Owo=
+// ============================================================
+//  CONFIGURAÇÃO DO SUPABASE
+// ------------------------------------------------------------
+//  COMO PREENCHER:
+//   1. Abra https://supabase.com/dashboard e escolha seu projeto.
+//   2. No menu lateral, clique em "Project Settings" (engrenagem).
+//   3. Clique em "API".
+//   4. Copie o valor de "Project URL" e cole em url, abaixo.
+//   5. Copie a chave "anon public" e cole em anonKey, abaixo.
+//   6. Salve este arquivo.
+//
+//  A chave "anon public" pode ficar no site: ela só permite o que
+//  as regras de segurança (RLS) do banco autorizarem.
+//  NUNCA use aqui a chave "service_role".
+// ============================================================
+
+window.SUPABASE_CONFIG = {
+  url: 'https://sffbppytcygqvgwovfvq.supabase.co',
+  anonKey: 'sb_publishable_SwLawCFOyciVYAQGJ1l5uw_r32AAnP1',
+};

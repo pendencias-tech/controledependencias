@@ -1,1 +1,407 @@
-PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9InB0LUJSIj4KPGhlYWQ+CiAgPG1ldGEgY2hhcnNldD0iVVRGLTgiIC8+CiAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAiLz4KICA8bWV0YSBuYW1lPSJkZXNjcmlwdGlvbiIgY29udGVudD0iQ29udHJvbGUgZGUgcGVuZMOqbmNpYXMgZmluYW5jZWlyYXMgcG9yIG3DqnM6IGNvbnRhcyBhIHBhZ2FyIGUgYSByZWNlYmVyLCBmaWx0cm9zLCByZXN1bW8gZSBleHBvcnRhw6fDo28gZW0gQ1NWLiIvPgogIDx0aXRsZT5Db250cm9sZSBkZSBQZW5kw6puY2lhczwvdGl0bGU+CiAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJzdHlsZS5jc3MiIC8+CjwvaGVhZD4KPGJvZHk+Cgo8ZGl2IGNsYXNzPSJoZWFkZXIiPgogIDxkaXYgY2xhc3M9ImhlYWRlci1jb250ZW50Ij4KICAgIDxpbWcgc3JjPSJsb2dvLWlkZWFsLWFsaW1lbnRhY2FvLWJyYW5jby5wbmciIGFsdD0iSWRlYWwgQWxpbWVudGHDp8OjbyIgY2xhc3M9ImxvZ28taGVhZGVyIiAvPgogICAgPGgxPvCfk4sgQ29udHJvbGUgZGUgUGVuZMOqbmNpYXM8L2gxPgogICAgPHA+R2VzdMOjbyBkZSBwZW5kw6puY2lhcyBmaW5hbmNlaXJhcyBwb3IgbcOqczwvcD4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJoZWFkZXItYWN0aW9ucyI+CiAgICA8ZGl2IGNsYXNzPSJtZW51LWFjb2VzIj4KICAgICAgPGJ1dHRvbiB0eXBlPSJidXR0b24iIGNsYXNzPSJidG4gYnRuLXByaW1hcnkgYnRuLW1lbnUiIGlkPSJidG5NZW51QWNvZXMiCiAgICAgICAgYXJpYS1oYXNwb3B1cD0idHJ1ZSIgYXJpYS1leHBhbmRlZD0iZmFsc2UiIGFyaWEtY29udHJvbHM9Im1lbnVBY29lc0xpc3RhIgogICAgICAgIG9uY2xpY2s9ImFsdGVybmFyTWVudUFjb2VzKGV2ZW50KSI+CiAgICAgICAg4piwIEHDp8O1ZXMgPHNwYW4gY2xhc3M9Im1lbnUtc2V0YSIgYXJpYS1oaWRkZW49InRydWUiPuKWvjwvc3Bhbj4KICAgICAgPC9idXR0b24+CiAgICAgIDxkaXYgY2xhc3M9Im1lbnUtYWNvZXMtbGlzdGEiIGlkPSJtZW51QWNvZXNMaXN0YSIgcm9sZT0ibWVudSIgaGlkZGVuPgogICAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0ibWVudS1hY2FvIG1lbnUtYWNhby1kZXN0YXF1ZSIgcm9sZT0ibWVudWl0ZW0iCiAgICAgICAgICBvbmNsaWNrPSJmZWNoYXJNZW51QWNvZXMoKTsgYWJyaXJNb2RhbCgpIj7inpUgTm92YSBQZW5kw6puY2lhPC9idXR0b24+CiAgICAgICAgPGJ1dHRvbiB0eXBlPSJidXR0b24iIGNsYXNzPSJtZW51LWFjYW8iIHJvbGU9Im1lbnVpdGVtIgogICAgICAgICAgb25jbGljaz0iZmVjaGFyTWVudUFjb2VzKCk7IGV4cG9ydGFyQ1NWKCkiPuKshyBFeHBvcnRhciBDU1Y8L2J1dHRvbj4KICAgICAgICA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3M9Im1lbnUtYWNhbyIgcm9sZT0ibWVudWl0ZW0iCiAgICAgICAgICBvbmNsaWNrPSJmZWNoYXJNZW51QWNvZXMoKTsgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2ltcG9ydGFyQ1NWJykuY2xpY2soKSI+4qyGIEltcG9ydGFyIENTVjwvYnV0dG9uPgogICAgICAgIDxhIGNsYXNzPSJtZW51LWFjYW8iIHJvbGU9Im1lbnVpdGVtIiBocmVmPSJpbXBvcnRhY2FvLXBlbmRlbmNpYXMtdGVtcGxhdGUuY3N2IgogICAgICAgICAgZG93bmxvYWQ9Im1vZGVsby1wZW5kZW5jaWFzLmNzdiIgb25jbGljaz0iZmVjaGFyTWVudUFjb2VzKCkiPvCfk4QgTW9kZWxvIENTVjwvYT4KICAgICAgICA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3M9Im1lbnUtYWNhbyIgcm9sZT0ibWVudWl0ZW0iCiAgICAgICAgICBvbmNsaWNrPSJmZWNoYXJNZW51QWNvZXMoKTsgYWJyaXJNb2RhbE9wY29lcygpIj7impkgT3DDp8O1ZXM8L2J1dHRvbj4KICAgICAgICA8ZGl2IGNsYXNzPSJtZW51LXNlcGFyYWRvciIgcm9sZT0ic2VwYXJhdG9yIj48L2Rpdj4KICAgICAgICA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3M9Im1lbnUtYWNhbyIgcm9sZT0ibWVudWl0ZW0iIGlkPSJtZW51RW50cmFyTnV2ZW0iCiAgICAgICAgICBvbmNsaWNrPSJmZWNoYXJNZW51QWNvZXMoKTsgTnV2ZW0uYWJyaXJMb2dpbigpIj7imIEgRW50cmFyIG5hIG51dmVtPC9idXR0b24+CiAgICAgICAgPGJ1dHRvbiB0eXBlPSJidXR0b24iIGNsYXNzPSJtZW51LWFjYW8iIHJvbGU9Im1lbnVpdGVtIiBpZD0ibWVudVNpbmNyb25pemFyTnV2ZW0iIGhpZGRlbgogICAgICAgICAgb25jbGljaz0iZmVjaGFyTWVudUFjb2VzKCk7IE51dmVtLmJhaXhhckRhTnV2ZW0odHJ1ZSkiPuKYgSBTaW5jcm9uaXphciBhZ29yYTwvYnV0dG9uPgogICAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0ibWVudS1hY2FvIiByb2xlPSJtZW51aXRlbSIgaWQ9Im1lbnVTYWlyTnV2ZW0iIGhpZGRlbgogICAgICAgICAgb25jbGljaz0iZmVjaGFyTWVudUFjb2VzKCk7IE51dmVtLnNhaXIoKSI+8J+aqiBTYWlyIGRhIGNvbnRhPC9idXR0b24+CiAgICAgICAgPGRpdiBjbGFzcz0ibWVudS11c3VhcmlvIiBpZD0ibWVudVVzdWFyaW9OdXZlbSIgaGlkZGVuPjwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9Im1lbnUtc2VwYXJhZG9yIiByb2xlPSJzZXBhcmF0b3IiPjwvZGl2PgogICAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0ibWVudS1hY2FvIiByb2xlPSJtZW51aXRlbSIgaWQ9ImJ0blRlbWEiCiAgICAgICAgICBvbmNsaWNrPSJmZWNoYXJNZW51QWNvZXMoKTsgYWx0ZXJuYXJUZW1hKCkiPvCfjJkgRXNjdXJvPC9idXR0b24+CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgICA8aW5wdXQgdHlwZT0iZmlsZSIgaWQ9ImltcG9ydGFyQ1NWIiBhY2NlcHQ9Ii5jc3YsdGV4dC9jc3YiIHN0eWxlPSJkaXNwbGF5Om5vbmUiIG9uY2hhbmdlPSJpbXBvcnRhckNTVkFycXVpdm8oZXZlbnQpIiAvPgogIDwvZGl2Pgo8L2Rpdj4KCjwhLS0gTkFWRUdBw4fDg08gUFJJTkNJUEFMIC0tPgo8ZGl2IGNsYXNzPSJhYmFzLXByaW5jaXBhaXMiPgogIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0iYnRuIGJ0bi1vdXRsaW5lIGJ0bi1uYXYgYXRpdm8iIGlkPSJidG5OYXZEYXNoYm9hcmQiIG9uY2xpY2s9InNlbGVjaW9uYXJBYmEoJ2Rhc2hib2FyZCcpIj7wn5OKIERhc2hib2FyZDwvYnV0dG9uPgogIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0iYnRuIGJ0bi1vdXRsaW5lIGJ0bi1uYXYiIGlkPSJidG5OYXZQZW5kZW5jaWFzIiBvbmNsaWNrPSJzZWxlY2lvbmFyQWJhKCdwZW5kZW5jaWFzJykiPvCfk4sgUGVuZMOqbmNpYXM8L2J1dHRvbj4KPC9kaXY+Cgo8IS0tIERBU0hCT0FSRCAtLT4KPHNlY3Rpb24gY2xhc3M9ImRhc2hib2FyZCB2aWV3IiBpZD0idmlld0Rhc2hib2FyZCIgYXJpYS1sYWJlbGxlZGJ5PSJkYXNoYm9hcmRUaXR1bG8iPgogIDxkaXYgY2xhc3M9ImRhc2hib2FyZC1oZWFkZXIiPgogICAgPGRpdj4KICAgICAgPGgyIGlkPSJkYXNoYm9hcmRUaXR1bG8iPvCfk4ogRGFzaGJvYXJkPC9oMj4KICAgICAgPHA+Vmlzw6NvIGdlcmFsIGRhcyBwZW5kw6puY2lhcyBjb25mb3JtZSBvcyBmaWx0cm9zIHNlbGVjaW9uYWRvczwvcD4KICAgIDwvZGl2PgogICAgPHNwYW4gY2xhc3M9ImRhc2hib2FyZC1wZXJpb2RvIiBpZD0iZGFzaGJvYXJkUGVyaW9kbyI+VG9kb3Mgb3MgbWVzZXM8L3NwYW4+CiAgICA8c2VsZWN0IGlkPSJmaWx0cm9EYXNoYm9hcmRNZXMiIG9uY2hhbmdlPSJyZW5kZXJpemFyRGFzaGJvYXJkKCkiPgogICAgICA8b3B0aW9uIHZhbHVlPSIiPkdlcmFsPC9vcHRpb24+CiAgICA8L3NlbGVjdD4KICA8L2Rpdj4KCiAgPGRpdiBjbGFzcz0icmVzdW1vLWNvbnRhaW5lciIgaWQ9InJlc3Vtb0NvbnRhaW5lciI+PC9kaXY+CgogIDxkaXYgY2xhc3M9ImRhc2hib2FyZC1ncmlkIj4KICAgIDxkaXYgY2xhc3M9ImRhc2hib2FyZC1jYXJkIGRhc2hib2FyZC1jYXJkLWZ1bGwiPgogICAgICA8ZGl2IGNsYXNzPSJkYXNoYm9hcmQtY2FyZC1oZWFkZXIiPgogICAgICAgIDxoMz5Fdm9sdcOnw6NvIG1lbnNhbDwvaDM+CiAgICAgICAgPHNwYW4gY2xhc3M9ImRhc2hib2FyZC1jYXJkLXN1YiI+VmFsb3IgbMOtcXVpZG8gcG9yIG3DqnM8L3NwYW4+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGlkPSJncmFmaWNvRXZvbHVjYW8iIGNsYXNzPSJncmFmaWNvLWV2b2x1Y2FvIj48L2Rpdj4KICAgIDwvZGl2PgoKICAgIDxkaXYgY2xhc3M9ImRhc2hib2FyZC1jYXJkIj4KICAgICAgPGRpdiBjbGFzcz0iZGFzaGJvYXJkLWNhcmQtaGVhZGVyIj4KICAgICAgICA8aDM+UG9yIHNldG9yPC9oMz4KICAgICAgICA8c3BhbiBjbGFzcz0iZGFzaGJvYXJkLWNhcmQtc3ViIj5WYWxvciBsw61xdWlkbzwvc3Bhbj4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgaWQ9ImdyYWZpY29TZXRvciI+PC9kaXY+CiAgICA8L2Rpdj4KCiAgICA8ZGl2IGNsYXNzPSJkYXNoYm9hcmQtY2FyZCI+CiAgICAgIDxkaXYgY2xhc3M9ImRhc2hib2FyZC1jYXJkLWhlYWRlciI+CiAgICAgICAgPGgzPlN0YXR1czwvaDM+CiAgICAgICAgPHNwYW4gY2xhc3M9ImRhc2hib2FyZC1jYXJkLXN1YiI+UXVhbnRpZGFkZTwvc3Bhbj4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgaWQ9ImdyYWZpY29TdGF0dXMiPjwvZGl2PgogICAgPC9kaXY+CgogICAgPGRpdiBjbGFzcz0iZGFzaGJvYXJkLWNhcmQgZGFzaGJvYXJkLWNhcmQtZnVsbCI+CiAgICAgIDxkaXYgY2xhc3M9ImRhc2hib2FyZC1jYXJkLWhlYWRlciI+CiAgICAgICAgPGgzPlBvciBiYW5jbzwvaDM+CiAgICAgICAgPHNwYW4gY2xhc3M9ImRhc2hib2FyZC1jYXJkLXN1YiI+VmFsb3IgbMOtcXVpZG88L3NwYW4+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGlkPSJncmFmaWNvQmFuY28iPjwvZGl2PgogICAgPC9kaXY+CgogICAgPGRpdiBjbGFzcz0iZGFzaGJvYXJkLWNhcmQgZGFzaGJvYXJkLWNhcmQtZnVsbCI+CiAgICAgIDxkaXYgY2xhc3M9ImRhc2hib2FyZC1jYXJkLWhlYWRlciI+CiAgICAgICAgPGgzPlBvciByZXNwb25zw6F2ZWw8L2gzPgogICAgICAgIDxzcGFuIGNsYXNzPSJkYXNoYm9hcmQtY2FyZC1zdWIiPlZhbG9yIGzDrXF1aWRvIGUgcXVhbnRpZGFkZTwvc3Bhbj4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgaWQ9ImdyYWZpY29SZXNwb25zYXZlbCI+PC9kaXY+CiAgICA8L2Rpdj4KCiAgICA8ZGl2IGNsYXNzPSJkYXNoYm9hcmQtY2FyZCBkYXNoYm9hcmQtY2FyZC1mdWxsIj4KICAgICAgPGRpdiBjbGFzcz0iZGFzaGJvYXJkLWNhcmQtaGVhZGVyIj4KICAgICAgICA8aDM+RGV0YWxoZSBkbyBncsOhZmljbzwvaDM+CiAgICAgICAgPHNwYW4gY2xhc3M9ImRhc2hib2FyZC1jYXJkLXN1YiI+Q2xpcXVlIGVtIHVtIGVsZW1lbnRvIGludGVyYXRpdm88L3NwYW4+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGlkPSJkZXRhbGhlR3JhZmljbyI+PC9kaXY+CiAgICA8L2Rpdj4KICA8L2Rpdj4KPC9zZWN0aW9uPgoKPCEtLSBBQkE6IFBFTkTDik5DSUFTIC0tPgo8c2VjdGlvbiBjbGFzcz0idmlldyB2aWV3LXBlbmRlbmNpYXMiIGlkPSJ2aWV3UGVuZGVuY2lhcyI+Cgo8IS0tIEZJTFRST1MgLS0+CjxkaXYgY2xhc3M9ImZpbHRyb3MtY29udGFpbmVyIj4KICA8ZGl2IGNsYXNzPSJmaWx0cm8tZ3J1cG8iPgogICAgPGxhYmVsPk3DqnMvQW5vPC9sYWJlbD4KICAgIDxpbnB1dCB0eXBlPSJtb250aCIgaWQ9ImZpbHRyb01lcyIgb25jaGFuZ2U9InJlbmRlcml6YXIoKSIgLz4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJmaWx0cm8tZ3J1cG8iPgogICAgPGxhYmVsPlN0YXR1czwvbGFiZWw+CiAgICA8c2VsZWN0IGlkPSJmaWx0cm9TdGF0dXMiIG9uY2hhbmdlPSJyZW5kZXJpemFyKCkiPgogICAgICA8b3B0aW9uIHZhbHVlPSIiPlRvZG9zPC9vcHRpb24+CiAgICAgIDxvcHRpb24gdmFsdWU9IlBlbmRlbnRlIj5QZW5kZW50ZTwvb3B0aW9uPgogICAgICA8b3B0aW9uIHZhbHVlPSJSZXNvbHZpZG8iPlJlc29sdmlkbzwvb3B0aW9uPgogICAgPC9zZWxlY3Q+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0iZmlsdHJvLWdydXBvIj4KICAgIDxsYWJlbD5TZXRvcjwvbGFiZWw+CiAgICA8c2VsZWN0IGlkPSJmaWx0cm9TZXRvciIgb25jaGFuZ2U9InJlbmRlcml6YXIoKSI+CiAgICAgIDxvcHRpb24gdmFsdWU9IiI+VG9kb3M8L29wdGlvbj4KICAgICAgPG9wdGlvbiB2YWx1ZT0iQSBQYWdhciI+QSBQYWdhcjwvb3B0aW9uPgogICAgICA8b3B0aW9uIHZhbHVlPSJBIFJlY2ViZXIiPkEgUmVjZWJlcjwvb3B0aW9uPgogICAgPC9zZWxlY3Q+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0iZmlsdHJvLWdydXBvIj4KICAgIDxsYWJlbD5CYW5jbzwvbGFiZWw+CiAgICA8c2VsZWN0IGlkPSJmaWx0cm9CYW5jbyIgb25jaGFuZ2U9InJlbmRlcml6YXIoKSI+CiAgICAgIDxvcHRpb24gdmFsdWU9IiI+VG9kb3M8L29wdGlvbj4KICAgICAgPG9wdGlvbiB2YWx1ZT0iQnJhc2lsIj5CcmFzaWw8L29wdGlvbj4KICAgICAgPG9wdGlvbiB2YWx1ZT0iQnJhZGVzY28iPkJyYWRlc2NvPC9vcHRpb24+CiAgICAgIDxvcHRpb24gdmFsdWU9IlNhbnRhbmRlciAyOTcxLTQiPlNhbnRhbmRlciAyOTcxLTQ8L29wdGlvbj4KICAgICAgPG9wdGlvbiB2YWx1ZT0iU2FudGFuZGVyIDM2MTctNCI+U2FudGFuZGVyIDM2MTctNDwvb3B0aW9uPgogICAgPC9zZWxlY3Q+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0iZmlsdHJvLWdydXBvIj4KICAgIDxsYWJlbD5CdXNjYXI8L2xhYmVsPgogICAgPGlucHV0IHR5cGU9InRleHQiIGlkPSJmaWx0cm9CdXNjYSIgcGxhY2Vob2xkZXI9IkZvcm5lY2Vkb3IsIG5vdGEuLi4iIG9uaW5wdXQ9InJlbmRlcml6YXIoKSIgLz4KICA8L2Rpdj4KICA8YnV0dG9uIGNsYXNzPSJidG4gYnRuLW91dGxpbmUiIG9uY2xpY2s9ImxpbXBhckZpbHRyb3MoKSI+4pyVIExpbXBhcjwvYnV0dG9uPgo8L2Rpdj4KCjwhLS0gVEFCUyBERSBNRVNFUyAtLT4KPGRpdiBjbGFzcz0ibWVzZXMtdGFicyIgaWQ9Im1lc2VzVGFicyI+PC9kaXY+Cgo8IS0tIFRBQkVMQSAtLT4KPGRpdiBjbGFzcz0idGFibGUtY29udGFpbmVyIj4KICA8dGFibGUgaWQ9InRhYmVsYVBlbmRlbmNpYXMiPgogICAgPHRoZWFkPgogICAgICA8dHI+CiAgICAgICAgPHRoPiM8L3RoPgogICAgICAgIDx0aD5OwrogTm90YTwvdGg+CiAgICAgICAgPHRoPkFGPC90aD4KICAgICAgICA8dGg+Rm9ybmVjZWRvcjwvdGg+CiAgICAgICAgPHRoPkRhdGEgUGFndG88L3RoPgogICAgICAgIDx0aD5WYWxvciBPcmlnaW5hbDwvdGg+CiAgICAgICAgPHRoPlZhbG9yIEzDrXF1aWRvPC90aD4KICAgICAgICA8dGg+TW90aXZvPC90aD4KICAgICAgICA8dGg+U2V0b3I8L3RoPgogICAgICAgIDx0aD5SZXNwb25zw6F2ZWw8L3RoPgogICAgICAgIDx0aD5CYW5jbzwvdGg+CiAgICAgICAgPHRoPlN0YXR1czwvdGg+CiAgICAgICAgPHRoPkHDp8O1ZXM8L3RoPgogICAgICA8L3RyPgogICAgPC90aGVhZD4KICAgIDx0Ym9keSBpZD0iY29ycG9UYWJlbGEiPjwvdGJvZHk+CiAgPC90YWJsZT4KICA8ZGl2IGlkPSJzZW1EYWRvcyIgY2xhc3M9InNlbS1kYWRvcyIgc3R5bGU9ImRpc3BsYXk6bm9uZSI+CiAgICA8cD5OZW5odW1hIHBlbmTDqm5jaWEgZW5jb250cmFkYSBwYXJhIG9zIGZpbHRyb3Mgc2VsZWNpb25hZG9zLjwvcD4KICA8L2Rpdj4KPC9kaXY+Cjwvc2VjdGlvbj4KCjwhLS0gTU9EQUwgLS0+CjxkaXYgY2xhc3M9Im1vZGFsLW92ZXJsYXkiIGlkPSJtb2RhbE92ZXJsYXkiIG9uY2xpY2s9ImZlY2hhck1vZGFsT3ZlcmxheShldmVudCkiPgogIDxkaXYgY2xhc3M9Im1vZGFsIj4KICAgIDxkaXYgY2xhc3M9Im1vZGFsLWhlYWRlciI+CiAgICAgIDxoMiBpZD0ibW9kYWxUaXR1bG8iPk5vdmEgUGVuZMOqbmNpYTwvaDI+CiAgICAgIDxidXR0b24gY2xhc3M9Im1vZGFsLWNsb3NlIiBvbmNsaWNrPSJmZWNoYXJNb2RhbCgpIj7inJU8L2J1dHRvbj4KICAgIDwvZGl2PgogICAgPGZvcm0gaWQ9ImZvcm1QZW5kZW5jaWEiIG9uc3VibWl0PSJzYWx2YXJQZW5kZW5jaWEoZXZlbnQpIiBhdXRvY29tcGxldGU9Im9mZiI+CiAgICAgIDxkaXYgY2xhc3M9ImZvcm0tZ3JpZCI+CgogICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tZ3J1cG8iPgogICAgICAgICAgPGxhYmVsPk7CuiBkYSBOb3RhPC9sYWJlbD4KICAgICAgICAgIDxpbnB1dCB0eXBlPSJ0ZXh0IiBpZD0ibnVtZXJvTm90YSIgcGxhY2Vob2xkZXI9IkV4OiAwMDEyMyIKICAgICAgICAgICAgb25pbnB1dD0ic2luY3Jvbml6YXJOb3RhQWYoJ25vdGEnKSIgLz4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgPGRpdiBjbGFzcz0iZm9ybS1ncnVwbyI+CiAgICAgICAgICA8bGFiZWw+QUY8L2xhYmVsPgogICAgICAgICAgPGlucHV0IHR5cGU9InRleHQiIGlkPSJhZiIgcGxhY2Vob2xkZXI9IkV4OiA0NTY3ODkiCiAgICAgICAgICAgIG9uaW5wdXQ9InNpbmNyb25pemFyTm90YUFmKCdhZicpIiAvPgogICAgICAgICAgPHNtYWxsIGNsYXNzPSJmb3JtLWFqdWRhIj5PcGNpb25hbDogcHJlZW5jaGEgYSBub3RhIG91IGEgQUYuIE8gY2FtcG8gcXVlIGZpY2FyIHZhemlvIHJlY2ViZSDigJwt4oCdLjwvc21hbGw+CiAgICAgICAgPC9kaXY+CgogICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tZ3J1cG8iPgogICAgICAgICAgPGxhYmVsPk5vbWUgZG8gRm9ybmVjZWRvciAqPC9sYWJlbD4KICAgICAgICAgIDxpbnB1dCB0eXBlPSJ0ZXh0IiBpZD0iZm9ybmVjZWRvciIgcmVxdWlyZWQgcGxhY2Vob2xkZXI9Ik5vbWUgZG8gZm9ybmVjZWRvciIgLz4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgPGRpdiBjbGFzcz0iZm9ybS1ncnVwbyI+CiAgICAgICAgICA8bGFiZWw+RGF0YSBkZSBQYWdhbWVudG8gKjwvbGFiZWw+CiAgICAgICAgICA8aW5wdXQgdHlwZT0iZGF0ZSIgaWQ9ImRhdGFQYWdhbWVudG8iIHJlcXVpcmVkIC8+CiAgICAgICAgPC9kaXY+CgogICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tZ3J1cG8iPgogICAgICAgICAgPGxhYmVsPlZhbG9yIE9yaWdpbmFsIChSJCkgKjwvbGFiZWw+CiAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgaWQ9InZhbG9yT3JpZ2luYWwiIHJlcXVpcmVkIHBsYWNlaG9sZGVyPSIwLDAwIgogICAgICAgICAgICBpbnB1dG1vZGU9Im51bWVyaWMiIG9uaW5wdXQ9ImZvcm1hdGFyTW9lZGEodGhpcykiIC8+CiAgICAgICAgPC9kaXY+CgogICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tZ3J1cG8iPgogICAgICAgICAgPGxhYmVsPlZhbG9yIEzDrXF1aWRvIChSJCkgKjwvbGFiZWw+CiAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgaWQ9InZhbG9yTGlxdWlkbyIgcmVxdWlyZWQgcGxhY2Vob2xkZXI9IjAsMDAiCiAgICAgICAgICAgIGlucHV0bW9kZT0ibnVtZXJpYyIgb25pbnB1dD0iZm9ybWF0YXJNb2VkYSh0aGlzKSIgLz4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgPGRpdiBjbGFzcz0iZm9ybS1ncnVwbyBmb3JtLWZ1bGwiPgogICAgICAgICAgPGxhYmVsPk1vdGl2byBkYSBQZW5kw6puY2lhICo8L2xhYmVsPgogICAgICAgICAgPHRleHRhcmVhIGlkPSJtb3Rpdm9QZW5kZW5jaWEiIHJlcXVpcmVkIHBsYWNlaG9sZGVyPSJEZXNjcmV2YSBvIG1vdGl2byBkYSBwZW5kw6puY2lhLi4uIiByb3dzPSIzIj48L3RleHRhcmVhPgogICAgICAgIDwvZGl2PgoKICAgICAgICA8ZGl2IGNsYXNzPSJmb3JtLWdydXBvIj4KICAgICAgICAgIDxsYWJlbD5TZXRvciBSZXNwb25zw6F2ZWwgKjwvbGFiZWw+CiAgICAgICAgICA8c2VsZWN0IGlkPSJzZXRvciIgcmVxdWlyZWQ+CiAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IiI+U2VsZWNpb25lLi4uPC9vcHRpb24+CiAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IkEgUGFnYXIiPkEgUGFnYXI8L29wdGlvbj4KICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iQSBSZWNlYmVyIj5BIFJlY2ViZXI8L29wdGlvbj4KICAgICAgICAgIDwvc2VsZWN0PgogICAgICAgIDwvZGl2PgoKICAgICAgICA8ZGl2IGNsYXNzPSJmb3JtLWdydXBvIj4KICAgICAgICAgIDxsYWJlbD5SZXNwb25zw6F2ZWwgcGVsYSBQZW5kw6puY2lhICo8L2xhYmVsPgogICAgICAgICAgPGlucHV0IHR5cGU9InRleHQiIGlkPSJyZXNwb25zYXZlbCIgcmVxdWlyZWQgcGxhY2Vob2xkZXI9Ik5vbWUgZG8gcmVzcG9uc8OhdmVsIiAvPgogICAgICAgIDwvZGl2PgoKICAgICAgICA8ZGl2IGNsYXNzPSJmb3JtLWdydXBvIj4KICAgICAgICAgIDxsYWJlbD5CYW5jbyAqPC9sYWJlbD4KICAgICAgICAgIDxzZWxlY3QgaWQ9ImJhbmNvIiByZXF1aXJlZD4KICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iIj5TZWxlY2lvbmUuLi48L29wdGlvbj4KICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iQnJhc2lsIj5CcmFzaWw8L29wdGlvbj4KICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iQnJhZGVzY28iPkJyYWRlc2NvPC9vcHRpb24+CiAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IlNhbnRhbmRlciAyOTcxLTQiPlNhbnRhbmRlciAyOTcxLTQ8L29wdGlvbj4KICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iU2FudGFuZGVyIDM2MTctNCI+U2FudGFuZGVyIDM2MTctNDwvb3B0aW9uPgogICAgICAgICAgPC9zZWxlY3Q+CiAgICAgICAgPC9kaXY+CgogICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tZ3J1cG8iPgogICAgICAgICAgPGxhYmVsPlN0YXR1cyAqPC9sYWJlbD4KICAgICAgICAgIDxzZWxlY3QgaWQ9InN0YXR1cyIgcmVxdWlyZWQ+CiAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IiI+U2VsZWNpb25lLi4uPC9vcHRpb24+CiAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IlBlbmRlbnRlIj5QZW5kZW50ZTwvb3B0aW9uPgogICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJSZXNvbHZpZG8iPlJlc29sdmlkbzwvb3B0aW9uPgogICAgICAgICAgPC9zZWxlY3Q+CiAgICAgICAgPC9kaXY+CgogICAgICA8L2Rpdj4KCiAgICAgIDxkaXYgY2xhc3M9Im1vZGFsLWZvb3RlciI+CiAgICAgICAgPGJ1dHRvbiB0eXBlPSJidXR0b24iIGNsYXNzPSJidG4gYnRuLW91dGxpbmUiIG9uY2xpY2s9ImZlY2hhck1vZGFsKCkiPkNhbmNlbGFyPC9idXR0b24+CiAgICAgICAgPGJ1dHRvbiB0eXBlPSJzdWJtaXQiIGNsYXNzPSJidG4gYnRuLXByaW1hcnkiIGlkPSJidG5TYWx2YXIiPlNhbHZhcjwvYnV0dG9uPgogICAgICA8L2Rpdj4KICAgIDwvZm9ybT4KICA8L2Rpdj4KPC9kaXY+Cgo8IS0tIE1PREFMIENPTkZJUk1Bw4fDg08gRVhDTFVTw4NPIC0tPgo8ZGl2IGNsYXNzPSJtb2RhbC1vdmVybGF5IiBpZD0ibW9kYWxFeGNsdXNhbyIgb25jbGljaz0iZmVjaGFyTW9kYWxFeGNsdXNhb092ZXJsYXkoZXZlbnQpIj4KICA8ZGl2IGNsYXNzPSJtb2RhbCBtb2RhbC1wZXF1ZW5vIj4KICAgIDxkaXYgY2xhc3M9Im1vZGFsLWhlYWRlciI+CiAgICAgIDxoMj5Db25maXJtYXIgRXhjbHVzw6NvPC9oMj4KICAgICAgPGJ1dHRvbiBjbGFzcz0ibW9kYWwtY2xvc2UiIG9uY2xpY2s9ImZlY2hhck1vZGFsRXhjbHVzYW8oKSI+4pyVPC9idXR0b24+CiAgICA8L2Rpdj4KICAgIDxkaXYgc3R5bGU9InBhZGRpbmc6IDI0cHg7IHRleHQtYWxpZ246Y2VudGVyOyI+CiAgICAgIDxwIGlkPSJ0ZXh0b0V4Y2x1c2FvIiBzdHlsZT0iZm9udC1zaXplOjE2cHg7IGNvbG9yOiM1NTU7Ij5EZXNlamEgcmVhbG1lbnRlIGV4Y2x1aXIgZXN0YSBwZW5kw6puY2lhPzwvcD4KICAgICAgPHAgc3R5bGU9ImNvbG9yOiNlNzRjM2M7IGZvbnQtd2VpZ2h0OjYwMDsgbWFyZ2luLXRvcDo4cHg7Ij5Fc3RhIGHDp8OjbyBuw6NvIHBvZGUgc2VyIGRlc2ZlaXRhLjwvcD4KICAgIDwvZGl2PgogICAgPGRpdiBjbGFzcz0ibW9kYWwtZm9vdGVyIj4KICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuIGJ0bi1vdXRsaW5lIiBvbmNsaWNrPSJmZWNoYXJNb2RhbEV4Y2x1c2FvKCkiPkNhbmNlbGFyPC9idXR0b24+CiAgICAgIDxidXR0b24gY2xhc3M9ImJ0biBidG4tZGFuZ2VyIiBvbmNsaWNrPSJjb25maXJtYXJFeGNsdXNhbygpIj5FeGNsdWlyPC9idXR0b24+CiAgICA8L2Rpdj4KICA8L2Rpdj4KPC9kaXY+Cgo8IS0tIE1PREFMIE9Qw4fDlUVTIFBFUlNPTkFMSVrDgVZFSVMgLS0+CjxkaXYgY2xhc3M9Im1vZGFsLW92ZXJsYXkiIGlkPSJtb2RhbE9wY29lcyIgb25jbGljaz0iZmVjaGFyTW9kYWxPcGNvZXNPdmVybGF5KGV2ZW50KSI+CiAgPGRpdiBjbGFzcz0ibW9kYWwgbW9kYWwtb3Bjb2VzIj4KICAgIDxkaXYgY2xhc3M9Im1vZGFsLWhlYWRlciI+CiAgICAgIDxoMj7impkgT3DDp8O1ZXMgUGVyc29uYWxpesOhdmVpczwvaDI+CiAgICAgIDxidXR0b24gY2xhc3M9Im1vZGFsLWNsb3NlIiBvbmNsaWNrPSJmZWNoYXJNb2RhbE9wY29lcygpIj7inJU8L2J1dHRvbj4KICAgIDwvZGl2PgoKICAgIDxkaXYgY2xhc3M9Im9wY29lcy1jb3JwbyI+CiAgICAgIDxwIGNsYXNzPSJvcGNvZXMtYWp1ZGEiPgogICAgICAgIENhZGFzdHJlIGUgcmVtb3ZhIGFzIG9ww6fDtWVzIGRpc3BvbsOtdmVpcyBub3MgY2FtcG9zIGRlIHNldG9yLCBiYW5jbyBlIHN0YXR1cy4KICAgICAgICBSZW1vdmVyIHVtYSBvcMOnw6NvIG7Do28gYWx0ZXJhIGFzIHBlbmTDqm5jaWFzIGrDoSBjYWRhc3RyYWRhcy4KICAgICAgPC9wPgoKICAgICAgPGRpdiBjbGFzcz0ib3Bjb2VzLWdyaWQiPgogICAgICAgIDxzZWN0aW9uIGNsYXNzPSJvcGNvZXMtZ3J1cG8iIGFyaWEtbGFiZWxsZWRieT0ib3Bjb2VzVGl0dWxvU2V0b3JlcyI+CiAgICAgICAgICA8aDMgaWQ9Im9wY29lc1RpdHVsb1NldG9yZXMiPlNldG9yZXM8L2gzPgogICAgICAgICAgPGZvcm0gY2xhc3M9Im9wY2FvLWZvcm0iIG9uc3VibWl0PSJhZGljaW9uYXJPcGNhbyhldmVudCwgJ3NldG9yZXMnKSI+CiAgICAgICAgICAgIDxpbnB1dCB0eXBlPSJ0ZXh0IiBpZD0ibm92YU9wY2FvU2V0b3JlcyIgcGxhY2Vob2xkZXI9Ik5vdm8gc2V0b3IiIGF1dG9jb21wbGV0ZT0ib2ZmIiAvPgogICAgICAgICAgICA8YnV0dG9uIHR5cGU9InN1Ym1pdCIgY2xhc3M9ImJ0biBidG4tYWRkLW9wY2FvIj5BZGljaW9uYXI8L2J1dHRvbj4KICAgICAgICAgIDwvZm9ybT4KICAgICAgICAgIDx1bCBjbGFzcz0ib3Bjb2VzLWxpc3RhIiBpZD0ibGlzdGFPcGNvZXNTZXRvcmVzIj48L3VsPgogICAgICAgIDwvc2VjdGlvbj4KCiAgICAgICAgPHNlY3Rpb24gY2xhc3M9Im9wY29lcy1ncnVwbyIgYXJpYS1sYWJlbGxlZGJ5PSJvcGNvZXNUaXR1bG9CYW5jb3MiPgogICAgICAgICAgPGgzIGlkPSJvcGNvZXNUaXR1bG9CYW5jb3MiPkJhbmNvczwvaDM+CiAgICAgICAgICA8Zm9ybSBjbGFzcz0ib3BjYW8tZm9ybSIgb25zdWJtaXQ9ImFkaWNpb25hck9wY2FvKGV2ZW50LCAnYmFuY29zJykiPgogICAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgaWQ9Im5vdmFPcGNhb0JhbmNvcyIgcGxhY2Vob2xkZXI9Ik5vdm8gYmFuY28iIGF1dG9jb21wbGV0ZT0ib2ZmIiAvPgogICAgICAgICAgICA8YnV0dG9uIHR5cGU9InN1Ym1pdCIgY2xhc3M9ImJ0biBidG4tYWRkLW9wY2FvIj5BZGljaW9uYXI8L2J1dHRvbj4KICAgICAgICAgIDwvZm9ybT4KICAgICAgICAgIDx1bCBjbGFzcz0ib3Bjb2VzLWxpc3RhIiBpZD0ibGlzdGFPcGNvZXNCYW5jb3MiPjwvdWw+CiAgICAgICAgPC9zZWN0aW9uPgoKICAgICAgICA8c2VjdGlvbiBjbGFzcz0ib3Bjb2VzLWdydXBvIiBhcmlhLWxhYmVsbGVkYnk9Im9wY29lc1RpdHVsb1N0YXR1cyI+CiAgICAgICAgICA8aDMgaWQ9Im9wY29lc1RpdHVsb1N0YXR1cyI+U3RhdHVzPC9oMz4KICAgICAgICAgIDxmb3JtIGNsYXNzPSJvcGNhby1mb3JtIiBvbnN1Ym1pdD0iYWRpY2lvbmFyT3BjYW8oZXZlbnQsICdzdGF0dXMnKSI+CiAgICAgICAgICAgIDxpbnB1dCB0eXBlPSJ0ZXh0IiBpZD0ibm92YU9wY2FvU3RhdHVzIiBwbGFjZWhvbGRlcj0iTm92byBzdGF0dXMiIGF1dG9jb21wbGV0ZT0ib2ZmIiAvPgogICAgICAgICAgICA8YnV0dG9uIHR5cGU9InN1Ym1pdCIgY2xhc3M9ImJ0biBidG4tYWRkLW9wY2FvIj5BZGljaW9uYXI8L2J1dHRvbj4KICAgICAgICAgIDwvZm9ybT4KICAgICAgICAgIDx1bCBjbGFzcz0ib3Bjb2VzLWxpc3RhIiBpZD0ibGlzdGFPcGNvZXNTdGF0dXMiPjwvdWw+CiAgICAgICAgPC9zZWN0aW9uPgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgoKICAgIDxkaXYgY2xhc3M9Im1vZGFsLWZvb3RlciI+CiAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0iYnRuIGJ0bi1wcmltYXJ5IiBvbmNsaWNrPSJmZWNoYXJNb2RhbE9wY29lcygpIj5Db25jbHVpcjwvYnV0dG9uPgogICAgPC9kaXY+CiAgPC9kaXY+CjwvZGl2PgoKPCEtLSBNT0RBTCBOVVZFTSAoTE9HSU4gLyBDQURBU1RSTykgLS0+CjxkaXYgY2xhc3M9Im1vZGFsLW92ZXJsYXkiIGlkPSJtb2RhbE51dmVtIiBvbmNsaWNrPSJOdXZlbS5mZWNoYXJMb2dpbk92ZXJsYXkoZXZlbnQpIj4KICA8ZGl2IGNsYXNzPSJtb2RhbCBtb2RhbC1wZXF1ZW5vIj4KICAgIDxkaXYgY2xhc3M9Im1vZGFsLWhlYWRlciI+CiAgICAgIDxoMiBpZD0idGl0dWxvTG9naW5OdXZlbSI+4piBIEVudHJhciBuYSBudXZlbTwvaDI+CiAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0ibW9kYWwtY2xvc2UiIG9uY2xpY2s9Ik51dmVtLmZlY2hhckxvZ2luKCkiIGFyaWEtbGFiZWw9IkZlY2hhciI+4pyVPC9idXR0b24+CiAgICA8L2Rpdj4KCiAgICA8Zm9ybSBpZD0iZm9ybUxvZ2luTnV2ZW0iIG9uc3VibWl0PSJOdXZlbS5lbnZpYXJGb3JtdWxhcmlvKGV2ZW50KSIgYXV0b2NvbXBsZXRlPSJvbiI+CiAgICAgIDxkaXYgY2xhc3M9ImxvZ2luLWNvcnBvIj4KICAgICAgICA8cCBjbGFzcz0ibG9naW4tYWp1ZGEiIGlkPSJhanVkYUxvZ2luTnV2ZW0iPgogICAgICAgICAgRW50cmUgY29tIHNldSBlLW1haWwgZSBzZW5oYSBwYXJhIGNhcnJlZ2FyIHNldXMgZGFkb3MgZGEgbnV2ZW0uCiAgICAgICAgPC9wPgoKICAgICAgICA8ZGl2IGNsYXNzPSJmb3JtLWdydXBvIj4KICAgICAgICAgIDxsYWJlbCBmb3I9ImxvZ2luRW1haWwiPkUtbWFpbDwvbGFiZWw+CiAgICAgICAgICA8aW5wdXQgdHlwZT0iZW1haWwiIGlkPSJsb2dpbkVtYWlsIiBwbGFjZWhvbGRlcj0idm9jZUBlbXByZXNhLmNvbSIKICAgICAgICAgICAgYXV0b2NvbXBsZXRlPSJlbWFpbCIgcmVxdWlyZWQgLz4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgPGRpdiBjbGFzcz0iZm9ybS1ncnVwbyI+CiAgICAgICAgICA8bGFiZWwgZm9yPSJsb2dpblNlbmhhIj5TZW5oYTwvbGFiZWw+CiAgICAgICAgICA8aW5wdXQgdHlwZT0icGFzc3dvcmQiIGlkPSJsb2dpblNlbmhhIiBwbGFjZWhvbGRlcj0iTcOtbmltbyA2IGNhcmFjdGVyZXMiCiAgICAgICAgICAgIGF1dG9jb21wbGV0ZT0iY3VycmVudC1wYXNzd29yZCIgbWlubGVuZ3RoPSI2IiByZXF1aXJlZCAvPgogICAgICAgIDwvZGl2PgoKICAgICAgICA8ZGl2IGNsYXNzPSJmb3JtLWdydXBvIiBpZD0iZ3J1cG9Db25maXJtYXJTZW5oYSIgaGlkZGVuPgogICAgICAgICAgPGxhYmVsIGZvcj0ibG9naW5TZW5oYTIiPkNvbmZpcm1hciBzZW5oYTwvbGFiZWw+CiAgICAgICAgICA8aW5wdXQgdHlwZT0icGFzc3dvcmQiIGlkPSJsb2dpblNlbmhhMiIgcGxhY2Vob2xkZXI9IlJlcGl0YSBhIHNlbmhhIgogICAgICAgICAgICBhdXRvY29tcGxldGU9Im5ldy1wYXNzd29yZCIgbWlubGVuZ3RoPSI2IiAvPgogICAgICAgIDwvZGl2PgoKICAgICAgICA8cCBjbGFzcz0ibG9naW4tZXJybyIgaWQ9ImxvZ2luRXJybyIgcm9sZT0iYWxlcnQiIGhpZGRlbj48L3A+CgogICAgICAgIDxidXR0b24gdHlwZT0ic3VibWl0IiBjbGFzcz0iYnRuIGJ0bi1wcmltYXJ5IGJ0bi1sb2dpbiIgaWQ9ImJ0bkxvZ2luTnV2ZW0iPkVudHJhcjwvYnV0dG9uPgogICAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0iYnRuLWxpbmsiIGlkPSJidG5BbHRlcm5hck1vZG8iCiAgICAgICAgICBvbmNsaWNrPSJOdXZlbS5hbHRlcm5hck1vZG8odHJ1ZSkiPkFpbmRhIG7Do28gdGVuaG8gY29udGEg4oCUIGNyaWFyPC9idXR0b24+CiAgICAgIDwvZGl2PgogICAgPC9mb3JtPgogIDwvZGl2Pgo8L2Rpdj4KCjxzY3JpcHQgc3JjPSJ2ZW5kb3Ivc3VwYWJhc2UuanMiPjwvc2NyaXB0Pgo8c2NyaXB0IHNyYz0ic3VwYWJhc2UtY29uZmlnLmpzIj48L3NjcmlwdD4KPHNjcmlwdCBzcmM9ImFwcC5qcyI+PC9zY3JpcHQ+CjxzY3JpcHQgc3JjPSJudXZlbS5qcyI+PC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPgo=
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Controle de pendências financeiras por mês: contas a pagar e a receber, filtros, resumo e exportação em CSV."/>
+  <title>Controle de Pendências</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="header">
+  <div class="header-content">
+    <img src="logo-ideal-alimentacao-branco.png" alt="Ideal Alimentação" class="logo-header" />
+    <h1>📋 Controle de Pendências</h1>
+    <p>Gestão de pendências financeiras por mês</p>
+  </div>
+  <div class="header-actions">
+    <div class="menu-acoes">
+      <button type="button" class="btn btn-primary btn-menu" id="btnMenuAcoes"
+        aria-haspopup="true" aria-expanded="false" aria-controls="menuAcoesLista"
+        onclick="alternarMenuAcoes(event)">
+        ☰ Ações <span class="menu-seta" aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-acoes-lista" id="menuAcoesLista" role="menu" hidden>
+        <button type="button" class="menu-acao menu-acao-destaque" role="menuitem"
+          onclick="fecharMenuAcoes(); abrirModal()">➕ Nova Pendência</button>
+        <button type="button" class="menu-acao" role="menuitem"
+          onclick="fecharMenuAcoes(); exportarCSV()">⬇ Exportar CSV</button>
+        <button type="button" class="menu-acao" role="menuitem"
+          onclick="fecharMenuAcoes(); document.getElementById('importarCSV').click()">⬆ Importar CSV</button>
+        <a class="menu-acao" role="menuitem" href="importacao-pendencias-template.csv"
+          download="modelo-pendencias.csv" onclick="fecharMenuAcoes()">📄 Modelo CSV</a>
+        <button type="button" class="menu-acao" role="menuitem"
+          onclick="fecharMenuAcoes(); abrirModalOpcoes()">⚙ Opções</button>
+        <div class="menu-separador" role="separator"></div>
+        <button type="button" class="menu-acao" role="menuitem" id="menuEntrarNuvem"
+          onclick="fecharMenuAcoes(); Nuvem.abrirLogin()">☁ Entrar na nuvem</button>
+        <button type="button" class="menu-acao" role="menuitem" id="menuSincronizarNuvem" hidden
+          onclick="fecharMenuAcoes(); Nuvem.baixarDaNuvem(true)">☁ Sincronizar agora</button>
+        <button type="button" class="menu-acao" role="menuitem" id="menuSairNuvem" hidden
+          onclick="fecharMenuAcoes(); Nuvem.sair()">🚪 Sair da conta</button>
+        <div class="menu-usuario" id="menuUsuarioNuvem" hidden></div>
+        <div class="menu-separador" role="separator"></div>
+        <button type="button" class="menu-acao" role="menuitem" id="btnTema"
+          onclick="fecharMenuAcoes(); alternarTema()">🌙 Escuro</button>
+      </div>
+    </div>
+    <input type="file" id="importarCSV" accept=".csv,text/csv" style="display:none" onchange="importarCSVArquivo(event)" />
+  </div>
+</div>
+
+<!-- NAVEGAÇÃO PRINCIPAL -->
+<div class="abas-principais">
+  <button type="button" class="btn btn-outline btn-nav ativo" id="btnNavDashboard" onclick="selecionarAba('dashboard')">📊 Dashboard</button>
+  <button type="button" class="btn btn-outline btn-nav" id="btnNavPendencias" onclick="selecionarAba('pendencias')">📋 Pendências</button>
+</div>
+
+<!-- DASHBOARD -->
+<section class="dashboard view" id="viewDashboard" aria-labelledby="dashboardTitulo">
+  <div class="dashboard-header">
+    <div>
+      <h2 id="dashboardTitulo">📊 Dashboard</h2>
+      <p>Visão geral das pendências conforme os filtros selecionados</p>
+    </div>
+    <span class="dashboard-periodo" id="dashboardPeriodo">Todos os meses</span>
+    <select id="filtroDashboardMes" onchange="renderizarDashboard()">
+      <option value="">Geral</option>
+    </select>
+  </div>
+
+  <div class="resumo-container" id="resumoContainer"></div>
+
+  <div class="dashboard-grid">
+    <div class="dashboard-card dashboard-card-full">
+      <div class="dashboard-card-header">
+        <h3>Evolução mensal</h3>
+        <span class="dashboard-card-sub">Valor líquido por mês</span>
+      </div>
+      <div id="graficoEvolucao" class="grafico-evolucao"></div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="dashboard-card-header">
+        <h3>Por setor</h3>
+        <span class="dashboard-card-sub">Valor líquido</span>
+      </div>
+      <div id="graficoSetor"></div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="dashboard-card-header">
+        <h3>Status</h3>
+        <span class="dashboard-card-sub">Quantidade</span>
+      </div>
+      <div id="graficoStatus"></div>
+    </div>
+
+    <div class="dashboard-card dashboard-card-full">
+      <div class="dashboard-card-header">
+        <h3>Por banco</h3>
+        <span class="dashboard-card-sub">Valor líquido</span>
+      </div>
+      <div id="graficoBanco"></div>
+    </div>
+
+    <div class="dashboard-card dashboard-card-full">
+      <div class="dashboard-card-header">
+        <h3>Por responsável</h3>
+        <span class="dashboard-card-sub">Valor líquido e quantidade</span>
+      </div>
+      <div id="graficoResponsavel"></div>
+    </div>
+
+    <div class="dashboard-card dashboard-card-full">
+      <div class="dashboard-card-header">
+        <h3>Detalhe do gráfico</h3>
+        <span class="dashboard-card-sub">Clique em um elemento interativo</span>
+      </div>
+      <div id="detalheGrafico"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABA: PENDÊNCIAS -->
+<section class="view view-pendencias" id="viewPendencias">
+
+<!-- FILTROS -->
+<div class="filtros-container">
+  <div class="filtro-grupo">
+    <label>Mês/Ano</label>
+    <input type="month" id="filtroMes" onchange="renderizar()" />
+  </div>
+  <div class="filtro-grupo">
+    <label>Status</label>
+    <select id="filtroStatus" onchange="renderizar()">
+      <option value="">Todos</option>
+      <option value="Pendente">Pendente</option>
+      <option value="Resolvido">Resolvido</option>
+    </select>
+  </div>
+  <div class="filtro-grupo">
+    <label>Setor</label>
+    <select id="filtroSetor" onchange="renderizar()">
+      <option value="">Todos</option>
+      <option value="A Pagar">A Pagar</option>
+      <option value="A Receber">A Receber</option>
+    </select>
+  </div>
+  <div class="filtro-grupo">
+    <label>Banco</label>
+    <select id="filtroBanco" onchange="renderizar()">
+      <option value="">Todos</option>
+      <option value="Brasil">Brasil</option>
+      <option value="Bradesco">Bradesco</option>
+      <option value="Santander 2971-4">Santander 2971-4</option>
+      <option value="Santander 3617-4">Santander 3617-4</option>
+    </select>
+  </div>
+  <div class="filtro-grupo">
+    <label>Buscar</label>
+    <input type="text" id="filtroBusca" placeholder="Fornecedor, nota..." oninput="renderizar()" />
+  </div>
+  <button class="btn btn-outline" onclick="limparFiltros()">✕ Limpar</button>
+</div>
+
+<!-- TABS DE MESES -->
+<div class="meses-tabs" id="mesesTabs"></div>
+
+<!-- TABELA -->
+<div class="table-container">
+  <table id="tabelaPendencias">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nº Nota</th>
+        <th>AF</th>
+        <th>Fornecedor</th>
+        <th>Data Pagto</th>
+        <th>Valor Original</th>
+        <th>Valor Líquido</th>
+        <th>Motivo</th>
+        <th>Setor</th>
+        <th>Responsável</th>
+        <th>Banco</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="corpoTabela"></tbody>
+  </table>
+  <div id="semDados" class="sem-dados" style="display:none">
+    <p>Nenhuma pendência encontrada para os filtros selecionados.</p>
+  </div>
+</div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="fecharModalOverlay(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitulo">Nova Pendência</h2>
+      <button class="modal-close" onclick="fecharModal()">✕</button>
+    </div>
+    <form id="formPendencia" onsubmit="salvarPendencia(event)" autocomplete="off">
+      <div class="form-grid">
+
+        <div class="form-grupo">
+          <label>Nº da Nota</label>
+          <input type="text" id="numeroNota" placeholder="Ex: 00123"
+            oninput="sincronizarNotaAf('nota')" />
+        </div>
+
+        <div class="form-grupo">
+          <label>AF</label>
+          <input type="text" id="af" placeholder="Ex: 456789"
+            oninput="sincronizarNotaAf('af')" />
+          <small class="form-ajuda">Opcional: preencha a nota ou a AF. O campo que ficar vazio recebe “-”.</small>
+        </div>
+
+        <div class="form-grupo">
+          <label>Nome do Fornecedor *</label>
+          <input type="text" id="fornecedor" required placeholder="Nome do fornecedor" />
+        </div>
+
+        <div class="form-grupo">
+          <label>Data de Pagamento *</label>
+          <input type="date" id="dataPagamento" required />
+        </div>
+
+        <div class="form-grupo">
+          <label>Valor Original (R$) *</label>
+          <input type="text" id="valorOriginal" required placeholder="0,00"
+            inputmode="numeric" oninput="formatarMoeda(this)" />
+        </div>
+
+        <div class="form-grupo">
+          <label>Valor Líquido (R$) *</label>
+          <input type="text" id="valorLiquido" required placeholder="0,00"
+            inputmode="numeric" oninput="formatarMoeda(this)" />
+        </div>
+
+        <div class="form-grupo form-full">
+          <label>Motivo da Pendência *</label>
+          <textarea id="motivoPendencia" required placeholder="Descreva o motivo da pendência..." rows="3"></textarea>
+        </div>
+
+        <div class="form-grupo">
+          <label>Setor Responsável *</label>
+          <select id="setor" required>
+            <option value="">Selecione...</option>
+            <option value="A Pagar">A Pagar</option>
+            <option value="A Receber">A Receber</option>
+          </select>
+        </div>
+
+        <div class="form-grupo">
+          <label>Responsável pela Pendência *</label>
+          <input type="text" id="responsavel" required placeholder="Nome do responsável" />
+        </div>
+
+        <div class="form-grupo">
+          <label>Banco *</label>
+          <select id="banco" required>
+            <option value="">Selecione...</option>
+            <option value="Brasil">Brasil</option>
+            <option value="Bradesco">Bradesco</option>
+            <option value="Santander 2971-4">Santander 2971-4</option>
+            <option value="Santander 3617-4">Santander 3617-4</option>
+          </select>
+        </div>
+
+        <div class="form-grupo">
+          <label>Status *</label>
+          <select id="status" required>
+            <option value="">Selecione...</option>
+            <option value="Pendente">Pendente</option>
+            <option value="Resolvido">Resolvido</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="fecharModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="btnSalvar">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO EXCLUSÃO -->
+<div class="modal-overlay" id="modalExclusao" onclick="fecharModalExclusaoOverlay(event)">
+  <div class="modal modal-pequeno">
+    <div class="modal-header">
+      <h2>Confirmar Exclusão</h2>
+      <button class="modal-close" onclick="fecharModalExclusao()">✕</button>
+    </div>
+    <div style="padding: 24px; text-align:center;">
+      <p id="textoExclusao" style="font-size:16px; color:#555;">Deseja realmente excluir esta pendência?</p>
+      <p style="color:#e74c3c; font-weight:600; margin-top:8px;">Esta ação não pode ser desfeita.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModalExclusao()">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmarExclusao()">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL OPÇÕES PERSONALIZÁVEIS -->
+<div class="modal-overlay" id="modalOpcoes" onclick="fecharModalOpcoesOverlay(event)">
+  <div class="modal modal-opcoes">
+    <div class="modal-header">
+      <h2>⚙ Opções Personalizáveis</h2>
+      <button class="modal-close" onclick="fecharModalOpcoes()">✕</button>
+    </div>
+
+    <div class="opcoes-corpo">
+      <p class="opcoes-ajuda">
+        Cadastre e remova as opções disponíveis nos campos de setor, banco e status.
+        Remover uma opção não altera as pendências já cadastradas.
+      </p>
+
+      <div class="opcoes-grid">
+        <section class="opcoes-grupo" aria-labelledby="opcoesTituloSetores">
+          <h3 id="opcoesTituloSetores">Setores</h3>
+          <form class="opcao-form" onsubmit="adicionarOpcao(event, 'setores')">
+            <input type="text" id="novaOpcaoSetores" placeholder="Novo setor" autocomplete="off" />
+            <button type="submit" class="btn btn-add-opcao">Adicionar</button>
+          </form>
+          <ul class="opcoes-lista" id="listaOpcoesSetores"></ul>
+        </section>
+
+        <section class="opcoes-grupo" aria-labelledby="opcoesTituloBancos">
+          <h3 id="opcoesTituloBancos">Bancos</h3>
+          <form class="opcao-form" onsubmit="adicionarOpcao(event, 'bancos')">
+            <input type="text" id="novaOpcaoBancos" placeholder="Novo banco" autocomplete="off" />
+            <button type="submit" class="btn btn-add-opcao">Adicionar</button>
+          </form>
+          <ul class="opcoes-lista" id="listaOpcoesBancos"></ul>
+        </section>
+
+        <section class="opcoes-grupo" aria-labelledby="opcoesTituloStatus">
+          <h3 id="opcoesTituloStatus">Status</h3>
+          <form class="opcao-form" onsubmit="adicionarOpcao(event, 'status')">
+            <input type="text" id="novaOpcaoStatus" placeholder="Novo status" autocomplete="off" />
+            <button type="submit" class="btn btn-add-opcao">Adicionar</button>
+          </form>
+          <ul class="opcoes-lista" id="listaOpcoesStatus"></ul>
+        </section>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" onclick="fecharModalOpcoes()">Concluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUVEM (LOGIN / CADASTRO) -->
+<div class="modal-overlay" id="modalNuvem" onclick="Nuvem.fecharLoginOverlay(event)">
+  <div class="modal modal-pequeno">
+    <div class="modal-header">
+      <h2 id="tituloLoginNuvem">☁ Entrar na nuvem</h2>
+      <button type="button" class="modal-close" onclick="Nuvem.fecharLogin()" aria-label="Fechar">✕</button>
+    </div>
+
+    <form id="formLoginNuvem" onsubmit="Nuvem.enviarFormulario(event)" autocomplete="on">
+      <div class="login-corpo">
+        <p class="login-ajuda" id="ajudaLoginNuvem">
+          Entre com seu e-mail e senha para carregar seus dados da nuvem.
+        </p>
+
+        <div class="form-grupo">
+          <label for="loginEmail">E-mail</label>
+          <input type="email" id="loginEmail" placeholder="voce@empresa.com"
+            autocomplete="email" required />
+        </div>
+
+        <div class="form-grupo">
+          <label for="loginSenha">Senha</label>
+          <input type="password" id="loginSenha" placeholder="Mínimo 6 caracteres"
+            autocomplete="current-password" minlength="6" required />
+        </div>
+
+        <div class="form-grupo" id="grupoConfirmarSenha" hidden>
+          <label for="loginSenha2">Confirmar senha</label>
+          <input type="password" id="loginSenha2" placeholder="Repita a senha"
+            autocomplete="new-password" minlength="6" />
+        </div>
+
+        <p class="login-erro" id="loginErro" role="alert" hidden></p>
+
+        <button type="submit" class="btn btn-primary btn-login" id="btnLoginNuvem">Entrar</button>
+        <button type="button" class="btn-link" id="btnAlternarModo"
+          onclick="Nuvem.alternarModo(true)">Ainda não tenho conta — criar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="vendor/supabase.js"></script>
+<script src="supabase-config.js"></script>
+<script src="app.js"></script>
+<script src="nuvem.js"></script>
+</body>
+</html>
