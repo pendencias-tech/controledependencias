@@ -1174,7 +1174,7 @@ function renderizarTabela() {
         <td><span class="valor liquido">${formatarMoedaStr(p.valorLiquido)}</span></td>
         <td title="${esc(p.motivoPendencia)}">${esc(truncar(p.motivoPendencia, 40))}</td>
         <td>${badgeSetor}</td>
-        <td>${texto(p.responsavel)}</td>
+        <td data-responsavel="${esc(p.responsavel)}">${texto(p.responsavel)}</td>
         <td>${badgeBanco}</td>
         <td>${badgeStatus}</td>
         <td>
@@ -1188,6 +1188,15 @@ function renderizarTabela() {
     `;
   }).join('');
 }
+
+// Clique na célula de responsável abre os detalhes da pessoa
+document.getElementById('corpoTabela').addEventListener('click', e => {
+  const celula = e.target.closest('td');
+  if (!celula) return;
+  const nome = celula.getAttribute('data-responsavel');
+  if (!nome) return;
+  mostrarDetalheResponsavel(nome);
+});
 
 // Escapa texto para uso seguro em HTML
 function esc(valor) {
