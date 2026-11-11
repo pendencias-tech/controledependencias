@@ -221,7 +221,11 @@
 
   function fecharLogin() {
     const modal = document.getElementById('modalNuvem');
-    if (modal) modal.classList.remove('aberto');
+    const bloqueado = Boolean(configurada) && !usuario;
+    if (modal) {
+      if (bloqueado) modal.classList.add('aberto');
+      else modal.classList.remove('aberto');
+    }
   }
 
   function fecharLoginOverlay(evento) {
@@ -344,6 +348,7 @@
     idsNaNuvem = new Set();
     statusEnvio = 'inativo';
     atualizarInterface();
+    atualizarAreaApp();
     mostrarAviso('Você saiu da nuvem. O app continua funcionando com os dados deste navegador.', 'ok');
   }
 
@@ -582,6 +587,19 @@
 
   // ---------- Inicialização ----------
 
+  // Controla se o conteúdo do app fica visível (bloqueia na tela de login quando exigido)
+  function atualizarAreaApp() {
+    const area = document.getElementById('appArea');
+    const deveBloquear = Boolean(configurada) && !usuario;
+    if (area) area.style.display = deveBloquear ? 'none' : 'block';
+
+    const modal = document.getElementById('modalNuvem');
+    if (modal) {
+      if (deveBloquear) modal.classList.add('aberto');
+      else modal.classList.remove('aberto');
+    }
+  }
+
   async function iniciar() {
     atualizarInterface();
 
@@ -603,6 +621,7 @@
       }
 
       atualizarInterface();
+      atualizarAreaApp();
 
       if (sessao && (evento === 'SIGNED_IN' || evento === 'INITIAL_SESSION' || evento === 'TOKEN_REFRESHED')) {
         setTimeout(() => { sincronizarAposLogin(); }, 0);
@@ -613,6 +632,7 @@
       const { data } = await c.auth.getSession();
       usuario = data && data.session ? data.session.user : null;
       atualizarInterface();
+      atualizarAreaApp();
       if (usuario) await sincronizarAposLogin();
     } catch (erro) {
       console.error('[nuvem] sessão', erro);
