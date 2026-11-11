@@ -33,6 +33,21 @@
   // Ids que já existem na nuvem (para detectar exclusões)
   let idsNaNuvem = new Set();
 
+  // Marca que existem alterações locais ainda não confirmadas na nuvem
+  const CHAVE_ENVIO_PENDENTE = 'pendencias_envio_pendente_v1';
+
+  function marcarEnvioPendente() {
+    try { localStorage.setItem(CHAVE_ENVIO_PENDENTE, '1'); } catch { /* sem espaço */ }
+  }
+
+  function limparEnvioPendente() {
+    try { localStorage.removeItem(CHAVE_ENVIO_PENDENTE); } catch { /* ignora */ }
+  }
+
+  function temEnvioPendente() {
+    try { return localStorage.getItem(CHAVE_ENVIO_PENDENTE) === '1'; } catch { return false; }
+  }
+
   let statusEnvio = 'inativo'; // inativo | enviando | ok | erro
   let temporizadorAviso = null;
 
@@ -393,6 +408,7 @@
     }
 
     idsNaNuvem = ids;
+    limparEnvioPendente();
   }
 
   function enfileirar(tarefa) {
@@ -406,6 +422,7 @@
   // Chamado pelo app.js sempre que os dados locais mudam
   function enviarPendencias(lista) {
     if (!usuario) return;
+    marcarEnvioPendente();
     pendenciasPendentes = Array.isArray(lista) ? lista.slice() : [];
     definirStatus('enviando');
     enfileirar(async () => {
@@ -473,6 +490,19 @@
     try {
       const remotas = await baixarPendenciasRemotas();
       const locais = Array.isArray(pendencias) ? pendencias : [];
+
+      // Se este navegador tem alterações que não chegaram à nuvem
+      // (por exemplo, feitas sem internet), elas têm prioridade.
+      if (temEnvioPendente() && locais.length) {
+        idsNaNuvem = new Set(remotas.map(linha => linha.id));
+        await enviarAgora(locais);
+        const opc = await baixarOpcoesRemotas();
+        if (!opc) await enviarOpcoesAgora();
+        usuarioSincronizado = usuario.id;
+        mostrarAviso('Alterações pendentes deste navegador foram enviadas para a nuvem.', 'ok');
+        definirStatus('ok');
+        return;
+      }
 
       if (!remotas.length && locais.length) {
         // Primeira conexão: sobe o que já existe neste navegador

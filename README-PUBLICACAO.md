@@ -1,5 +1,8 @@
 # Sistema de Pendências — publicação e nuvem
 
+**Site publicado:** https://daianypenha-tech.github.io/sistema-pendencias/
+**Repositório:** https://github.com/daianypenha-tech/sistema-pendencias
+
 Guia curto para colocar o sistema no ar com **GitHub Pages** e **Supabase**.
 
 ## 1. Supabase (banco de dados na nuvem)
@@ -21,8 +24,11 @@ No Supabase, em **Authentication → Providers → Email**:
 - **Opção fácil:** desligue **Confirm email**. O cadastro entra direto.
 - **Opção com confirmação:** mantenha ligado e, em
   **Authentication → URL Configuration**, adicione a URL do site publicado
-  (ex.: `https://seu-usuario.github.io/sistema-pendencias/`) em
-  **Site URL** e **Redirect URLs**.
+  em **Site URL** e **Redirect URLs**:
+
+  ```
+  https://daianypenha-tech.github.io/sistema-pendencias/
+  ```
 
 ## 2. GitHub Pages
 
