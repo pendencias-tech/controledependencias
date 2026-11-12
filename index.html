@@ -123,6 +123,49 @@
   </div>
 </section>
 
+<!-- PÁGINA DE DETALHES (ABERTA EM NOVA GUIA) -->
+<section class="view view-detalhe" id="viewDetalhe" aria-labelledby="detalheTitulo">
+  <div class="detalhe-pagina">
+    <div class="detalhe-pagina-header">
+      <div class="detalhe-pagina-titulo">
+        <a class="btn btn-outline detalhe-voltar" href="index.html">← Voltar ao sistema</a>
+        <h2 id="detalheTitulo">Detalhes</h2>
+        <p id="detalheSubtitulo">Detalhamento das pendências.</p>
+      </div>
+      <span class="dashboard-periodo" id="detalhePeriodo">Geral</span>
+    </div>
+
+    <div class="detalhe-filtros" id="detalheFiltros"></div>
+
+    <div class="resumo-container" id="detalheResumo"></div>
+
+    <div class="table-container detalhe-tabela">
+      <table aria-label="Pendências do detalhe">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nº Nota</th>
+            <th>AF</th>
+            <th>Fornecedor</th>
+            <th>Data Pagto</th>
+            <th>Valor Original</th>
+            <th>Valor Líquido</th>
+            <th>Motivo</th>
+            <th>Setor</th>
+            <th>Responsável</th>
+            <th>Banco</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="detalheCorpoTabela"></tbody>
+      </table>
+      <div id="detalheSemDados" class="sem-dados" style="display:none">
+        <p>Nenhuma pendência encontrada para este detalhe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ABA: PENDÊNCIAS -->
 <section class="view view-pendencias" id="viewPendencias">
 
