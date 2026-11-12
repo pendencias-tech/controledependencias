@@ -478,6 +478,7 @@ function renderizar() {
   renderizarTabs();
   renderizarTabela();
   renderizarDashboard();
+  if (detalheAtual) renderizarPaginaDetalhe();
 }
 
 function renderizarTabs() {
@@ -787,6 +788,7 @@ function selecionarMesEvolucao(mes) {
     valor,
     quantidade: dados.filter(p => mesAno(p.dataPagamento) === mes).length,
   });
+  abrirDetalheEmNovaGuia('evolucao', mes, 'dashboard');
 }
 
 function donutHTML(itens, rotuloCentro, valorCentro, formatador) {
@@ -831,6 +833,30 @@ function donutHTML(itens, rotuloCentro, valorCentro, formatador) {
   `;
 }
 
+// Descobre qual fatia do donut foi clicada a partir do ângulo do clique
+function itemDonutClicado(evento, itens) {
+  const donut = evento.target.closest('.donut');
+  if (!donut) return null;
+
+  const rect = donut.getBoundingClientRect();
+  if (!rect.width || !rect.height) return null;
+
+  const x = evento.clientX - rect.left - rect.width / 2;
+  const y = evento.clientY - rect.top - rect.height / 2;
+  let angulo = (Math.atan2(y, x) * 180) / Math.PI + 90;
+  if (angulo < 0) angulo += 360;
+
+  const total = itens.reduce((soma, item) => soma + item.valor, 0);
+  if (!total) return null;
+
+  let acumulado = 0;
+  for (const item of itens) {
+    acumulado += item.valor;
+    if (angulo <= (acumulado / total) * 360) return item;
+  }
+  return itens[itens.length - 1] || null;
+}
+
 const PALETA_GRAFICOS = [
   '#8b5cf6', '#f59e0b', '#10b981', '#ec4899',
   '#0ea5e9', '#84cc16', '#f97316', '#64748b',
@@ -857,6 +883,259 @@ function corDoStatus(nome) {
   );
   const base = indice >= 0 ? indice : nome.length;
   return PALETA_GRAFICOS[base % PALETA_GRAFICOS.length];
+}
+
+// ============================================================
+//  PÁGINA DE DETALHES (aberta em uma nova guia)
+// ============================================================
+
+const ROTULOS_DETALHE = {
+  evolucao: { titulo: 'Evolução mensal', icone: '📅', campo: null, vazio: '' },
+  setor: { titulo: 'Setor', icone: '📂', campo: 'setor', vazio: 'Sem setor' },
+  banco: { titulo: 'Banco', icone: '🏦', campo: 'banco', vazio: 'Não informado' },
+  status: { titulo: 'Status', icone: '📌', campo: 'status', vazio: 'Sem status' },
+  responsavel: { titulo: 'Responsável', icone: '👤', campo: 'responsavel', vazio: 'Sem responsável' },
+  pendencia: { titulo: 'Pendência', icone: '📄', campo: 'id', vazio: '' },
+};
+
+let detalheAtual = null;
+
+// Abre o detalhe em uma nova guia (aba) do navegador, levando os filtros atuais
+function abrirDetalheEmNovaGuia(tipo, nome, origem) {
+  const f = getFiltros();
+  const mesDashboard = String(document.getElementById('filtroDashboardMes')?.value || '');
+  const params = new URLSearchParams();
+
+  params.set('d', `${tipo}:${nome ?? ''}`);
+  params.set('origem', origem || 'dashboard');
+  if (f.mes) params.set('mes', f.mes);
+  if (f.status) params.set('status', f.status);
+  if (f.setor) params.set('setor', f.setor);
+  if (f.banco) params.set('banco', f.banco);
+  if (f.busca) params.set('busca', f.busca);
+  if (mesDashboard) params.set('dm', mesDashboard);
+
+  const url = `${location.origin}${location.pathname}?${params.toString()}`;
+  const guia = window.open(url, '_blank');
+  if (guia) guia.focus();
+  else alert('Não foi possível abrir a nova guia. Verifique o bloqueador de pop-ups do navegador.');
+}
+
+function filtrosDoDetalhe(params) {
+  return {
+    mes: params.get('mes') || '',
+    mesDashboard: params.get('dm') || '',
+    status: params.get('status') || '',
+    setor: params.get('setor') || '',
+    banco: params.get('banco') || '',
+    busca: (params.get('busca') || '').toLowerCase().trim(),
+    origem: params.get('origem') === 'tabela' ? 'tabela' : 'dashboard',
+  };
+}
+
+function periodoDoDetalhe(tipo, nome, filtros) {
+  if (tipo === 'evolucao') return nome;
+  if (filtros.origem === 'tabela') return filtros.mes;
+  return filtros.mesDashboard;
+}
+
+function categoriasDetalhe(tipo, nome, lista) {
+  const rotulo = ROTULOS_DETALHE[tipo];
+  if (!rotulo || !rotulo.campo) return lista;
+  return lista.filter(p => (p[rotulo.campo] || rotulo.vazio) === nome);
+}
+
+// Lê ?d=tipo:nome (e os filtros) e monta a página de detalhes
+function processarDetalheUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const d = params.get('d');
+  if (!d) return false;
+
+  const partes = d.split(':');
+  const tipo = (partes[0] || '').toLowerCase();
+  const nome = partes.slice(1).join(':');
+  if (!ROTULOS_DETALHE[tipo]) return false;
+
+  detalheAtual = { tipo, nome, filtros: filtrosDoDetalhe(params) };
+  document.body.classList.add('modo-detalhe');
+  document.getElementById('viewDashboard')?.classList.remove('view-ativo');
+  document.getElementById('viewPendencias')?.classList.remove('view-ativo');
+  document.getElementById('viewDetalhe')?.classList.add('view-ativo');
+  renderizarPaginaDetalhe();
+  return true;
+}
+
+function renderizarPaginaDetalhe() {
+  if (!detalheAtual) return;
+
+  const { tipo, nome, filtros } = detalheAtual;
+  const rotulo = ROTULOS_DETALHE[tipo];
+  const periodo = tipo === 'pendencia' ? '' : periodoDoDetalhe(tipo, nome, filtros);
+
+  let base;
+  let lista;
+  let nomeExibido;
+
+  if (tipo === 'pendencia') {
+    const registro = pendencias.find(p => p.id === nome);
+    lista = registro ? [registro] : [];
+    base = lista;
+    nomeExibido = registro
+      ? `Nº ${registro.numero || '—'} — ${registro.fornecedor || 'Sem fornecedor'}`
+      : 'não encontrada';
+  } else {
+    base = pendencias.filter(p =>
+      correspondeFiltros(p, { ...filtros, mes: '' }, true)
+    );
+    if (periodo) base = base.filter(p => mesAno(p.dataPagamento) === periodo);
+
+    lista = categoriasDetalhe(tipo, nome, base);
+    nomeExibido = tipo === 'evolucao' ? labelMesAno(nome) : nome;
+  }
+
+  const titulo = nomeExibido || rotulo.titulo;
+
+  document.title = `${rotulo.titulo}: ${titulo} — Controle de Pendências`;
+
+  const tituloEl = document.getElementById('detalheTitulo');
+  if (tituloEl) tituloEl.textContent = `${rotulo.icone} ${rotulo.titulo}: ${titulo}`;
+
+  const subtitulo = document.getElementById('detalheSubtitulo');
+  if (subtitulo) {
+    subtitulo.textContent = tipo === 'pendencia'
+      ? 'Ficha completa da pendência selecionada.'
+      : 'Detalhamento completo das pendências com os filtros aplicados no sistema.';
+  }
+
+  const periodoEl = document.getElementById('detalhePeriodo');
+  if (periodoEl) {
+    periodoEl.textContent = tipo === 'pendencia'
+      ? 'Registro individual'
+      : (periodo ? `Referência: ${labelMesAno(periodo)}` : 'Geral');
+  }
+
+  renderizarFiltrosDetalhe(tipo === 'pendencia' ? {} : filtros, periodo);
+  renderizarResumoDetalhe(lista, base);
+  renderizarTabelaDetalhe(lista);
+}
+
+function renderizarFiltrosDetalhe(filtros, periodo) {
+  const el = document.getElementById('detalheFiltros');
+  if (!el) return;
+
+  const chips = [];
+  if (periodo) chips.push(`Mês: ${labelMesAno(periodo)}`);
+  if (filtros.status) chips.push(`Status: ${filtros.status}`);
+  if (filtros.setor) chips.push(`Setor: ${filtros.setor}`);
+  if (filtros.banco) chips.push(`Banco: ${filtros.banco}`);
+  if (filtros.busca) chips.push(`Busca: “${filtros.busca}”`);
+
+  el.innerHTML = chips.length
+    ? chips.map(chip => `<span class="detalhe-chip">${esc(chip)}</span>`).join('')
+    : '<span class="detalhe-chip detalhe-chip-vazio">Sem filtros adicionais</span>';
+}
+
+function renderizarResumoDetalhe(lista, base) {
+  const el = document.getElementById('detalheResumo');
+  if (!el) return;
+
+  const total = lista.length;
+  const pendentes = lista.filter(p => p.status !== 'Resolvido');
+  const resolvidos = lista.filter(p => p.status === 'Resolvido');
+  const valorTotal = somarValores(lista);
+  const valorBase = somarValores(base);
+  const hoje = dataHojeISO();
+  const atrasadas = pendentes.filter(p => p.dataPagamento && p.dataPagamento < hoje);
+  const valorAtrasado = somarValores(atrasadas);
+  const aPagar = lista.filter(p => p.setor === 'A Pagar');
+  const aReceber = lista.filter(p => p.setor === 'A Receber');
+
+  el.innerHTML = [
+    cardResumo(
+      'total',
+      'Lançamentos',
+      total,
+      `${pendentes.length} em aberto · ${resolvidos.length} resolvida(s)`
+    ),
+    cardResumo(
+      'valor',
+      'Valor Líquido',
+      formatarMoedaStr(valorTotal),
+      total ? `Ticket médio: ${formatarMoedaStr(valorTotal / total)}` : 'Sem lançamentos'
+    ),
+    cardResumo(
+      'pendente',
+      'Pendentes',
+      pendentes.length,
+      `${percentual(pendentes.length, total)}% dos lançamentos`
+    ),
+    cardResumo(
+      'resolvido',
+      'Resolvidas',
+      resolvidos.length,
+      `${percentual(resolvidos.length, total)}% dos lançamentos`
+    ),
+    cardResumo(
+      'atraso',
+      'Em atraso',
+      atrasadas.length,
+      `${formatarMoedaStr(valorAtrasado)} em aberto`
+    ),
+    cardResumo(
+      'pagar',
+      'A Pagar',
+      formatarMoedaStr(somarValores(aPagar)),
+      `${aPagar.length} lançamento(s)`
+    ),
+    cardResumo(
+      'receber',
+      'A Receber',
+      formatarMoedaStr(somarValores(aReceber)),
+      `${aReceber.length} lançamento(s)`
+    ),
+    cardResumo(
+      'total',
+      'Participação',
+      `${percentual(valorTotal, valorBase)}%`,
+      `do valor filtrado (${formatarMoedaStr(valorBase)})`
+    ),
+  ].join('');
+}
+
+function renderizarTabelaDetalhe(lista) {
+  const corpo = document.getElementById('detalheCorpoTabela');
+  const semDados = document.getElementById('detalheSemDados');
+  if (!corpo || !semDados) return;
+
+  if (!lista.length) {
+    corpo.innerHTML = '';
+    semDados.style.display = 'block';
+    return;
+  }
+  semDados.style.display = 'none';
+
+  const ordenado = [...lista].sort((a, b) => {
+    const porData = (b.dataPagamento || '').localeCompare(a.dataPagamento || '');
+    if (porData !== 0) return porData;
+    return (Number(b.numero) || 0) - (Number(a.numero) || 0);
+  });
+
+  corpo.innerHTML = ordenado.map((p, idx) => `
+    <tr>
+      <td><span class="num">${p.numero || idx + 1}</span></td>
+      <td><span class="nota">${texto(p.numeroNota)}</span></td>
+      <td><span class="nota">${texto(p.af)}</span></td>
+      <td><span class="fornecedor-nome">${texto(p.fornecedor)}</span></td>
+      <td><span class="data">${formatarData(p.dataPagamento)}</span></td>
+      <td><span class="valor original">${formatarMoedaStr(p.valorOriginal)}</span></td>
+      <td><span class="valor liquido">${formatarMoedaStr(p.valorLiquido)}</span></td>
+      <td><span class="motivo">${texto(p.motivoPendencia)}</span></td>
+      <td>${badgeSetorHTML(p)}</td>
+      <td>${texto(p.responsavel)}</td>
+      <td>${badgeBancoHTML(p)}</td>
+      <td>${badgeStatusHTML(p)}</td>
+    </tr>
+  `).join('');
 }
 
 function mostrarDetalheGrafico(tipo, item, total) {
@@ -978,8 +1257,10 @@ function renderizarGraficoSetor(lista) {
 
   el.onclick = (e) => {
     const itemEl = e.target.closest('.legenda-item');
-    if (!itemEl) return;
-    mostrarDetalheSetor(itemEl.dataset.nome);
+    const item = itemEl ? { nome: itemEl.dataset.nome } : itemDonutClicado(e, itens);
+    if (!item) return;
+    mostrarDetalheSetor(item.nome);
+    abrirDetalheEmNovaGuia('setor', item.nome, 'dashboard');
   };
 }
 
@@ -1008,8 +1289,10 @@ function renderizarGraficoStatus(lista) {
 
   el.onclick = (e) => {
     const itemEl = e.target.closest('.legenda-item');
-    if (!itemEl) return;
-    mostrarDetalheStatus(itemEl.dataset.nome);
+    const item = itemEl ? { nome: itemEl.dataset.nome } : itemDonutClicado(e, itens);
+    if (!item) return;
+    mostrarDetalheStatus(item.nome);
+    abrirDetalheEmNovaGuia('status', item.nome, 'dashboard');
   };
 }
 
@@ -1064,6 +1347,7 @@ function renderizarGraficoBanco(lista) {
     if (!itemEl) return;
     const nome = itemEl.querySelector('.banco-nome').textContent.replace(/^🏦\s*/, '');
     mostrarDetalheBanco(nome);
+    abrirDetalheEmNovaGuia('banco', nome, 'dashboard');
   };
 }
 
@@ -1118,6 +1402,7 @@ function renderizarGraficoResponsavel(lista) {
     if (!itemEl) return;
     const nome = itemEl.querySelector('.banco-nome').textContent.replace(/^👤\s*/, '');
     mostrarDetalheResponsavel(nome);
+    abrirDetalheEmNovaGuia('responsavel', nome, 'dashboard');
   };
 }
 
@@ -1141,30 +1426,12 @@ function renderizarTabela() {
   });
 
   corpo.innerHTML = ordenado.map((p, idx) => {
-    const badgeStatus = p.status === 'Resolvido'
-      ? '<span class="badge badge-resolvido">✅ Resolvido</span>'
-      : p.status === 'Pendente'
-        ? '<span class="badge badge-pendente">⏳ Pendente</span>'
-        : p.status
-          ? `<span class="badge badge-status">${esc(p.status)}</span>`
-          : '<span class="badge">—</span>';
-
-    const classeSetor = p.setor === 'A Pagar' ? 'badge-pagar'
-      : p.setor === 'A Receber' ? 'badge-receber' : 'badge-setor';
-    const badgeSetor = p.setor
-      ? `<span class="badge ${classeSetor}">${esc(p.setor)}</span>`
-      : '<span class="badge">—</span>';
-
-    const badgeBanco = p.banco
-      ? `<span class="badge badge-banco">🏦 ${esc(p.banco)}</span>`
-      : '—';
-
     const btnResolver = p.status !== 'Resolvido'
       ? `<button class="btn-success-sm" onclick="resolverPendencia('${p.id}')" title="Marcar como resolvido" aria-label="Marcar como resolvido">✓</button>`
       : '';
 
     return `
-      <tr>
+      <tr data-id="${esc(p.id)}">
         <td><span class="num">${p.numero || idx + 1}</span></td>
         <td><span class="nota">${texto(p.numeroNota)}</span></td>
         <td><span class="nota">${texto(p.af)}</span></td>
@@ -1173,10 +1440,10 @@ function renderizarTabela() {
         <td><span class="valor original">${formatarMoedaStr(p.valorOriginal)}</span></td>
         <td><span class="valor liquido">${formatarMoedaStr(p.valorLiquido)}</span></td>
         <td title="${esc(p.motivoPendencia)}">${esc(truncar(p.motivoPendencia, 40))}</td>
-        <td>${badgeSetor}</td>
-        <td data-responsavel="${esc(p.responsavel)}">${texto(p.responsavel)}</td>
-        <td>${badgeBanco}</td>
-        <td>${badgeStatus}</td>
+        <td>${badgeSetorHTML(p)}</td>
+        <td data-responsavel="${esc(p.responsavel || 'Sem responsável')}">${texto(p.responsavel)}</td>
+        <td>${badgeBancoHTML(p)}</td>
+        <td>${badgeStatusHTML(p)}</td>
         <td>
           <div class="acoes">
             ${btnResolver}
@@ -1189,13 +1456,42 @@ function renderizarTabela() {
   }).join('');
 }
 
-// Clique na célula de responsável abre os detalhes da pessoa
+function badgeStatusHTML(p) {
+  if (p.status === 'Resolvido') return '<span class="badge badge-resolvido">✅ Resolvido</span>';
+  if (p.status === 'Pendente') return '<span class="badge badge-pendente">⏳ Pendente</span>';
+  if (p.status) return `<span class="badge badge-status">${esc(p.status)}</span>`;
+  return '<span class="badge">—</span>';
+}
+
+function badgeSetorHTML(p) {
+  if (!p.setor) return '<span class="badge">—</span>';
+  const classe = p.setor === 'A Pagar' ? 'badge-pagar'
+    : p.setor === 'A Receber' ? 'badge-receber' : 'badge-setor';
+  return `<span class="badge ${classe}">${esc(p.setor)}</span>`;
+}
+
+function badgeBancoHTML(p) {
+  return p.banco
+    ? `<span class="badge badge-banco">🏦 ${esc(p.banco)}</span>`
+    : '—';
+}
+
+// Clique em qualquer informação da tabela abre o detalhe em uma nova guia:
+// - célula do responsável → detalhes da pessoa
+// - demais células → ficha completa da pendência
 document.getElementById('corpoTabela').addEventListener('click', e => {
-  const celula = e.target.closest('td');
-  if (!celula) return;
-  const nome = celula.getAttribute('data-responsavel');
-  if (!nome) return;
-  mostrarDetalheResponsavel(nome);
+  if (e.target.closest('button, a, input, select, textarea')) return;
+
+  const linha = e.target.closest('tr[data-id]');
+  if (!linha) return;
+
+  const celulaResponsavel = e.target.closest('td[data-responsavel]');
+  if (celulaResponsavel) {
+    abrirDetalheEmNovaGuia('responsavel', celulaResponsavel.getAttribute('data-responsavel'), 'tabela');
+    return;
+  }
+
+  abrirDetalheEmNovaGuia('pendencia', linha.getAttribute('data-id'), 'tabela');
 });
 
 // Escapa texto para uso seguro em HTML
@@ -1794,3 +2090,4 @@ atualizarSelectsModal();
 renderizarListaOpcoes();
 selecionarAba('dashboard');
 renderizar();
+processarDetalheUrl();
