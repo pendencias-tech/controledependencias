@@ -1094,6 +1094,7 @@
     fecharAcessosOverlay,
     definirAcesso,
     carregarListaAcessos,
+    atualizarAreaApp,
     atualizarInterface,
     mostrarAviso,
     perfilAtual: () => perfil,
