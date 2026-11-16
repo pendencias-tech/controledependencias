@@ -63,6 +63,22 @@ function mostrarAvisoApp(texto, tipo) {
   temporizadorAvisoApp = setTimeout(() => el.classList.remove('visivel'), 7000);
 }
 
+// ---------- Modo somente leitura ----------
+function somenteLeituraAtiva() {
+  return Boolean(
+    window.Nuvem &&
+    typeof window.Nuvem.modoSomenteLeitura === 'function' &&
+    window.Nuvem.modoSomenteLeitura()
+  );
+}
+
+function avisarSomenteLeitura() {
+  alert(
+    'Seu acesso é somente leitura.\n\n' +
+    'Apenas o administrador pode cadastrar, editar, excluir ou importar pendências.'
+  );
+}
+
 // Converte qualquer valor (inclusive "R$ 1.234,56") em número
 function paraNumero(valor) {
   if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
@@ -257,6 +273,11 @@ function carregarDados() {
 }
 
 function salvarDados(lista) {
+  if (somenteLeituraAtiva()) {
+    avisarSomenteLeitura();
+    return false;
+  }
+
   const origem = Array.isArray(lista) ? lista : pendencias;
   // Rede de segurança: nunca grava informações repetidas
   const { lista: dados, removidos } = removerDuplicatas(origem);
@@ -438,6 +459,7 @@ function renderizarListaOpcoes() {
 }
 
 function abrirModalOpcoes() {
+  if (somenteLeituraAtiva()) { avisarSomenteLeitura(); return; }
   renderizarListaOpcoes();
   document.getElementById('modalOpcoes').classList.add('aberto');
   setTimeout(() => document.getElementById('novaOpcaoSetores')?.focus(), 60);
@@ -453,6 +475,7 @@ function fecharModalOpcoesOverlay(e) {
 
 function adicionarOpcao(event, grupo) {
   event.preventDefault();
+  if (somenteLeituraAtiva()) { avisarSomenteLeitura(); return; }
 
   const input = document.getElementById(MAPA_INPUTS[grupo]);
   if (!input) return;
@@ -488,6 +511,7 @@ function adicionarOpcao(event, grupo) {
 }
 
 function removerOpcao(grupo, indice) {
+  if (somenteLeituraAtiva()) { avisarSomenteLeitura(); return; }
   const valor = opcoes[grupo][indice];
   if (!valor) return;
 
@@ -1675,9 +1699,17 @@ function renderizarTabela() {
   });
 
   corpo.innerHTML = ordenado.map((p, idx) => {
-    const btnResolver = p.status !== 'Resolvido'
+    const somenteLeitura = somenteLeituraAtiva();
+    const btnResolver = !somenteLeitura && p.status !== 'Resolvido'
       ? `<button class="btn-success-sm" onclick="resolverPendencia('${p.id}')" title="Marcar como resolvido" aria-label="Marcar como resolvido">✓</button>`
       : '';
+    const acoes = somenteLeitura
+      ? '<span class="somente-leitura-txt" title="Acesso somente leitura">👁 leitura</span>'
+      : `
+            ${btnResolver}
+            <button class="btn-edit" onclick="editarPendencia('${p.id}')" title="Editar" aria-label="Editar pendência">✏</button>
+            <button class="btn-del" onclick="excluirPendencia('${p.id}')" title="Excluir" aria-label="Excluir pendência">🗑</button>
+          `;
 
     return `
       <tr data-id="${esc(p.id)}">
@@ -1695,9 +1727,7 @@ function renderizarTabela() {
         <td>${badgeStatusHTML(p)}</td>
         <td>
           <div class="acoes">
-            ${btnResolver}
-            <button class="btn-edit" onclick="editarPendencia('${p.id}')" title="Editar" aria-label="Editar pendência">✏</button>
-            <button class="btn-del" onclick="excluirPendencia('${p.id}')" title="Excluir" aria-label="Excluir pendência">🗑</button>
+            ${acoes}
           </div>
         </td>
       </tr>
@@ -1817,6 +1847,7 @@ function sincronizarNotaAf(origem) {
 
 // ---------- CRUD ----------
 function abrirModal(id) {
+  if (somenteLeituraAtiva()) { avisarSomenteLeitura(); return; }
   editandoId = id || null;
   document.getElementById('modalTitulo').textContent = id ? 'Editar Pendência' : 'Nova Pendência';
   document.getElementById('formPendencia').reset();
@@ -1862,6 +1893,7 @@ function fecharModalOverlay(e) {
 
 function salvarPendencia(e) {
   e.preventDefault();
+  if (somenteLeituraAtiva()) { avisarSomenteLeitura(); return; }
 
   const dados = {
     numeroNota: document.getElementById('numeroNota').value.trim(),
@@ -1934,6 +1966,7 @@ function editarPendencia(id) {
 }
 
 function excluirPendencia(id) {
+  if (somenteLeituraAtiva()) { avisarSomenteLeitura(); return; }
   const p = pendencias.find(x => x.id === id);
   if (!p) return;
 
@@ -1963,6 +1996,7 @@ function fecharModalExclusaoOverlay(e) {
 }
 
 function confirmarExclusao() {
+  if (somenteLeituraAtiva()) { avisarSomenteLeitura(); return; }
   if (!excluindoId) return;
 
   const lista = pendencias.filter(p => p.id !== excluindoId);
@@ -1973,6 +2007,7 @@ function confirmarExclusao() {
 }
 
 function resolverPendencia(id) {
+  if (somenteLeituraAtiva()) { avisarSomenteLeitura(); return; }
   const lista = pendencias.map(p =>
     p.id === id ? { ...p, status: 'Resolvido' } : p
   );
@@ -2131,6 +2166,11 @@ function converterDataImportacao(valor) {
 }
 
 function importarCSVArquivo(event) {
+  if (somenteLeituraAtiva()) {
+    avisarSomenteLeitura();
+    if (event && event.target) event.target.value = '';
+    return;
+  }
   const campoArquivo = event.target;
   const arquivo = campoArquivo.files ? campoArquivo.files[0] : null;
 

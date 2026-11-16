@@ -47,19 +47,30 @@ O repositório deve se chamar `sistema-pendencias`.
 - Ao **entrar na nuvem** (menu **☰ Ações → ☁ Entrar na nuvem**), o sistema:
   - na primeira vez, envia os dados deste navegador para a nuvem;
   - nos próximos acessos (mesmo em outro computador), baixa os dados da nuvem.
-- Cada alteração é reenviada automaticamente para a nuvem.
+- Cada alteração é reenviada automaticamente para a nuvem (somente pelo administrador).
 - **☁ Sincronizar agora** baixa os dados da nuvem e substitui os deste navegador
   (uma cópia local é guardada antes).
-- **☁ Enviar dados para a nuvem** (menu ☰ Ações, com login feito) envia a lista
+- **☁ Enviar dados para a nuvem** (menu, com login do administrador) envia a lista
   deste navegador já sem duplicados, removendo da nuvem os registros repetidos.
 - O sistema **não permite informações repetidas**: nota, AF ou registro com os
   mesmos dados (fornecedor, data e valores) é bloqueado no cadastro e ignorado na
   importação de CSV. Ao abrir, registros repetidos já salvos são removidos
   automaticamente e um aviso é exibido.
-- Cada conta vê **apenas os próprios dados** (proteção RLS do Supabase).
-- Por padrão o sistema abre sem exigir login e a nuvem é opcional. Para
-  obrigar o login antes de usar, coloque `exigirLogin: true` em
-  `supabase-config.js`.
+- Controle de acesso:
+  - o primeiro usuário do banco se torna administrador (e entra liberado);
+  - o administrador libera ou bloqueia usuários no menu
+    **☰ Ações → 👥 Gerenciar acessos**;
+  - usuários **liberados** acessam o sistema em **somente leitura** (visualizam as
+    pendências; somente o administrador cadastra/edita/exclui);
+  - usuários **pendentes/bloqueados** veem a tela “Acesso não liberado”;
+  - ao liberar, o administrador deve aplicar o SQL com a tabela `public.perfis`
+    (ver `supabase-schema.sql`) e ajustar o e-mail do administrador, se necessário:
+    `update public.perfis set papel = 'admin', status = 'liberado' where email = '...';`
+- O acesso é aplicado via RLS no Supabase, junto com os dados por usuário. A chave
+  `anon public` não dá acesso sem login.
+- O sistema abre exigindo o login na nuvem e com o controle de acesso ativo
+  (`exigirLogin: true` em `supabase-config.js`). Para abrir sem login, use
+  `exigirLogin: false`.
 
 ## 4. Atualizar o site depois
 

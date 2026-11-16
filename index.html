@@ -15,6 +15,7 @@
     <img src="logo-ideal-alimentacao-branco.png" alt="Ideal Alimentação" class="logo-header" />
     <h1>📋 Controle de Pendências</h1>
     <p>Gestão de pendências financeiras por mês</p>
+    <span id="badgeAcesso" class="badge-acesso" hidden></span>
   </div>
   <div class="header-actions">
     <div class="menu-acoes">
@@ -24,15 +25,15 @@
         ☰ Ações <span class="menu-seta" aria-hidden="true">▾</span>
       </button>
       <div class="menu-acoes-lista" id="menuAcoesLista" role="menu" hidden>
-        <button type="button" class="menu-acao menu-acao-destaque" role="menuitem"
+        <button type="button" class="menu-acao menu-acao-destaque" role="menuitem" id="menuNovaPendencia"
           onclick="fecharMenuAcoes(); abrirModal()">➕ Nova Pendência</button>
         <button type="button" class="menu-acao" role="menuitem"
           onclick="fecharMenuAcoes(); exportarCSV()">⬇ Exportar CSV</button>
-        <button type="button" class="menu-acao" role="menuitem"
+        <button type="button" class="menu-acao" role="menuitem" id="menuImportarCSV"
           onclick="fecharMenuAcoes(); document.getElementById('importarCSV').click()">⬆ Importar CSV</button>
         <a class="menu-acao" role="menuitem" href="importacao-pendencias-template.csv"
           download="modelo-pendencias.csv" onclick="fecharMenuAcoes()">📄 Modelo CSV</a>
-        <button type="button" class="menu-acao" role="menuitem"
+        <button type="button" class="menu-acao" role="menuitem" id="menuOpcoes"
           onclick="fecharMenuAcoes(); abrirModalOpcoes()">⚙ Opções</button>
         <div class="menu-separador" role="separator"></div>
         <button type="button" class="menu-acao" role="menuitem" id="menuEntrarNuvem"
@@ -41,6 +42,8 @@
           onclick="fecharMenuAcoes(); Nuvem.baixarDaNuvem(true)">☁ Sincronizar agora</button>
         <button type="button" class="menu-acao" role="menuitem" id="menuEnviarNuvem" hidden
           onclick="fecharMenuAcoes(); Nuvem.enviarDadosParaNuvem(true)">☁ Enviar dados para a nuvem</button>
+        <button type="button" class="menu-acao" role="menuitem" id="menuAcessos" hidden
+          onclick="fecharMenuAcoes(); Nuvem.abrirAcessos()">👥 Gerenciar acessos</button>
         <button type="button" class="menu-acao" role="menuitem" id="menuSairNuvem" hidden
           onclick="fecharMenuAcoes(); Nuvem.sair()">🚪 Sair da conta</button>
         <div class="menu-usuario" id="menuUsuarioNuvem" hidden></div>
@@ -267,6 +270,17 @@
 
 </div>
 
+<!-- AVISO DE ACESSO NÃO LIBERADO -->
+<div id="acessoPendente" class="acesso-pendente" hidden>
+  <div class="acesso-caixa">
+    <span class="acesso-icone" aria-hidden="true">🔒</span>
+    <h2 id="tituloAcessoPendente">Acesso não liberado</h2>
+    <p id="textoAcessoPendente">Seu acesso está aguardando liberação do administrador.</p>
+    <p class="acesso-ajuda">Assim que o administrador liberar, entre novamente para visualizar as pendências.</p>
+    <button type="button" class="btn btn-outline" onclick="Nuvem.sair()">Sair da conta</button>
+  </div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="fecharModalOverlay(event)">
   <div class="modal">
@@ -425,6 +439,29 @@
 
     <div class="modal-footer">
       <button type="button" class="btn btn-primary" onclick="fecharModalOpcoes()">Concluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GERENCIAR ACESSOS (ADMINISTRADOR) -->
+<div class="modal-overlay" id="modalAcessos" onclick="Nuvem.fecharAcessosOverlay(event)">
+  <div class="modal modal-acessos">
+    <div class="modal-header">
+      <h2>👥 Gerenciar acessos</h2>
+      <button type="button" class="modal-close" onclick="Nuvem.fecharAcessos()" aria-label="Fechar">✕</button>
+    </div>
+
+    <div class="acessos-corpo">
+      <p class="opcoes-ajuda">
+        Libere quem pode visualizar as pendências. Usuários liberados têm acesso
+        <strong>somente leitura</strong>; apenas o administrador pode cadastrar,
+        editar ou excluir.
+      </p>
+      <div id="listaAcessos" class="acessos-lista"></div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" onclick="Nuvem.fecharAcessos()">Concluir</button>
     </div>
   </div>
 </div>

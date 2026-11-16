@@ -25,6 +25,12 @@
   let usuarioSincronizado = null;
   let sincronizando = false;
 
+  // Perfil do usuário logado (papel e status de acesso)
+  let perfil = null;
+  let perfilUsuarioId = null;
+  let perfilCarregando = false;
+  const CHAVE_PERFIL = 'pendencias_perfil_v1';
+
   // Quando exigirLogin = true em supabase-config.js, o sistema só é liberado
   // após o login. Por padrão o uso local é permitido (funciona até sem internet).
   const exigirLogin = Boolean(config.exigirLogin);
@@ -113,6 +119,81 @@
     };
   }
 
+  // ---------- Perfil e permissões ----------
+
+  function acessoLiberado() {
+    return Boolean(perfil && perfil.status === 'liberado');
+  }
+
+  function ehAdmin() {
+    return Boolean(perfil && perfil.papel === 'admin' && perfil.status === 'liberado');
+  }
+
+  function modoSomenteLeitura() {
+    return Boolean(usuario && perfil && perfil.status === 'liberado' && perfil.papel !== 'admin');
+  }
+
+  function salvarPerfilCache(p) {
+    if (!usuario || !p) return;
+    try {
+      localStorage.setItem(CHAVE_PERFIL, JSON.stringify({ user_id: usuario.id, perfil: p }));
+    } catch { /* sem espaço */ }
+  }
+
+  function lerPerfilCache(userId) {
+    try {
+      const salvo = JSON.parse(localStorage.getItem(CHAVE_PERFIL) || 'null');
+      if (salvo && salvo.user_id === userId && salvo.perfil) return salvo.perfil;
+    } catch { /* cache inválido */ }
+    return null;
+  }
+
+  function limparPerfilCache() {
+    try { localStorage.removeItem(CHAVE_PERFIL); } catch { /* ignora */ }
+  }
+
+  async function carregarPerfil() {
+    if (!usuario) {
+      perfil = null;
+      perfilUsuarioId = null;
+      return null;
+    }
+
+    perfilCarregando = true;
+    atualizarAreaApp();
+
+    try {
+      const c = criarCliente();
+      const { data, error } = await c
+        .from('perfis')
+        .select('*')
+        .eq('user_id', usuario.id)
+        .maybeSingle();
+
+      if (error) throw error;
+      perfil = data || null;
+      perfilUsuarioId = usuario.id;
+      if (perfil) salvarPerfilCache(perfil);
+      return perfil;
+    } catch (erro) {
+      // Sem internet: usa a última permissão confirmada deste usuário
+      const cache = lerPerfilCache(usuario.id);
+      if (cache) {
+        perfil = cache;
+        perfilUsuarioId = usuario.id;
+        console.warn('[nuvem] sem conexão: usando permissão salva', erro);
+        return perfil;
+      }
+      perfil = null;
+      perfilUsuarioId = usuario.id;
+      throw erro;
+    } finally {
+      perfilCarregando = false;
+      atualizarAreaApp();
+      atualizarInterface();
+    }
+  }
+
   function definirStatus(novo) {
     statusEnvio = novo;
     atualizarInterface();
@@ -144,10 +225,18 @@
     temporizadorAviso = setTimeout(() => el.classList.remove('visivel'), 4500);
   }
 
+  function escNuvem(valor) {
+    return String(valor ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function traduzirErro(erro) {
     const texto = String((erro && (erro.message || erro.error_description)) || erro || '');
     const minusculo = texto.toLowerCase();
-
     if (minusculo.includes('invalid login credentials')) return 'E-mail ou senha incorretos.';
     if (minusculo.includes('email not confirmed')) return 'Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada.';
     if (minusculo.includes('user already registered')) return 'Esta conta já existe. Use a opção "Entrar".';
@@ -168,8 +257,17 @@
     const entrar = document.getElementById('menuEntrarNuvem');
     const sincronizar = document.getElementById('menuSincronizarNuvem');
     const enviar = document.getElementById('menuEnviarNuvem');
+    const acessos = document.getElementById('menuAcessos');
+    const nova = document.getElementById('menuNovaPendencia');
+    const importar = document.getElementById('menuImportarCSV');
+    const opcoesMenu = document.getElementById('menuOpcoes');
     const sair = document.getElementById('menuSairNuvem');
     const info = document.getElementById('menuUsuarioNuvem');
+    const badge = document.getElementById('badgeAcesso');
+
+    const liberado = acessoLiberado();
+    const admin = ehAdmin();
+    const soLeitura = modoSomenteLeitura();
 
     if (entrar) {
       entrar.hidden = Boolean(usuario);
@@ -181,7 +279,7 @@
     }
 
     if (sincronizar) {
-      sincronizar.hidden = !usuario;
+      sincronizar.hidden = !usuario || !liberado;
       const rotulos = {
         enviando: '⏳ Sincronizando...',
         erro: '⚠ Falha ao sincronizar — tentar de novo',
@@ -191,12 +289,26 @@
       sincronizar.textContent = rotulos[statusEnvio] || rotulos.inativo;
     }
 
-    if (enviar) enviar.hidden = !usuario;
+    if (enviar) enviar.hidden = !usuario || !admin;
+    if (acessos) acessos.hidden = !admin;
+    if (nova) nova.hidden = !liberado || soLeitura;
+    if (importar) importar.hidden = !liberado || soLeitura;
+    if (opcoesMenu) opcoesMenu.hidden = !liberado || soLeitura;
     if (sair) sair.hidden = !usuario;
 
     if (info) {
       info.hidden = !usuario;
       info.textContent = usuario ? '👤 ' + (usuario.email || 'conectado') : '';
+    }
+
+    if (badge) {
+      if (usuario && liberado) {
+        badge.hidden = false;
+        badge.textContent = admin ? '👑 Administrador' : '👁 Somente leitura';
+        badge.className = 'badge-acesso ' + (admin ? 'admin' : 'leitura');
+      } else {
+        badge.hidden = true;
+      }
     }
   }
 
@@ -346,7 +458,10 @@
 
   async function sair() {
     if (!usuario) return;
-    if (!confirm('Sair da conta na nuvem?\n\nOs dados continuam salvos neste navegador.')) return;
+    if (!confirm('Sair da conta na nuvem?')) return;
+
+    const eraAdmin = ehAdmin();
+    const eraUsuario = Boolean(usuario);
 
     const c = criarCliente();
     if (c) {
@@ -355,11 +470,26 @@
 
     usuario = null;
     usuarioSincronizado = null;
+    perfil = null;
+    perfilUsuarioId = null;
+    perfilCarregando = false;
     idsNaNuvem = new Set();
     statusEnvio = 'inativo';
+    limparPerfilCache();
+
+    // Usuário comum não deixa os dados compartilhados salvos no navegador
+    if (eraUsuario && !eraAdmin) {
+      try {
+        localStorage.removeItem('pendencias_v1');
+        localStorage.removeItem('pendencias_backup_local');
+      } catch { /* ignora */ }
+      pendencias = [];
+      atualizarTelas();
+    }
+
     atualizarInterface();
     atualizarAreaApp();
-    mostrarAviso('Você saiu da nuvem. O app continua funcionando com os dados deste navegador.', 'ok');
+    mostrarAviso('Você saiu da nuvem.', 'ok');
   }
 
   // ---------- Dados ----------
@@ -376,10 +506,20 @@
 
   async function baixarOpcoesRemotas() {
     const c = criarCliente();
+
+    // Administrador usa as próprias opções; usuário liberado lê as do admin
+    let alvo = usuario.id;
+    if (!ehAdmin()) {
+      const { data: idAdmin, error: erroAdmin } = await c.rpc('id_admin');
+      if (erroAdmin) throw erroAdmin;
+      if (!idAdmin) return null;
+      alvo = idAdmin;
+    }
+
     const { data, error } = await c
       .from('opcoes')
       .select('*')
-      .eq('user_id', usuario.id)
+      .eq('user_id', alvo)
       .maybeSingle();
     if (error) throw error;
     return data || null;
@@ -436,7 +576,7 @@
 
   // Chamado pelo app.js sempre que os dados locais mudam
   function enviarPendencias(lista) {
-    if (!usuario) return;
+    if (!usuario || !ehAdmin()) return;
     marcarEnvioPendente();
     pendenciasPendentes = Array.isArray(lista) ? lista.slice() : [];
     definirStatus('enviando');
@@ -452,7 +592,7 @@
 
   // Chamado pelo app.js sempre que as opções mudam
   function enviarOpcoes(listaOpcoes) {
-    if (!usuario) return;
+    if (!usuario || !ehAdmin()) return;
     opcoesPendentes = listaOpcoes
       ? {
           setores: [...(listaOpcoes.setores || [])],
@@ -484,7 +624,7 @@
     idsNaNuvem = new Set(lista.map(p => p.id));
 
     const idsRemovidos = removidos.map(p => p.id).filter(Boolean);
-    if (idsRemovidos.length) {
+    if (idsRemovidos.length && ehAdmin()) {
       // Exclui da nuvem para os repetidos não voltarem na próxima sincronização
       enfileirar(async () => {
         try {
@@ -528,7 +668,43 @@
 
   async function sincronizarAposLogin() {
     if (!usuario || sincronizando) return;
-    if (usuarioSincronizado === usuario.id) return;
+
+    // Garante que o perfil (papel/status de acesso) esteja carregado
+    if (!perfil || perfilUsuarioId !== usuario.id) {
+      perfilCarregando = true;
+      atualizarAreaApp();
+      try {
+        await carregarPerfil();
+      } catch (erro) {
+        console.error('[nuvem] perfil', erro);
+        perfil = null;
+        perfilUsuarioId = usuario.id;
+        perfilCarregando = false;
+        atualizarInterface();
+        definirStatus('erro');
+        mostrarAviso('Não foi possível verificar o acesso. Confira se o SQL atualizado do Supabase foi aplicado.', 'erro');
+        return;
+      }
+    }
+
+    atualizarAreaApp();
+    atualizarInterface();
+
+    // Usuários com acesso liberado (ou o administrador) continuam a sincronização
+    const liberado = acessoLiberado();
+    const admin = ehAdmin();
+
+    if (!liberado) {
+      usuarioSincronizado = null;
+      definirStatus('inativo');
+      return;
+    }
+
+    if (usuarioSincronizado === usuario.id) {
+      atualizarTelas();
+      definirStatus('ok');
+      return;
+    }
 
     sincronizando = true;
     definirStatus('enviando');
@@ -540,7 +716,7 @@
       // Se este navegador tem alterações que não chegaram à nuvem
       // (por exemplo, feitas sem internet), elas têm prioridade — inclusive
       // quando a lista local ficou vazia porque o usuário excluiu tudo.
-      if (temEnvioPendente()) {
+      if (temEnvioPendente() && admin) {
         idsNaNuvem = new Set(remotas.map(linha => linha.id));
         await enviarAgora(locais);
         const opc = await baixarOpcoesRemotas();
@@ -551,7 +727,7 @@
         return;
       }
 
-      if (!remotas.length && locais.length) {
+      if (!remotas.length && locais.length && admin) {
         // Primeira conexão: sobe o que já existe neste navegador
         idsNaNuvem = new Set();
         await enviarAgora(locais);
@@ -560,8 +736,8 @@
         usuarioSincronizado = usuario.id;
         mostrarAviso(`${locais.length} pendência(s) deste navegador enviada(s) para a nuvem.`, 'ok');
       } else if (remotas.length) {
-        // A nuvem é a fonte da verdade
-        if (locais.length) {
+        // A nuvem é a fonte da verdade (dados do administrador para usuários liberados)
+        if (admin && locais.length) {
           try {
             localStorage.setItem('pendencias_backup_local', JSON.stringify(locais));
           } catch { /* sem espaço: segue */ }
@@ -570,7 +746,7 @@
         const opc = await baixarOpcoesRemotas();
         if (opc) {
           aplicarOpcoesRemotas(opc);
-        } else {
+        } else if (admin) {
           await enviarOpcoesAgora();
         }
         usuarioSincronizado = usuario.id;
@@ -584,7 +760,11 @@
       } else {
         // Nuvem e navegador vazios
         const opc = await baixarOpcoesRemotas();
-        if (!opc) await enviarOpcoesAgora();
+        if (opc) {
+          aplicarOpcoesRemotas(opc);
+        } else if (admin) {
+          await enviarOpcoesAgora();
+        }
         usuarioSincronizado = usuario.id;
       }
 
@@ -645,6 +825,10 @@
       abrirLogin();
       return;
     }
+    if (!ehAdmin()) {
+      mostrarAviso('Apenas o administrador pode enviar dados para a nuvem.', 'erro');
+      return;
+    }
 
     if (comConfirmacao) {
       const ok = confirm(
@@ -687,18 +871,160 @@
     }
   }
 
+  async function definirAcesso(userId, status) {
+    if (!ehAdmin()) return;
+    if (status === 'liberado' && userId === usuario.id) return;
+
+    const c = criarCliente();
+    const { error } = await c.from('perfis').update({ status }).eq('user_id', userId);
+    if (error) {
+      console.error('[nuvem] atualizar acesso', error);
+      mostrarAviso(traduzirErro(error), 'erro');
+      return;
+    }
+
+    try {
+      const salvo = await carregarPerfil();
+      if (salvo) {
+        mostrarAviso(
+          status === 'liberado'
+            ? `${salvo.email || 'Usuário'} foi liberado. Agora possui acesso ao sistema.`
+            : `${salvo.email || 'Usuário'} teve o acesso bloqueado.`,
+          'ok'
+        );
+      }
+    } catch (erro) {
+      console.warn('[nuvem] não foi possível recarregar perfil', erro);
+    }
+
+    atualizarTelas();
+    atualizarInterface();
+  }
+
+  async function abrirAcessos() {
+    if (!ehAdmin()) {
+      alert('Apenas o administrador pode gerenciar acessos.');
+      return;
+    }
+    const modal = document.getElementById('modalAcessos');
+    if (modal) modal.classList.add('aberto');
+    await carregarListaAcessos();
+  }
+
+  async function carregarListaAcessos() {
+    const el = document.getElementById('listaAcessos');
+    if (!el) return;
+    el.innerHTML = '<p class="acesso-carregando">Carregando...</p>';
+
+    const c = criarCliente();
+    if (!c) {
+      el.innerHTML = '<p class="acesso-vazio">Nuvem não configurada.</p>';
+      return;
+    }
+
+    try {
+      const { data, error } = await c.from('perfis').select('*').order('criado_em', { ascending: true });
+      if (error) throw error;
+      renderizarListaAcessos(data || []);
+    } catch (erro) {
+      console.error('[nuvem] listar perfis', erro);
+      el.innerHTML = '<p class="acesso-vazio">Não foi possível carregar a lista de acessos.</p>';
+      mostrarAviso(traduzirErro(erro), 'erro');
+    }
+  }
+
+  function renderizarListaAcessos(lista) {
+    const el = document.getElementById('listaAcessos');
+    if (!el) return;
+
+    if (!lista.length) {
+      el.innerHTML = '<p class="acesso-vazio">Nenhum usuário cadastrado na nuvem.</p>';
+      return;
+    }
+
+    el.innerHTML = lista.map(item => `
+      <div class="acesso-item">
+        <div class="acesso-info">
+          <span class="acesso-email">${escNuvem(item.email || 'sem e-mail')}</span>
+          <span class="acesso-status">${item.status === 'liberado' ? 'Acesso liberado' : (item.status === 'bloqueado' ? 'Acesso bloqueado' : 'Acesso pendente')}</span>
+        </div>
+        <div class="acesso-acoes">
+          ${item.papel === 'admin'
+            ? '<span class="acesso-selo">👑 Admin</span>'
+            : `
+              <button type="button" class="btn-acesso btn-liberar"
+                onclick="Nuvem.definirAcesso('${item.user_id}', 'liberado')">
+                Liberar
+              </button>
+              <button type="button" class="btn-acesso btn-bloquear"
+                onclick="Nuvem.definirAcesso('${item.user_id}', 'bloqueado')">
+                Bloquear
+              </button>
+            `}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function fecharAcessos() {
+    const modal = document.getElementById('modalAcessos');
+    if (modal) modal.classList.remove('aberto');
+  }
+
+  function fecharAcessosOverlay(evento) {
+    if (evento && evento.target === document.getElementById('modalAcessos')) fecharAcessos();
+  }
+
   // ---------- Inicialização ----------
 
   // Controla se o conteúdo do app fica visível (bloqueia na tela de login quando exigido)
   function atualizarAreaApp() {
     const area = document.getElementById('appArea');
-    const deveBloquear = exigirLogin && Boolean(configurada) && !usuario;
+    const tela = document.getElementById('acessoPendente');
+
+    const precisaLogin = exigirLogin && Boolean(configurada) && !usuario;
+    const usuarioLogado = Boolean(usuario);
+    const perfilValido = Boolean(perfil && perfilUsuarioId === usuario?.id);
+    const verificando = usuarioLogado && !perfilValido;
+    const liberado = acessoLiberado();
+    const bloqueadoPorAcesso = Boolean(usuarioLogado) && !verificando && !liberado;
+
+    const deveBloquear = Boolean(precisaLogin) || bloqueadoPorAcesso;
     if (area) area.style.display = deveBloquear ? 'none' : 'block';
 
     const modal = document.getElementById('modalNuvem');
     if (modal) {
-      if (deveBloquear) modal.classList.add('aberto');
+      if (precisaLogin) modal.classList.add('aberto');
       else modal.classList.remove('aberto');
+    }
+
+    if (tela) {
+      const statusBloqueio = !usuarioLogado
+        ? 'pendente'
+        : verificando
+          ? 'verificando'
+          : (!perfil ? 'erro' : perfil.status);
+
+      if (usuarioLogado && statusBloqueio !== 'liberado') {
+        tela.hidden = false;
+        const titulo = document.getElementById('tituloAcessoPendente');
+        const texto = document.getElementById('textoAcessoPendente');
+        if (statusBloqueio === 'verificando') {
+          if (titulo) titulo.textContent = 'Verificando acesso';
+          if (texto) texto.textContent = 'Aguarde alguns instantes...';
+        } else if (statusBloqueio === 'erro') {
+          if (titulo) titulo.textContent = 'Não foi possível verificar o acesso';
+          if (texto) texto.textContent = 'Confira se o SQL atualizado do Supabase foi aplicado.';
+        } else if (perfil && perfil.status === 'bloqueado') {
+          if (titulo) titulo.textContent = 'Acesso bloqueado';
+          if (texto) texto.textContent = 'Seu acesso foi bloqueado pelo administrador.';
+        } else {
+          if (titulo) titulo.textContent = 'Acesso aguardando liberação';
+          if (texto) texto.textContent = 'Seu acesso ainda não foi liberado pelo administrador.';
+        }
+      } else {
+        tela.hidden = true;
+      }
     }
   }
 
@@ -741,11 +1067,12 @@
     }
   }
 
-  // ESC fecha a janela de login
+  // ESC fecha os modais de login e de acesso
   document.addEventListener('keydown', evento => {
     if (evento.key !== 'Escape') return;
     const modal = document.getElementById('modalNuvem');
     if (modal && modal.classList.contains('aberto')) fecharLogin();
+    fecharAcessos();
   });
 
   window.Nuvem = {
@@ -762,8 +1089,17 @@
     enviarDadosParaNuvem,
     enviarPendencias,
     enviarOpcoes,
+    abrirAcessos,
+    fecharAcessos,
+    fecharAcessosOverlay,
+    definirAcesso,
+    carregarListaAcessos,
     atualizarInterface,
     mostrarAviso,
+    perfilAtual: () => perfil,
+    estaLiberado: () => acessoLiberado(),
+    ehAdmin,
+    modoSomenteLeitura,
   };
 
   // Inicia sozinho; app.js já foi carregado antes deste arquivo.

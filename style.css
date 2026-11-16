@@ -159,6 +159,7 @@ body {
   gap: 2px;
 }
 .menu-acoes-lista[hidden] { display: none; }
+.menu-acao[hidden] { display: none !important; }
 
 .menu-acao {
   display: flex;
@@ -1485,3 +1486,109 @@ body.modo-detalhe .abas-principais { display: none; }
   .dashboard .card-status .donut-wrap { flex-wrap: wrap; }
   .dashboard .card-status .donut-legenda { flex: 1 1 100%; }
 }
+
+/* ============================================================
+   CONTROLE DE ACESSO E MODO SOMENTE LEITURA
+   ============================================================ */
+.badge-acesso {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  background: rgba(255, 255, 255, .18);
+  color: #ffffff;
+}
+.badge-acesso.leitura { background: rgba(255, 255, 255, .16); }
+.badge-acesso.admin { background: rgba(255, 255, 255, .24); }
+
+.acesso-pendente {
+  position: fixed;
+  inset: 0;
+  z-index: 3500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--bg);
+}
+.acesso-pendente[hidden] { display: none; }
+.acesso-caixa {
+  width: 100%;
+  max-width: 440px;
+  padding: 36px 28px;
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+.acesso-icone { display: block; margin-bottom: 10px; font-size: 42px; }
+.acesso-caixa h2 { margin-bottom: 8px; font-size: 20px; color: var(--text); }
+.acesso-caixa p { font-size: 14px; line-height: 1.5; color: var(--text-light); }
+.acesso-ajuda { margin: 8px 0 20px !important; font-size: 12.5px !important; }
+
+.modal-acessos { width: min(560px, 94vw); }
+.acessos-corpo { padding: 18px 22px 6px; }
+.acessos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  max-height: 50vh;
+  overflow: auto;
+}
+.acesso-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.acesso-info { min-width: 0; }
+.acesso-email {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.acesso-status { display: block; margin-top: 2px; font-size: 11px; color: var(--text-light); }
+.acesso-acoes { display: flex; flex-shrink: 0; gap: 6px; }
+.btn-acesso {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.btn-liberar { background: #16a34a; color: #ffffff; }
+.btn-liberar:hover { background: #15803d; }
+.btn-bloquear { background: #dc2626; color: #ffffff; }
+.btn-bloquear:hover { background: #b91c1c; }
+.acesso-selo {
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  white-space: nowrap;
+  background: rgba(253, 101, 0, .14);
+  color: #c2410c;
+}
+:root[data-theme="dark"] .acesso-selo { background: rgba(253, 101, 0, .22); color: #fdba74; }
+.acesso-carregando,
+.acesso-vazio {
+  padding: 18px 0;
+  font-size: 12.5px;
+  text-align: center;
+  color: var(--text-light);
+}
+.somente-leitura-txt { font-size: 11px; font-weight: 700; white-space: nowrap; color: var(--text-light); }
