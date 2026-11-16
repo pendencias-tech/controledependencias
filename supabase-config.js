@@ -29,6 +29,6 @@ window.SUPABASE_CONFIG = {
 
   // true = exige login na nuvem para usar o sistema.
   // Para o controle de acesso (administrador libera os demais usuários),
-  // mantenha true. Defina false apenas se não quiser controlar acessos.
-  exigirLogin: true,
+  // mantenha true. Defina false apenas se quiser abrir sem login para qualquer pessoa.
+  exigirLogin: false,
 };
