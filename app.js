@@ -4,6 +4,7 @@
 
 // ---------- Estado global ----------
 const CHAVE_OPCOES = 'pendencias_opcoes_v1';
+const CHAVE_IDEIAS = 'ideias_remeficios_v1';
 
 const OPCOES_PADRAO = {
   setores: ['A Pagar', 'A Receber'],
@@ -34,6 +35,7 @@ let duplicatasRemovidasNaCarga = 0;
 
 let pendencias = carregarDados();
 let opcoes = carregarOpcoes();
+let ideias = carregarIdeias();
 let editandoId = null;
 let excluindoId = null;
 
@@ -2319,15 +2321,103 @@ function importarCSVArquivo(event) {
   reader.readAsText(arquivo, 'UTF-8');
 }
 
+// ---------- Ideias de remédios ----------
+function carregarIdeias() {
+  try {
+    const raw = localStorage.getItem(CHAVE_IDEIAS);
+    const dados = raw ? JSON.parse(raw) : [];
+    return Array.isArray(dados) ? dados : [];
+  } catch {
+    return [];
+  }
+}
+
+function salvarIdeias(lista) {
+  try {
+    localStorage.setItem(CHAVE_IDEIAS, JSON.stringify(lista));
+    return true;
+  } catch {
+    alert('Não foi possível salvar as ideias de remédio.');
+    return false;
+  }
+}
+
+function renderizarIdeias() {
+  const corpo = document.getElementById('corpoIdeias');
+  const semDados = document.getElementById('semDadosIdeias');
+  if (!corpo || !semDados) return;
+
+  if (!ideias.length) {
+    corpo.innerHTML = '';
+    semDados.style.display = 'block';
+    return;
+  }
+
+  semDados.style.display = 'none';
+
+  corpo.innerHTML = [...ideias]
+    .sort((a, b) => String(b.criadoEm || '').localeCompare(String(a.criadoEm || '')))
+    .map((item, idx) => `
+      <tr data-id="${esc(item.id)}">
+        <td>${esc(item.texto)}</td>
+        <td>${esc(item.autor || '—')}</td>
+        <td><span class="badge badge-status">${esc(item.status || 'Nova')}</span></td>
+        <td>
+          <button class="btn-del" onclick="excluirIdeia('${item.id}')" title="Excluir ideia" aria-label="Excluir ideia">🗑</button>
+        </td>
+      </tr>
+    `)
+    .join('');
+}
+
+function adicionarIdeia(event) {
+  if (event) event.preventDefault();
+
+  const texto = String(document.getElementById('ideiaTexto')?.value || '').trim();
+  const autor = String(document.getElementById('ideiaAutor')?.value || '').trim();
+  const status = String(document.getElementById('ideiaStatus')?.value || 'Nova');
+
+  if (!texto) {
+    alert('Descreva a ideia de remédio.');
+    document.getElementById('ideiaTexto')?.focus();
+    return;
+  }
+
+  const item = {
+    id: gerarId(),
+    texto,
+    autor: autor || 'Anônimo',
+    status,
+    criadoEm: new Date().toISOString(),
+  };
+
+  ideias = [...ideias, item];
+  if (!salvarIdeias(ideias)) return;
+
+  document.getElementById('ideiaTexto').value = '';
+  document.getElementById('ideiaAutor').value = '';
+  document.getElementById('ideiaStatus').value = 'Nova';
+  renderizarIdeias();
+}
+
+function excluirIdeia(id) {
+  ideias = ideias.filter(item => item.id !== id);
+  if (!salvarIdeias(ideias)) return;
+  renderizarIdeias();
+}
+
 // ---------- Navegação Dashboard / Pendências ----------
 function selecionarAba(id) {
   const viewDashboard = document.getElementById('viewDashboard');
   const viewPendencias = document.getElementById('viewPendencias');
+  const viewIdeias = document.getElementById('viewIdeias');
   const btnDashboard = document.getElementById('btnNavDashboard');
   const btnPendencias = document.getElementById('btnNavPendencias');
+  const btnIdeias = document.getElementById('btnNavIdeias');
 
   const ativoDashboard = id === 'dashboard';
   const ativoPendencias = id === 'pendencias';
+  const ativoIdeias = id === 'ideias';
 
   if (viewDashboard) {
     viewDashboard.classList.toggle('view-ativo', ativoDashboard);
@@ -2335,16 +2425,26 @@ function selecionarAba(id) {
   if (viewPendencias) {
     viewPendencias.classList.toggle('view-ativo', ativoPendencias);
   }
+  if (viewIdeias) {
+    viewIdeias.classList.toggle('view-ativo', ativoIdeias);
+  }
   if (btnDashboard) {
     btnDashboard.classList.toggle('ativo', ativoDashboard);
   }
   if (btnPendencias) {
     btnPendencias.classList.toggle('ativo', ativoPendencias);
   }
+  if (btnIdeias) {
+    btnIdeias.classList.toggle('ativo', ativoIdeias);
+  }
 
   // Redesenha o gráfico com a largura correta quando o Dashboard volta a ficar visível
   if (ativoDashboard) {
     requestAnimationFrame(() => renderizarGraficoEvolucao());
+  }
+
+  if (ativoIdeias) {
+    renderizarIdeias();
   }
 }
 

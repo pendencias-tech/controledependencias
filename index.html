@@ -60,6 +60,7 @@
 <div class="abas-principais">
   <button type="button" class="btn btn-outline btn-nav ativo" id="btnNavDashboard" onclick="selecionarAba('dashboard')">📊 Dashboard</button>
   <button type="button" class="btn btn-outline btn-nav" id="btnNavPendencias" onclick="selecionarAba('pendencias')">📋 Pendências</button>
+  <button type="button" class="btn btn-outline btn-nav" id="btnNavIdeias" onclick="selecionarAba('ideias')">💡 Ideias de Remédios</button>
 </div>
 
 <!-- DASHBOARD -->
@@ -266,6 +267,47 @@
     <p>Nenhuma pendência encontrada para os filtros selecionados.</p>
   </div>
 </div>
+</section>
+
+<!-- ABA: IDEIAS DE REMÉDIOS -->
+<section class="view" id="viewIdeias">
+  <form id="formIdeias" onsubmit="adicionarIdeia(event)" style="display:flex; gap:8px; flex-wrap:wrap; width:100%; margin-bottom:14px;">
+    <div class="filtro-grupo" style="max-width: 420px;">
+      <label htmlFor="ideiaTexto">Ideia de remédio</label>
+      <input type="text" id="ideiaTexto" placeholder="Ex.: Desenvolver nova formulação..." />
+    </div>
+    <div class="filtro-grupo" style="max-width: 220px;">
+      <label htmlFor="ideiaAutor">Autor</label>
+      <input type="text" id="ideiaAutor" placeholder="Quem propôs" />
+    </div>
+    <div class="filtro-grupo" style="max-width: 180px;">
+      <label htmlFor="ideiaStatus">Status</label>
+      <select id="ideiaStatus" onchange="renderizarIdeias()">
+        <option value="Nova">Nova</option>
+        <option value="Em análise">Em análise</option>
+        <option value="Aprovada">Aprovada</option>
+        <option value="Rejeitada">Rejeitada</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">➕ Adicionar ideia</button>
+  </form>
+
+  <div class="table-container">
+    <table id="tabelaIdeias" aria-label="Ideias de remédios">
+      <thead>
+        <tr>
+          <th>Ideia</th>
+          <th>Autor</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="corpoIdeias"></tbody>
+    </table>
+    <div id="semDadosIdeias" class="sem-dados" style="display:none">
+      <p>Nenhuma ideia de remédio cadastrada.</p>
+    </div>
+  </div>
 </section>
 
 </div>
