@@ -25,6 +25,10 @@
   let usuarioSincronizado = null;
   let sincronizando = false;
 
+  // Quando exigirLogin = true em supabase-config.js, o sistema só é liberado
+  // após o login. Por padrão o uso local é permitido (funciona até sem internet).
+  const exigirLogin = Boolean(config.exigirLogin);
+
   // Fila dos envios: evita que duas sincronizações se atropelem
   let fila = Promise.resolve();
   let pendenciasPendentes = null;
@@ -163,6 +167,7 @@
   function atualizarInterface() {
     const entrar = document.getElementById('menuEntrarNuvem');
     const sincronizar = document.getElementById('menuSincronizarNuvem');
+    const enviar = document.getElementById('menuEnviarNuvem');
     const sair = document.getElementById('menuSairNuvem');
     const info = document.getElementById('menuUsuarioNuvem');
 
@@ -186,6 +191,7 @@
       sincronizar.textContent = rotulos[statusEnvio] || rotulos.inativo;
     }
 
+    if (enviar) enviar.hidden = !usuario;
     if (sair) sair.hidden = !usuario;
 
     if (info) {
@@ -221,7 +227,7 @@
 
   function fecharLogin() {
     const modal = document.getElementById('modalNuvem');
-    const bloqueado = Boolean(configurada) && !usuario;
+    const bloqueado = exigirLogin && Boolean(configurada) && !usuario;
     if (modal) {
       if (bloqueado) modal.classList.add('aberto');
       else modal.classList.remove('aberto');
@@ -290,12 +296,16 @@
       if (!c) throw new Error('Não foi possível iniciar a conexão com a nuvem.');
 
       if (modoCadastro) {
+        // Depois de confirmar o e-mail, volta para a página inicial do sistema
+        const urlRetorno = new URL(window.location.href);
+        urlRetorno.search = '';
+        urlRetorno.hash = '';
+
         const { data, error } = await c.auth.signUp({
           email,
           password: senha,
           options: {
-            // Depois de confirmar o e-mail, volta para esta mesma página
-            emailRedirectTo: window.location.href.split('#')[0],
+            emailRedirectTo: urlRetorno.href,
           },
         });
         if (error) throw error;
@@ -460,7 +470,11 @@
   }
 
   function aplicarPendenciasRemotas(linhas) {
-    const lista = linhas.map(paraApp).map(normalizarPendencia);
+    const normalizadas = linhas.map(paraApp).map(normalizarPendencia);
+
+    // A nuvem também não deve manter informações repetidas
+    const { lista, removidos } = removerDuplicatas(normalizadas);
+
     pendencias = lista; // variável global do app.js
     try {
       localStorage.setItem('pendencias_v1', JSON.stringify(lista));
@@ -468,14 +482,41 @@
       console.warn('[nuvem] não foi possível gravar o cache local', erro);
     }
     idsNaNuvem = new Set(lista.map(p => p.id));
+
+    const idsRemovidos = removidos.map(p => p.id).filter(Boolean);
+    if (idsRemovidos.length) {
+      // Exclui da nuvem para os repetidos não voltarem na próxima sincronização
+      enfileirar(async () => {
+        try {
+          await excluirPendenciasRemotas(idsRemovidos);
+        } catch (erro) {
+          console.warn('[nuvem] não foi possível remover duplicados', erro);
+        }
+      });
+      mostrarAviso(
+        `${idsRemovidos.length} informação(ões) repetida(s) foi(ram) removida(s). ` +
+        'O sistema não permite informações repetidas.',
+        'alerta'
+      );
+    }
+
     atualizarTelas();
+    return idsRemovidos.length;
+  }
+
+  async function excluirPendenciasRemotas(ids) {
+    if (!usuario || !Array.isArray(ids) || !ids.length) return;
+    const c = criarCliente();
+    const { error } = await c.from('pendencias').delete().in('id', ids);
+    if (error) throw error;
+    ids.forEach(id => idsNaNuvem.delete(id));
   }
 
   function aplicarOpcoesRemotas(dados) {
     opcoes = {
-      setores: normalizarListaOpcoes(dados.setores, OPCOES_PADRAO.setores),
-      bancos: normalizarListaOpcoes(dados.bancos, OPCOES_PADRAO.bancos),
-      status: normalizarListaOpcoes(dados.status, OPCOES_PADRAO.status),
+      setores: normalizarListaOpcoes(dados.setores, OPCOES_PADRAO.setores, 'setores'),
+      bancos: normalizarListaOpcoes(dados.bancos, OPCOES_PADRAO.bancos, 'bancos'),
+      status: normalizarListaOpcoes(dados.status, OPCOES_PADRAO.status, 'status'),
     };
     try {
       localStorage.setItem(CHAVE_OPCOES, JSON.stringify(opcoes));
@@ -497,8 +538,9 @@
       const locais = Array.isArray(pendencias) ? pendencias : [];
 
       // Se este navegador tem alterações que não chegaram à nuvem
-      // (por exemplo, feitas sem internet), elas têm prioridade.
-      if (temEnvioPendente() && locais.length) {
+      // (por exemplo, feitas sem internet), elas têm prioridade — inclusive
+      // quando a lista local ficou vazia porque o usuário excluiu tudo.
+      if (temEnvioPendente()) {
         idsNaNuvem = new Set(remotas.map(linha => linha.id));
         await enviarAgora(locais);
         const opc = await baixarOpcoesRemotas();
@@ -524,7 +566,7 @@
             localStorage.setItem('pendencias_backup_local', JSON.stringify(locais));
           } catch { /* sem espaço: segue */ }
         }
-        aplicarPendenciasRemotas(remotas);
+        const removidos = aplicarPendenciasRemotas(remotas);
         const opc = await baixarOpcoesRemotas();
         if (opc) {
           aplicarOpcoesRemotas(opc);
@@ -532,7 +574,13 @@
           await enviarOpcoesAgora();
         }
         usuarioSincronizado = usuario.id;
-        mostrarAviso(`${remotas.length} pendência(s) carregada(s) da nuvem.`, 'ok');
+        const detalheDuplicados = removidos
+          ? ` ${removidos} repetida(s) removida(s).`
+          : '';
+        mostrarAviso(
+          `${remotas.length} pendência(s) carregada(s) da nuvem.${detalheDuplicados}`,
+          'ok'
+        );
       } else {
         // Nuvem e navegador vazios
         const opc = await baixarOpcoesRemotas();
@@ -570,16 +618,70 @@
       try {
         localStorage.setItem('pendencias_backup_local', JSON.stringify(pendencias));
       } catch { /* sem espaço: segue */ }
-      aplicarPendenciasRemotas(remotas);
+      const removidos = aplicarPendenciasRemotas(remotas);
 
       const opc = await baixarOpcoesRemotas();
-      if (opc) aplicarOpcoesRemotas(opc);
+      if (opc) {
+        aplicarOpcoesRemotas(opc);
+      } else {
+        await enviarOpcoesAgora();
+      }
 
       usuarioSincronizado = usuario.id;
       definirStatus('ok');
-      mostrarAviso('Dados atualizados a partir da nuvem.', 'ok');
+      const detalheDuplicados = removidos
+        ? ` ${removidos} informação(ões) repetida(s) removida(s).`
+        : '';
+      mostrarAviso(`Dados atualizados a partir da nuvem.${detalheDuplicados}`, 'ok');
     } catch (erro) {
       console.error('[nuvem] download', erro);
+      definirStatus('erro');
+      mostrarAviso(traduzirErro(erro), 'erro');
+    }
+  }
+
+  async function enviarDadosParaNuvem(comConfirmacao) {
+    if (!usuario) {
+      abrirLogin();
+      return;
+    }
+
+    if (comConfirmacao) {
+      const ok = confirm(
+        'Enviar os dados deste navegador para a nuvem?\n\n' +
+        'A nuvem será substituída por esta lista, que já está sem informações repetidas. ' +
+        'Pendências que existam apenas na nuvem (de outro dispositivo) serão removidas.'
+      );
+      if (!ok) return;
+    }
+
+    try {
+      definirStatus('enviando');
+
+      // Garante que nenhuma informação repetida seja enviada
+      const { lista, removidos } = removerDuplicatas(pendencias);
+      pendencias = lista; // variável global do app.js
+      try {
+        localStorage.setItem('pendencias_v1', JSON.stringify(lista));
+      } catch (erro) {
+        console.warn('[nuvem] não foi possível gravar a lista limpa', erro);
+      }
+
+      // Lê os ids atuais da nuvem para que os repetidos/ausentes sejam excluídos
+      const remotas = await baixarPendenciasRemotas();
+      idsNaNuvem = new Set(remotas.map(linha => linha.id));
+      await enviarAgora(lista);
+
+      usuarioSincronizado = usuario.id;
+      definirStatus('ok');
+      atualizarTelas();
+
+      const detalhe = removidos.length
+        ? ` ${removidos.length} duplicada(s) removida(s) antes do envio.`
+        : ' Nenhuma informação repetida encontrada.';
+      mostrarAviso(`Nuvem atualizada com ${lista.length} pendência(s).${detalhe}`, 'ok');
+    } catch (erro) {
+      console.error('[nuvem] envio manual', erro);
       definirStatus('erro');
       mostrarAviso(traduzirErro(erro), 'erro');
     }
@@ -590,7 +692,7 @@
   // Controla se o conteúdo do app fica visível (bloqueia na tela de login quando exigido)
   function atualizarAreaApp() {
     const area = document.getElementById('appArea');
-    const deveBloquear = Boolean(configurada) && !usuario;
+    const deveBloquear = exigirLogin && Boolean(configurada) && !usuario;
     if (area) area.style.display = deveBloquear ? 'none' : 'block';
 
     const modal = document.getElementById('modalNuvem');
@@ -657,6 +759,7 @@
     enviarFormulario,
     sair,
     baixarDaNuvem,
+    enviarDadosParaNuvem,
     enviarPendencias,
     enviarOpcoes,
     atualizarInterface,

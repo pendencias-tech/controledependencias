@@ -30,7 +30,6 @@
 
 :root[data-theme="dark"] .filtros-container,
 :root[data-theme="dark"] .dashboard-card,
-:root[data-theme="dark"] .resumo-card,
 :root[data-theme="dark"] .table-container,
 :root[data-theme="dark"] .meses-tabs,
 :root[data-theme="dark"] .modal,
@@ -38,6 +37,12 @@
 :root[data-theme="dark"] .modal-footer {
   background: var(--card);
   border-color: var(--border);
+  color: var(--text);
+}
+
+/* Mantém as cores de cada indicador também no tema escuro */
+:root[data-theme="dark"] .resumo-card {
+  background: var(--card);
   color: var(--text);
 }
 
@@ -94,6 +99,7 @@
 :root[data-theme="dark"] .badge-receber { background: rgba(253,101,0,.22); color: #fdba74; }
 :root[data-theme="dark"] .badge-banco { background: #334155; color: #e2e8f0; }
 :root[data-theme="dark"] .badge-status { background: #334155; color: #e2e8f0; }
+:root[data-theme="dark"] .badge-setor { background: rgba(245,158,11,.18); color: #fcd34d; }
 
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
@@ -257,6 +263,7 @@ body {
 .aviso-nuvem.visivel { opacity: 1; transform: translate(-50%, 0); }
 .aviso-erro { background: #b91c1c; }
 .aviso-ok { background: #166534; }
+.aviso-alerta { background: #c2410c; }
 
 :root[data-theme="dark"] .login-erro {
   background: rgba(220,38,38,.16);
@@ -400,7 +407,7 @@ body {
 .resumo-card.pendente { border-color: var(--warning); }
 .resumo-card.resolvido { border-color: var(--success); }
 .resumo-card.atraso { border-color: #f97316; }
-.resumo-card.valor { border-color: #8b5cf6; }
+.resumo-card.valor { border-color: var(--primary); }
 .resumo-card.pagar { border-color: #ef4444; }
 .resumo-card.receber { border-color: #ea580c; }
 .resumo-card.saldo-positivo { border-color: var(--success); }
@@ -413,7 +420,7 @@ body {
 .resumo-card.pendente .valor-num { color: var(--warning); }
 .resumo-card.resolvido .valor-num { color: var(--success); }
 .resumo-card.atraso .valor-num { color: #ea580c; }
-.resumo-card.valor .valor-num { color: #7c3aed; font-size: 19px; }
+.resumo-card.valor .valor-num { color: var(--primary); font-size: 19px; }
 .resumo-card.pagar .valor-num { color: #dc2626; font-size: 19px; }
 .resumo-card.receber .valor-num { color: var(--primary); font-size: 19px; }
 .resumo-card.saldo-positivo .valor-num { color: var(--success); font-size: 19px; }
@@ -741,6 +748,8 @@ td .valor.liquido { color: var(--text); }
 .badge-pagar { background: #fee2e2; color: #991b1b; }
 .badge-receber { background: #ffedd5; color: #c2410c; }
 .badge-banco { background: #f3f4f6; color: #374151; font-size: 11px; }
+.badge-status { background: #f3f4f6; color: #374151; }
+.badge-setor { background: #fef3c7; color: #92400e; }
 
 /* ===== AÇÕES ===== */
 .acoes { display: flex; gap: 6px; align-items: center; white-space: nowrap; }
@@ -1058,4 +1067,421 @@ body.modo-detalhe .abas-principais { display: none; }
   .dashboard-card { padding: 16px; }
   .dashboard-card-header { align-items: flex-start; flex-direction: column; gap: 2px; }
   .banco-topo { font-size: 12px; }
+}
+
+/* ============================================================
+   DASHBOARD — IDENTIDADE DO SITE (laranja)
+   Usa as mesmas variáveis do restante do sistema (claro/escuro).
+   ============================================================ */
+.dashboard {
+  position: relative;
+  margin: 18px 32px 32px;
+  padding: 22px;
+  border-radius: 24px;
+  color: var(--text);
+  background:
+    radial-gradient(900px 420px at 88% -12%, rgba(253, 101, 0, .12), transparent 60%),
+    radial-gradient(760px 440px at -6% 6%, rgba(234, 88, 12, .08), transparent 58%),
+    var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.dashboard::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ea580c, #fd6500 55%, #f59e0b);
+  opacity: .95;
+}
+.dashboard > * { position: relative; z-index: 1; }
+
+.dashboard .dashboard-header { align-items: center; margin-bottom: 16px; }
+.dash-eyebrow {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--primary-hover);
+}
+.dashboard .dashboard-header h2 {
+  color: var(--text);
+  font-size: 24px;
+  letter-spacing: -.02em;
+}
+.dashboard .dashboard-header p { color: var(--text-light); }
+.dash-controles { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.dashboard .dashboard-periodo,
+.dashboard #filtroDashboardMes {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.dashboard #filtroDashboardMes:focus { outline: none; border-color: var(--primary); }
+.dashboard #filtroDashboardMes option { background: var(--card); color: var(--text); }
+:root[data-theme="dark"] .dashboard .dash-eyebrow { color: #fdba74; }
+
+/* KPIs */
+.dashboard .resumo-container {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.dashboard .resumo-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 116px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.dashboard .resumo-card .label {
+  font-size: 10px;
+  letter-spacing: .09em;
+  color: var(--text-light);
+}
+.dashboard .resumo-card .valor-num {
+  margin-top: 6px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--text);
+}
+.dashboard .resumo-card .valor-sub {
+  margin-top: 6px;
+  font-size: 10.5px;
+  color: var(--text-light);
+}
+.dashboard .resumo-card.valor {
+  border-color: transparent;
+  background: linear-gradient(135deg, #fd6500 0%, #ea580c 55%, #c2410c 100%);
+  box-shadow: 0 14px 30px rgba(253, 101, 0, .28);
+  overflow: hidden;
+}
+.dashboard .resumo-card.valor::after {
+  content: "";
+  position: absolute;
+  right: -38px;
+  bottom: -52px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+}
+.dashboard .resumo-card.valor .label { color: rgba(255, 255, 255, .84); }
+.dashboard .resumo-card.valor .valor-num { color: #ffffff; }
+.dashboard .resumo-card.valor .valor-sub { color: rgba(255, 255, 255, .80); }
+
+/* Mantém cada KPI com a cor do seu indicador */
+.dashboard .resumo-card.total { border-left-color: var(--primary); }
+.dashboard .resumo-card.pagar { border-left-color: #dc2626; }
+.dashboard .resumo-card.receber { border-left-color: #ea580c; }
+
+/* Faixa de indicadores secundários */
+.dash-mini-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.dash-mini {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--card);
+}
+.dash-mini-rotulo {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+.dash-mini-valor {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.dash-mini-valor.alerta { color: var(--warning); }
+.dash-mini-valor.ok { color: var(--success); }
+.dash-mini-valor.perigo { color: var(--danger); }
+:root[data-theme="dark"] .dash-mini-valor.alerta { color: #fbbf24; }
+:root[data-theme="dark"] .dash-mini-valor.ok { color: #4ade80; }
+:root[data-theme="dark"] .dash-mini-valor.perigo { color: #f87171; }
+
+/* Grade principal */
+.dashboard .dashboard-grid {
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  grid-template-areas:
+    "evolucao banco"
+    "evolucao status"
+    "responsavel setor"
+    "detalhe detalhe";
+  gap: 12px;
+  margin-top: 12px;
+  align-items: stretch;
+}
+.dashboard .card-evolucao { grid-area: evolucao; grid-column: auto; }
+.dashboard .card-banco { grid-area: banco; }
+.dashboard .card-status { grid-area: status; }
+.dashboard .card-responsavel { grid-area: responsavel; }
+.dashboard .card-setor { grid-area: setor; }
+.dashboard .card-detalhe { grid-area: detalhe; grid-column: auto; }
+
+.dashboard .dashboard-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 15px 16px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.dashboard .dashboard-card-header {
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.dashboard .dashboard-card-header h3 { font-size: 13px; color: var(--text); }
+.dashboard .dashboard-card-sub {
+  font-size: 9.5px;
+  letter-spacing: .06em;
+  color: var(--text-light);
+}
+.dash-card-icone {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(253, 101, 0, .12);
+  color: var(--primary-hover);
+  font-size: 12px;
+}
+:root[data-theme="dark"] .dash-card-icone {
+  background: rgba(253, 101, 0, .18);
+  color: #fdba74;
+}
+
+/* Evolução */
+.dashboard .card-evolucao { justify-content: flex-start; }
+.dashboard .grafico-evolucao {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 250px;
+  margin-top: 2px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.dashboard .grafico-evolucao-svg { width: 100%; height: auto; }
+.dashboard .grafico-evolucao-svg text { fill: var(--text-light); }
+.dashboard .grafico-evolucao-svg .valor-ponto { fill: var(--text); }
+.dashboard .grafico-evolucao-svg .ponto-evolucao {
+  fill: var(--card);
+  stroke: var(--primary);
+  stroke-width: 2.5;
+}
+
+/* Filtro de período do gráfico */
+.dash-periodos {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+}
+.dash-periodo-btn {
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 9.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .15s;
+}
+.dash-periodo-btn:hover { color: var(--text); }
+.dash-periodo-btn.ativo {
+  background: linear-gradient(135deg, #fd6500, #ea580c);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(253, 101, 0, .32);
+}
+
+/* Barras horizontais (banco / responsável) */
+.dashboard .bancos-lista,
+.dashboard .responsavel-lista {
+  grid-template-columns: 1fr;
+  gap: 11px;
+}
+.dashboard .banco-topo { gap: 8px; font-size: 11px; }
+.dashboard .banco-nome { color: var(--text); }
+.dashboard .banco-valor { color: var(--text); font-size: 10.5px; }
+.dashboard .banco-trilha {
+  height: 6px;
+  margin: 5px 0 3px;
+  background: rgba(148, 163, 184, .22);
+}
+.dashboard .banco-barra { background: linear-gradient(90deg, #fd6500 0%, #f59e0b 100%); }
+.dashboard .banco-rodape { font-size: 9.5px; color: var(--text-light); }
+
+/* Rosca de status */
+.dashboard .card-status .donut-wrap {
+  flex: 1;
+  min-height: 150px;
+  flex-wrap: nowrap;
+}
+.dashboard .card-status .donut-legenda {
+  display: flex;
+  flex: 1 1 96px;
+  gap: 8px;
+  font-size: 10px;
+}
+.dashboard .card-status .legenda-item { gap: 5px; font-size: 10px; }
+.dashboard .card-status .legenda-item:hover { background: rgba(253, 101, 0, .10); }
+.dashboard .card-status .legenda-cor { width: 8px; height: 8px; border-radius: 2px; }
+.dashboard .card-status .legenda-nome { font-weight: 700; color: var(--text); }
+.dashboard .card-status .legenda-valor { font-size: 9px; font-weight: 700; color: var(--text-light); }
+.dashboard .card-status .legenda-pct { font-size: 9px; color: var(--text-light); }
+.dashboard .donut { width: min(172px, 82%); max-width: 172px; }
+.dashboard .donut-centro {
+  inset: 16%;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.dashboard .donut-valor { color: var(--text); font-size: 22px; }
+.dashboard .donut-label { color: var(--text-light); font-size: 9px; }
+
+/* Barras verticais de setor */
+.dashboard #graficoSetor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.dashboard .setor-barras {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 10px;
+  flex: 1;
+  min-height: 158px;
+  padding: 4px 2px 0;
+}
+.dashboard .setor-barra-item {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.dashboard .setor-barra-valor {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+}
+.dashboard .setor-barra-trilha {
+  position: relative;
+  width: 100%;
+  max-width: 44px;
+  flex: 1;
+  min-height: 118px;
+  border-radius: 8px 8px 4px 4px;
+  background: rgba(148, 163, 184, .18);
+  overflow: hidden;
+}
+.dashboard .setor-barra-fill {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  border-radius: 8px 8px 4px 4px;
+  transition: height .3s ease;
+}
+.dashboard .setor-barra-nome {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 9.5px;
+  color: var(--text-light);
+  text-align: center;
+}
+.dashboard .setor-barra-item:hover .setor-barra-trilha { background: rgba(253, 101, 0, .16); }
+
+/* Detalhe e estados vazios */
+.dashboard .grafico-vazio,
+.dashboard .detalhe-vazio { color: var(--text-light); }
+.dashboard .detalhe-conteudo h4 { color: var(--text); }
+.dashboard .detalhe-conteudo p { color: var(--text-light); }
+.dashboard .detalhe-conteudo p strong { color: var(--text); }
+
+@media (max-width: 1100px) {
+  .dashboard .resumo-container { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dash-mini-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dashboard .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "evolucao evolucao"
+      "banco status"
+      "responsavel setor"
+      "detalhe detalhe";
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard { margin: 14px 16px 24px; padding: 16px; border-radius: 18px; }
+  .dashboard .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "evolucao"
+      "banco"
+      "status"
+      "responsavel"
+      "setor"
+      "detalhe";
+  }
+  .dashboard .resumo-container { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dash-mini-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dashboard .resumo-card { min-height: 96px; padding: 12px; }
+  .dashboard .resumo-card .valor-num { font-size: 17px; }
+  .dashboard .dashboard-header { align-items: flex-start; }
+  .dash-controles { width: 100%; }
+  .dash-periodos { margin-top: 2px; }
+}
+
+@media (max-width: 360px) {
+  .dashboard .resumo-container { grid-template-columns: 1fr; }
+  .dashboard .resumo-card .valor-num { font-size: 21px; }
+  .dashboard .card-status .donut-wrap { flex-wrap: wrap; }
+  .dashboard .card-status .donut-legenda { flex: 1 1 100%; }
 }

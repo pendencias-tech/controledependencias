@@ -50,7 +50,16 @@ O repositório deve se chamar `sistema-pendencias`.
 - Cada alteração é reenviada automaticamente para a nuvem.
 - **☁ Sincronizar agora** baixa os dados da nuvem e substitui os deste navegador
   (uma cópia local é guardada antes).
+- **☁ Enviar dados para a nuvem** (menu ☰ Ações, com login feito) envia a lista
+  deste navegador já sem duplicados, removendo da nuvem os registros repetidos.
+- O sistema **não permite informações repetidas**: nota, AF ou registro com os
+  mesmos dados (fornecedor, data e valores) é bloqueado no cadastro e ignorado na
+  importação de CSV. Ao abrir, registros repetidos já salvos são removidos
+  automaticamente e um aviso é exibido.
 - Cada conta vê **apenas os próprios dados** (proteção RLS do Supabase).
+- Por padrão o sistema abre sem exigir login e a nuvem é opcional. Para
+  obrigar o login antes de usar, coloque `exigirLogin: true` em
+  `supabase-config.js`.
 
 ## 4. Atualizar o site depois
 

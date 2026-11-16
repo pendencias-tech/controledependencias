@@ -29,6 +29,9 @@ const MAPA_LISTAS = {
   status: 'listaOpcoesStatus',
 };
 
+// Quantidade de registros repetidos removidos automaticamente ao abrir o sistema
+let duplicatasRemovidasNaCarga = 0;
+
 let pendencias = carregarDados();
 let opcoes = carregarOpcoes();
 let editandoId = null;
@@ -37,6 +40,27 @@ let excluindoId = null;
 // ---------- Utilitários ----------
 function gerarId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+// Aviso flutuante para mensagens rápidas (duplicidade, limpeza de dados etc.)
+let temporizadorAvisoApp = null;
+
+function mostrarAvisoApp(texto, tipo) {
+  let el = document.getElementById('avisoApp');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'avisoApp';
+    el.setAttribute('role', 'alert');
+    document.body.appendChild(el);
+  }
+
+  el.className = 'aviso-nuvem aviso-app aviso-' + (tipo || 'ok');
+  el.textContent = texto;
+  void el.offsetWidth;
+  el.classList.add('visivel');
+
+  clearTimeout(temporizadorAvisoApp);
+  temporizadorAvisoApp = setTimeout(() => el.classList.remove('visivel'), 7000);
 }
 
 // Converte qualquer valor (inclusive "R$ 1.234,56") em número
@@ -56,12 +80,23 @@ function paraNumero(valor) {
   return Number.isFinite(numero) ? numero : 0;
 }
 
+// Valida uma data no formato AAAA-MM-DD (inclusive dias inexistentes, como 30/02)
+function dataISOValida(valor) {
+  if (typeof valor !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(valor)) return false;
+
+  const [ano, mes, dia] = valor.split('-').map(Number);
+  const data = new Date(Date.UTC(ano, mes - 1, dia));
+
+  return data.getUTCFullYear() === ano
+    && data.getUTCMonth() === mes - 1
+    && data.getUTCDate() === dia;
+}
+
 // Garante que registros antigos/incompletos não quebrem a aplicação
 function normalizarPendencia(registro) {
   const p = (registro && typeof registro === 'object') ? registro : {};
   const numero = Number(p.numero);
-  const dataValida = typeof p.dataPagamento === 'string'
-    && /^\d{4}-\d{2}-\d{2}$/.test(p.dataPagamento);
+  const dataValida = dataISOValida(p.dataPagamento);
   const idLimpo = String(p.id || gerarId()).replace(/[^A-Za-z0-9_-]/g, '');
   const setorTexto = String(p.setor ?? '').trim();
   const statusTexto = String(p.status ?? '').trim();
@@ -98,21 +133,141 @@ function normalizarPendencia(registro) {
   };
 }
 
+// ---------- Duplicidade ----------
+// Normaliza texto para comparar informações (sem acentos, minúsculo, espaços simples)
+function normalizarTextoComparacao(valor) {
+  return String(valor ?? '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ');
+}
+
+// Códigos numéricos iguais não dependem de zeros à esquerda (00123 = 123)
+function normalizarCodigo(valor) {
+  const texto = normalizarTextoComparacao(valor);
+  if (!texto || texto === '-') return '';
+  return /^\d+$/.test(texto) ? texto.replace(/^0+(?=\d)/, '') : texto;
+}
+
+// Conteúdo completo usado quando o registro não tem nota nem AF
+function conteudoComparacao(p) {
+  return [
+    normalizarTextoComparacao(p.fornecedor),
+    String(p.dataPagamento || ''),
+    paraNumero(p.valorOriginal).toFixed(2),
+    paraNumero(p.valorLiquido).toFixed(2),
+    normalizarTextoComparacao(p.motivoPendencia),
+    normalizarTextoComparacao(p.setor),
+    normalizarTextoComparacao(p.responsavel),
+    normalizarTextoComparacao(p.banco),
+    normalizarTextoComparacao(p.status),
+  ].join('|');
+}
+
+// Lista as "identidades" do registro: nota, AF ou o conteúdo completo
+function chavesDuplicidade(p) {
+  const chaves = [];
+  const nota = normalizarCodigo(p.numeroNota);
+  const af = normalizarCodigo(p.af);
+
+  if (nota) {
+    chaves.push({
+      chave: 'nota:' + nota,
+      rotulo: `a nota "${String(p.numeroNota).trim()}"`,
+      campo: 'numeroNota',
+    });
+  }
+  if (af) {
+    chaves.push({
+      chave: 'af:' + af,
+      rotulo: `a AF "${String(p.af).trim()}"`,
+      campo: 'af',
+    });
+  }
+  if (!chaves.length) {
+    chaves.push({
+      chave: 'registro:' + conteudoComparacao(p),
+      rotulo: 'as mesmas informações (fornecedor, data e valores)',
+      campo: '',
+    });
+  }
+
+  return chaves;
+}
+
+// Retorna a pendência conflitante (ou null) e qual informação está repetida
+function encontrarDuplicata(lista, dados, ignorarId) {
+  const alvo = chavesDuplicidade(dados);
+  if (!alvo.length) return null;
+
+  for (const p of (Array.isArray(lista) ? lista : [])) {
+    if (!p || p.id === ignorarId) continue;
+    const atuais = new Set(chavesDuplicidade(p).map(item => item.chave));
+    const repetida = alvo.find(item => atuais.has(item.chave));
+    if (repetida) return { pendencia: p, rotulo: repetida.rotulo, campo: repetida.campo };
+  }
+
+  return null;
+}
+
+// Remove registros repetidos mantendo o primeiro de cada informação
+function removerDuplicatas(lista) {
+  const vistos = new Set();
+  const unicos = [];
+  const removidos = [];
+
+  (Array.isArray(lista) ? lista : []).forEach(p => {
+    const chaves = chavesDuplicidade(p);
+    if (chaves.some(item => vistos.has(item.chave))) {
+      removidos.push(p);
+      return;
+    }
+    chaves.forEach(item => vistos.add(item.chave));
+    unicos.push(p);
+  });
+
+  return { lista: unicos, removidos };
+}
+
 function carregarDados() {
   try {
     const raw = localStorage.getItem('pendencias_v1');
     const dados = raw ? JSON.parse(raw) : [];
     if (!Array.isArray(dados)) return [];
-    return dados
+    const normalizados = dados
       .filter(p => p && typeof p === 'object')
       .map(normalizarPendencia);
+
+    // Limpa registros repetidos que já estavam salvos no navegador
+    const { lista, removidos } = removerDuplicatas(normalizados);
+    if (removidos.length) {
+      duplicatasRemovidasNaCarga = removidos.length;
+      try {
+        localStorage.setItem('pendencias_v1', JSON.stringify(lista));
+        // Faz a limpeza chegar também à nuvem na próxima sincronização
+        localStorage.setItem('pendencias_envio_pendente_v1', '1');
+      } catch { /* sem espaço: segue apenas com a lista em memória */ }
+    }
+    return lista;
   } catch {
     return [];
   }
 }
 
 function salvarDados(lista) {
-  const dados = Array.isArray(lista) ? lista : pendencias;
+  const origem = Array.isArray(lista) ? lista : pendencias;
+  // Rede de segurança: nunca grava informações repetidas
+  const { lista: dados, removidos } = removerDuplicatas(origem);
+  if (removidos.length) {
+    mostrarAvisoApp(
+      `${removidos.length} registro(s) repetido(s) não foi(ram) salvo(s). ` +
+      'Não é possível enviar informações repetidas.',
+      'alerta'
+    );
+  }
+
   try {
     localStorage.setItem('pendencias_v1', JSON.stringify(dados));
     pendencias = dados;
@@ -126,13 +281,29 @@ function salvarDados(lista) {
 }
 
 // ---------- Opções personalizáveis ----------
-function normalizarListaOpcoes(valor, padrao) {
+// Unifica a grafia das opções conhecidas (ex.: "resolvido" → "Resolvido")
+function normalizarValorOpcao(grupo, valor) {
+  const texto = String(valor ?? '').trim();
+  const chave = texto.toLowerCase();
+
+  if (grupo === 'setores') {
+    if (chave === 'a pagar') return 'A Pagar';
+    if (chave === 'a receber') return 'A Receber';
+  }
+  if (grupo === 'status') {
+    if (chave === 'pendente') return 'Pendente';
+    if (chave === 'resolvido') return 'Resolvido';
+  }
+  return texto;
+}
+
+function normalizarListaOpcoes(valor, padrao, grupo) {
   const origem = Array.isArray(valor) ? valor : padrao;
   const vistos = new Set();
   const lista = [];
 
   origem.forEach(item => {
-    const texto = String(item ?? '').trim();
+    const texto = grupo ? normalizarValorOpcao(grupo, item) : String(item ?? '').trim();
     if (!texto) return;
     const chave = texto.toLowerCase();
     if (vistos.has(chave)) return;
@@ -152,9 +323,9 @@ function carregarOpcoes() {
   }
 
   return {
-    setores: normalizarListaOpcoes(salvo.setores, OPCOES_PADRAO.setores),
-    bancos: normalizarListaOpcoes(salvo.bancos, OPCOES_PADRAO.bancos),
-    status: normalizarListaOpcoes(salvo.status, OPCOES_PADRAO.status),
+    setores: normalizarListaOpcoes(salvo.setores, OPCOES_PADRAO.setores, 'setores'),
+    bancos: normalizarListaOpcoes(salvo.bancos, OPCOES_PADRAO.bancos, 'bancos'),
+    status: normalizarListaOpcoes(salvo.status, OPCOES_PADRAO.status, 'status'),
   };
 }
 
@@ -286,7 +457,7 @@ function adicionarOpcao(event, grupo) {
   const input = document.getElementById(MAPA_INPUTS[grupo]);
   if (!input) return;
 
-  const valor = input.value.trim();
+  const valor = normalizarValorOpcao(grupo, input.value);
   if (!valor) {
     input.focus();
     return;
@@ -301,8 +472,12 @@ function adicionarOpcao(event, grupo) {
     return;
   }
 
-  opcoes[grupo].push(valor);
-  if (!salvarOpcoes()) return;
+  const anteriores = opcoes[grupo];
+  opcoes[grupo] = [...anteriores, valor];
+  if (!salvarOpcoes()) {
+    opcoes[grupo] = anteriores;
+    return;
+  }
 
   input.value = '';
   atualizarSelectsFiltros();
@@ -325,8 +500,14 @@ function removerOpcao(grupo, indice) {
     return;
   }
 
-  opcoes[grupo].splice(indice, 1);
-  if (!salvarOpcoes()) return;
+  const anteriores = opcoes[grupo];
+  const novasOpcoes = [...anteriores];
+  novasOpcoes.splice(indice, 1);
+  opcoes[grupo] = novasOpcoes;
+  if (!salvarOpcoes()) {
+    opcoes[grupo] = anteriores;
+    return;
+  }
 
   atualizarSelectsFiltros();
   atualizarSelectsModal();
@@ -400,6 +581,14 @@ function proximoNumero() {
 }
 
 // ---------- Filtros ----------
+// Busca sem diferenciar maiúsculas/minúsculas e acentos ("joao" encontra "João")
+function normalizarBusca(valor) {
+  return String(valor ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
 function getFiltros() {
   return {
     mes: document.getElementById('filtroMes').value,
@@ -425,15 +614,16 @@ function correspondeFiltros(p, f, ignorarMes = false) {
   if (f.setor && p.setor !== f.setor) return false;
   if (f.banco && p.banco !== f.banco) return false;
   if (f.busca) {
-    const haystack = [
+    const busca = normalizarBusca(f.busca);
+    const haystack = normalizarBusca([
       p.fornecedor,
       p.numeroNota,
       p.af,
       p.responsavel,
       p.motivoPendencia,
       p.banco,
-    ].join(' ').toLowerCase();
-    if (!haystack.includes(f.busca)) return false;
+    ].join(' '));
+    if (!haystack.includes(busca)) return false;
   }
   return true;
 }
@@ -459,15 +649,16 @@ function filtrarDashboard(lista) {
     if (f.setor && p.setor !== f.setor) return false;
     if (f.banco && p.banco !== f.banco) return false;
     if (f.busca) {
-      const haystack = [
+      const busca = normalizarBusca(f.busca);
+      const haystack = normalizarBusca([
         p.fornecedor,
         p.numeroNota,
         p.af,
         p.responsavel,
         p.motivoPendencia,
         p.banco,
-      ].join(' ').toLowerCase();
-      if (!haystack.includes(f.busca)) return false;
+      ].join(' '));
+      if (!haystack.includes(busca)) return false;
     }
     return true;
   });
@@ -539,11 +730,20 @@ function cardResumo(classe, rotulo, valor, complemento) {
   `;
 }
 
+let periodoEvolucaoMeses = 6;
+
+function miniStat(rotulo, valor, classe) {
+  return `
+    <div class="dash-mini">
+      <span class="dash-mini-rotulo">${rotulo}</span>
+      <span class="dash-mini-valor ${classe || ''}">${valor}</span>
+    </div>
+  `;
+}
+
 function renderizarDashboard() {
-  const f = getFiltros();
   const selectMes = document.getElementById('filtroDashboardMes');
-  const mesDashboard = String(selectMes?.value || '');
-  const lista = filtrarDashboard(pendencias);
+  let mesDashboard = String(selectMes?.value || '');
 
   const meses = Array.from(new Set(
     pendencias
@@ -555,8 +755,12 @@ function renderizarDashboard() {
     selectMes.innerHTML = '<option value="">Geral</option>' + meses
       .map(m => `<option value="${esc(m)}">${esc(labelMesAno(m))}</option>`)
       .join('');
-    selectMes.value = mesDashboard || '';
+    // Se o mês selecionado deixou de existir (registros excluídos), volta para "Geral"
+    if (mesDashboard && !meses.includes(mesDashboard)) mesDashboard = '';
+    selectMes.value = mesDashboard;
   }
+
+  const lista = filtrarDashboard(pendencias);
 
   const total = lista.length;
   // Qualquer status diferente de "Resolvido" conta como pendente/em aberto
@@ -572,45 +776,26 @@ function renderizarDashboard() {
 
   const hoje = dataHojeISO();
   const atrasadas = pendentes.filter(p => p.dataPagamento && p.dataPagamento < hoje);
-  const valorAtrasado = somarValores(atrasadas);
 
   const periodo = document.getElementById('dashboardPeriodo');
   if (periodo) {
     periodo.textContent = mesDashboard
       ? `Referência: ${labelMesAno(mesDashboard)}`
-      : 'Geral';
+      : 'Todos os meses';
   }
 
   document.getElementById('resumoContainer').innerHTML = [
+    cardResumo(
+      'valor',
+      'Valor Líquido',
+      formatarMoedaStr(valorTotal),
+      total ? `Ticket médio: ${formatarMoedaStr(valorTotal / total)}` : 'Sem lançamentos'
+    ),
     cardResumo(
       'total',
       'Total de Pendências',
       total,
       `${pendentes.length} pendente(s) · ${resolvidos.length} resolvida(s)`
-    ),
-    cardResumo(
-      'pendente',
-      'Pendentes',
-      pendentes.length,
-      `${percentual(pendentes.length, total)}% do total`
-    ),
-    cardResumo(
-      'resolvido',
-      'Resolvidas',
-      resolvidos.length,
-      `${percentual(resolvidos.length, total)}% do total`
-    ),
-    cardResumo(
-      'atraso',
-      'Em atraso',
-      atrasadas.length,
-      `${formatarMoedaStr(valorAtrasado)} em aberto`
-    ),
-    cardResumo(
-      'valor',
-      'Valor Líquido Total',
-      formatarMoedaStr(valorTotal),
-      total ? `Ticket médio: ${formatarMoedaStr(valorTotal / total)}` : 'Sem lançamentos'
     ),
     cardResumo(
       'pagar',
@@ -624,13 +809,17 @@ function renderizarDashboard() {
       formatarMoedaStr(valorReceber),
       `${aReceber.length} pendência(s)`
     ),
-    cardResumo(
-      saldo >= 0 ? 'saldo-positivo' : 'saldo-negativo',
-      'Saldo',
-      formatarMoedaStr(saldo),
-      'A receber − a pagar'
-    ),
   ].join('');
+
+  const resumoMini = document.getElementById('resumoMini');
+  if (resumoMini) {
+    resumoMini.innerHTML = [
+      miniStat('Pendentes', pendentes.length, 'alerta'),
+      miniStat('Resolvidas', resolvidos.length, 'ok'),
+      miniStat('Em atraso', atrasadas.length, atrasadas.length ? 'perigo' : ''),
+      miniStat('Saldo', formatarMoedaStr(saldo), saldo >= 0 ? 'ok' : 'perigo'),
+    ].join('');
+  }
 
   renderizarGraficoEvolucao();
   renderizarGraficoSetor(lista);
@@ -694,8 +883,18 @@ function renderizarGraficoEvolucao() {
 
   const mesDashboard = String(document.getElementById('filtroDashboardMes')?.value || '');
   const base = mesDashboard || dataHojeISO().slice(0, 7);
-  const meses = ultimosMeses(base, 6);
   const dados = filtrarSemMes(pendencias);
+
+  let meses;
+  if (periodoEvolucaoMeses > 0) {
+    meses = ultimosMeses(base, periodoEvolucaoMeses);
+  } else {
+    const todos = Array.from(new Set(
+      dados.map(p => mesAno(p.dataPagamento)).filter(Boolean)
+    )).sort().filter(mes => mes <= base);
+    meses = todos.length ? todos : ultimosMeses(base, 6);
+  }
+
   const itens = meses.map(mes => ({
     mes,
     valor: somarValores(dados.filter(p => mesAno(p.dataPagamento) === mes)),
@@ -729,6 +928,9 @@ function renderizarGraficoEvolucao() {
   const x = (indice) => padding.left + (indice * chartW) / Math.max(1, itens.length - 1);
   const y = (valor) => padding.top + (1 - valor / escalaMaxima) * chartH;
   const pontos = itens.map((item, indice) => ({ x: x(indice), y: y(item.valor) }));
+  // Evita rótulos sobrepostos em telas estreitas
+  const espacoRotulo = chartW / Math.max(1, itens.length - 1);
+  const passoRotulo = Math.max(1, Math.ceil(46 / Math.max(1, espacoRotulo)));
   const linha = criarCurvaLinha(pontos);
   const baseArea = padding.top + chartH;
   const area = `${linha} L ${pontos[pontos.length - 1].x.toFixed(2)} ${baseArea.toFixed(2)} L ${pontos[0].x.toFixed(2)} ${baseArea.toFixed(2)} Z`;
@@ -748,45 +950,57 @@ function renderizarGraficoEvolucao() {
     <svg class="grafico-evolucao-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Evolução mensal do valor líquido">
       <defs>
         <linearGradient id="gradEvolucao" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#fd6500" stop-opacity="0.35" />
+          <stop offset="0%" stop-color="#fd6500" stop-opacity="0.38" />
           <stop offset="100%" stop-color="#fd6500" stop-opacity="0.02" />
+        </linearGradient>
+        <linearGradient id="linhaEvolucao" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#f59e0b" />
+          <stop offset="55%" stop-color="#fd6500" />
+          <stop offset="100%" stop-color="#c2410c" />
         </linearGradient>
       </defs>
       ${ticks.map(valor => `
-        <line x1="${padding.left}" y1="${y(valor).toFixed(2)}" x2="${(padding.left + chartW).toFixed(2)}" y2="${y(valor).toFixed(2)}" stroke="#e2e8f0" stroke-width="1" />
+        <line x1="${padding.left}" y1="${y(valor).toFixed(2)}" x2="${(padding.left + chartW).toFixed(2)}" y2="${y(valor).toFixed(2)}" stroke="rgba(148,163,184,.14)" stroke-width="1" />
         <text x="${padding.left - 10}" y="${y(valor).toFixed(2)}" text-anchor="end" dominant-baseline="middle" font-size="10.5">${rotuloEixo(valor)}</text>
       `).join('')}
       <path d="${area}" fill="url(#gradEvolucao)" />
-      <path d="${linha}" fill="none" stroke="#fd6500" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="${linha}" fill="none" stroke="url(#linhaEvolucao)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
       ${itens.map((item, indice) => {
         const ancora = indice === 0 ? 'start' : indice === itens.length - 1 ? 'end' : 'middle';
         const valorY = Math.max(pontos[indice].y - 13, padding.top - 20);
 
         return `
           <circle cx="${pontos[indice].x.toFixed(2)}" cy="${pontos[indice].y.toFixed(2)}" r="5"
-            fill="#ffffff" stroke="#fd6500" stroke-width="2.5"
+            class="ponto-evolucao"
             onclick="selecionarMesEvolucao('${item.mes}')" data-mes="${item.mes}" style="cursor:pointer">
             <title>${labelMesAno(item.mes)}: ${formatarMoedaStr(item.valor)}</title>
           </circle>
           ${mostrarValores ? `<text x="${pontos[indice].x.toFixed(2)}" y="${valorY.toFixed(2)}" text-anchor="${ancora}" font-size="10.5" class="valor-ponto">${formatarMoedaCurta(item.valor)}</text>` : ''}
-          <text x="${pontos[indice].x.toFixed(2)}" y="${height - 18}" text-anchor="${ancora}" font-size="11">${rotuloMes(item.mes)}</text>
+          ${(itens.length - 1 - indice) % passoRotulo === 0
+            ? `<text x="${pontos[indice].x.toFixed(2)}" y="${height - 18}" text-anchor="${ancora}" font-size="${width < 480 ? 10 : 11}">${rotuloMes(item.mes)}</text>`
+            : ''}
         `;
       }).join('')}
     </svg>
   `;
 }
 
-function selecionarMesEvolucao(mes) {
-  const select = document.getElementById('filtroDashboardMes');
-  if (select) select.value = mes;
-  renderizarDashboard();
+function selecionarPeriodoEvolucao(meses) {
+  periodoEvolucaoMeses = Number(meses) || 0;
+  document.querySelectorAll('#periodosEvolucao .dash-periodo-btn').forEach(btn => {
+    btn.classList.toggle('ativo', Number(btn.dataset.meses) === periodoEvolucaoMeses);
+  });
+  renderizarGraficoEvolucao();
+}
 
+function selecionarMesEvolucao(mes) {
   const dados = filtrarSemMes(pendencias);
-  const valor = somarValores(dados.filter(p => mesAno(p.dataPagamento) === mes));
+  const doMes = dados.filter(p => mesAno(p.dataPagamento) === mes);
+
   mostrarDetalheGrafico('evolucao', {
     mes,
-    valor,
-    quantidade: dados.filter(p => mesAno(p.dataPagamento) === mes).length,
+    valor: somarValores(doMes),
+    quantidade: doMes.length,
   });
   abrirDetalheEmNovaGuia('evolucao', mes, 'dashboard');
 }
@@ -843,6 +1057,11 @@ function itemDonutClicado(evento, itens) {
 
   const x = evento.clientX - rect.left - rect.width / 2;
   const y = evento.clientY - rect.top - rect.height / 2;
+
+  // Clique no miolo (área central) não seleciona nenhuma fatia
+  const raio = rect.width / 2;
+  if (Math.hypot(x, y) < raio * 0.7) return null;
+
   let angulo = (Math.atan2(y, x) * 180) / Math.PI + 90;
   if (angulo < 0) angulo += 360;
 
@@ -858,13 +1077,13 @@ function itemDonutClicado(evento, itens) {
 }
 
 const PALETA_GRAFICOS = [
-  '#8b5cf6', '#f59e0b', '#10b981', '#ec4899',
-  '#0ea5e9', '#84cc16', '#f97316', '#64748b',
+  '#fd6500', '#f59e0b', '#16a34a', '#0ea5e9',
+  '#dc2626', '#c2410c', '#84cc16', '#64748b',
 ];
 
 function corDoSetor(nome) {
   if (nome === 'A Pagar') return '#dc2626';
-  if (nome === 'A Receber') return '#ea580c';
+  if (nome === 'A Receber') return '#fd6500';
   if (nome === 'Sem setor') return '#94a3b8';
 
   const indice = opcoes.setores.findIndex(
@@ -875,7 +1094,7 @@ function corDoSetor(nome) {
 }
 
 function corDoStatus(nome) {
-  if (nome === 'Pendente') return '#d97706';
+  if (nome === 'Pendente') return '#f59e0b';
   if (nome === 'Resolvido') return '#16a34a';
 
   const indice = opcoes.status.findIndex(
@@ -915,8 +1134,12 @@ function abrirDetalheEmNovaGuia(tipo, nome, origem) {
   if (f.busca) params.set('busca', f.busca);
   if (mesDashboard) params.set('dm', mesDashboard);
 
-  const url = `${location.origin}${location.pathname}?${params.toString()}`;
-  const guia = window.open(url, '_blank');
+  // Usa a URL atual (funciona também quando o sistema é aberto via file://)
+  const url = new URL(window.location.href);
+  url.search = params.toString();
+  url.hash = '';
+
+  const guia = window.open(url.href, '_blank');
   if (guia) guia.focus();
   else alert('Não foi possível abrir a nova guia. Verifique o bloqueador de pop-ups do navegador.');
 }
@@ -1253,14 +1476,37 @@ function renderizarGraficoSetor(lista) {
     .map(item => ({ ...item, cor: corDoSetor(item.nome) }));
 
   const total = itens.reduce((s, i) => s + i.valor, 0);
-  el.innerHTML = donutHTML(itens, 'Total', formatarMoedaCurta(total), formatarMoedaStr);
+  if (!itens.length) {
+    el.innerHTML = '<div class="grafico-vazio">Sem dados para exibir.</div>';
+    return;
+  }
+
+  const maximo = Math.max(...itens.map(i => i.valor), 0);
+  el.innerHTML = `
+    <div class="setor-barras" role="img" aria-label="Valor líquido por setor">
+      ${itens.map(item => {
+        const altura = maximo ? Math.max((item.valor / maximo) * 100, 8) : 0;
+        return `
+          <button type="button" class="setor-barra-item"
+            data-nome="${esc(item.nome)}"
+            title="${esc(item.nome)}: ${formatarMoedaStr(item.valor)} (${percentual(item.valor, total)}%)">
+            <span class="setor-barra-valor">${formatarMoedaCurta(item.valor)}</span>
+            <span class="setor-barra-trilha">
+              <span class="setor-barra-fill" style="height:${altura.toFixed(1)}%;background:${item.cor}"></span>
+            </span>
+            <span class="setor-barra-nome">${esc(item.nome)}</span>
+          </button>
+        `;
+      }).join('')}
+    </div>
+  `;
 
   el.onclick = (e) => {
-    const itemEl = e.target.closest('.legenda-item');
-    const item = itemEl ? { nome: itemEl.dataset.nome } : itemDonutClicado(e, itens);
-    if (!item) return;
-    mostrarDetalheSetor(item.nome);
-    abrirDetalheEmNovaGuia('setor', item.nome, 'dashboard');
+    const itemEl = e.target.closest('.setor-barra-item');
+    if (!itemEl) return;
+    const nome = itemEl.dataset.nome;
+    mostrarDetalheSetor(nome);
+    abrirDetalheEmNovaGuia('setor', nome, 'dashboard');
   };
 }
 
@@ -1280,10 +1526,13 @@ function renderizarGraficoStatus(lista) {
     .sort((a, b) => b.valor - a.valor)
     .map(item => ({ ...item, cor: corDoStatus(item.nome) }));
 
+  const resolvidos = lista.filter(p => p.status === 'Resolvido').length;
+  const taxaResolucao = percentual(resolvidos, lista.length);
+
   el.innerHTML = donutHTML(
     itens,
-    'Pendências',
-    String(lista.length),
+    'resolvidas',
+    `${taxaResolucao}%`,
     valor => String(valor)
   );
 
@@ -1314,7 +1563,7 @@ function renderizarGraficoBanco(lista) {
     mapa.set(nome, atual);
   });
 
-  const itens = Array.from(mapa.values()).sort((a, b) => b.valor - a.valor);
+  const itens = Array.from(mapa.values()).sort((a, b) => b.valor - a.valor).slice(0, 6);
   const maximo = Math.max(...itens.map(i => i.valor), 0);
   const valorTotal = somarValores(lista);
 
@@ -1325,7 +1574,7 @@ function renderizarGraficoBanco(lista) {
           ? Math.max((item.valor / maximo) * 100, 2)
           : 0;
         return `
-          <div class="banco-item">
+          <div class="banco-item" data-nome="${esc(item.nome)}">
             <div class="banco-topo">
               <span class="banco-nome">🏦 ${esc(item.nome)}</span>
               <span class="banco-valor">${formatarMoedaStr(item.valor)}</span>
@@ -1345,7 +1594,7 @@ function renderizarGraficoBanco(lista) {
   el.onclick = (e) => {
     const itemEl = e.target.closest('.banco-item');
     if (!itemEl) return;
-    const nome = itemEl.querySelector('.banco-nome').textContent.replace(/^🏦\s*/, '');
+    const nome = itemEl.dataset.nome;
     mostrarDetalheBanco(nome);
     abrirDetalheEmNovaGuia('banco', nome, 'dashboard');
   };
@@ -1369,7 +1618,7 @@ function renderizarGraficoResponsavel(lista) {
     mapa.set(nome, atual);
   });
 
-  const itens = Array.from(mapa.values()).sort((a, b) => b.valor - a.valor);
+  const itens = Array.from(mapa.values()).sort((a, b) => b.valor - a.valor).slice(0, 6);
   const maximo = Math.max(...itens.map(i => i.valor), 0);
   const valorTotal = somarValores(lista);
 
@@ -1380,7 +1629,7 @@ function renderizarGraficoResponsavel(lista) {
           ? Math.max((item.valor / maximo) * 100, 2)
           : 0;
         return `
-          <div class="banco-item">
+          <div class="banco-item" data-nome="${esc(item.nome)}">
             <div class="banco-topo">
               <span class="banco-nome">👤 ${esc(item.nome)}</span>
               <span class="banco-valor">${formatarMoedaStr(item.valor)}</span>
@@ -1400,7 +1649,7 @@ function renderizarGraficoResponsavel(lista) {
   el.onclick = (e) => {
     const itemEl = e.target.closest('.banco-item');
     if (!itemEl) return;
-    const nome = itemEl.querySelector('.banco-nome').textContent.replace(/^👤\s*/, '');
+    const nome = itemEl.dataset.nome;
     mostrarDetalheResponsavel(nome);
     abrirDetalheEmNovaGuia('responsavel', nome, 'dashboard');
   };
@@ -1648,19 +1897,23 @@ function salvarPendencia(e) {
   else if (afReal && !notaReal) dados.numeroNota = '-';
   else if (!notaReal && !afReal) { dados.numeroNota = ''; dados.af = ''; }
 
-  // Aviso de possível nota duplicada (não bloqueia o cadastro)
-  const nota = dados.numeroNota.toLowerCase();
-  if (nota && nota !== '-') {
-    const conflito = pendencias.find(p =>
-      p.id !== editandoId && p.numeroNota.toLowerCase() === nota
+  // Informações repetidas são bloqueadas (nota, AF ou conteúdo idêntico)
+  const duplicata = encontrarDuplicata(pendencias, dados, editandoId);
+
+  if (duplicata) {
+    const fornecedor = duplicata.pendencia.fornecedor
+      ? ` (${duplicata.pendencia.fornecedor})`
+      : '';
+    alert(
+      'Não é possível enviar informações repetidas.\n\n' +
+      `Já existe uma pendência com ${duplicata.rotulo}${fornecedor}.\n` +
+      'Altere a nota/AF ou edite o registro existente.'
     );
-    if (conflito) {
-      const fornecedor = conflito.fornecedor || 'outro fornecedor';
-      if (!confirm(`Já existe uma pendência com a nota "${dados.numeroNota}" (${fornecedor}). Deseja salvar mesmo assim?`)) {
-        document.getElementById('numeroNota').focus();
-        return;
-      }
+    if (duplicata.campo) {
+      const campo = document.getElementById(duplicata.campo);
+      if (campo) campo.focus();
     }
+    return;
   }
 
   let lista;
@@ -1731,8 +1984,9 @@ function resolverPendencia(id) {
 function csvCampo(valor) {
   let texto = valor === null || valor === undefined ? '' : String(valor);
 
-  // Evita que o Excel interprete o conteúdo como fórmula
-  if (/^[=+\-@\t\r]/.test(texto)) texto = "'" + texto;
+  // Evita que o Excel interprete o conteúdo como fórmula.
+  // Um "-" sozinho é apenas o marcador de campo vazio automático (nota/AF).
+  if (texto !== '-' && /^[=+\-@\t\r]/.test(texto)) texto = "'" + texto;
 
   return '"' + texto.replace(/"/g, '""') + '"';
 }
@@ -1877,7 +2131,11 @@ function converterDataImportacao(valor) {
 }
 
 function importarCSVArquivo(event) {
-  const arquivo = event.target.files ? event.target.files[0] : null;
+  const campoArquivo = event.target;
+  const arquivo = campoArquivo.files ? campoArquivo.files[0] : null;
+
+  // Limpa o campo já aqui: permite escolher o mesmo arquivo novamente
+  if (campoArquivo) campoArquivo.value = '';
   if (!arquivo) return;
 
   const reader = new FileReader();
@@ -1899,7 +2157,25 @@ function importarCSVArquivo(event) {
       );
     });
 
+    if (!Object.values(indiceCampos).some(indice => indice >= 0)) {
+      alert(
+        'Nenhuma coluna conhecida foi encontrada no arquivo.\n\n' +
+        'Baixe o modelo em ☰ Ações → 📄 Modelo CSV e use os mesmos nomes de coluna.'
+      );
+      return;
+    }
+
+    let ignorados = 0;
+    let duplicados = 0;
+    let numeroAtual = proximoNumero();
     const novasPendencias = [];
+
+    // Informações que já existem no sistema (nota, AF ou conteúdo completo)
+    const chavesExistentes = new Set();
+    pendencias.forEach(p => {
+      chavesDuplicidade(p).forEach(item => chavesExistentes.add(item.chave));
+    });
+
     registros.slice(1).forEach(valores => {
       const registro = {};
       Object.keys(CAMPOS_IMPORTACAO).forEach(campo => {
@@ -1908,12 +2184,21 @@ function importarCSVArquivo(event) {
         if (valor) registro[campo] = valor;
       });
 
-      novasPendencias.push(normalizarPendencia({
+      const dataPagamento = converterDataImportacao(registro.dataPagamento);
+      const temIdentificacao = Boolean(registro.fornecedor || registro.numeroNota || registro.af);
+
+      // Ignora linhas vazias, sem identificação ou com data inválida
+      if (!temIdentificacao || !dataISOValida(dataPagamento)) {
+        ignorados += 1;
+        return;
+      }
+
+      const pendencia = normalizarPendencia({
         numero: registro.numero,
         numeroNota: registro.numeroNota,
         af: registro.af,
         fornecedor: registro.fornecedor,
-        dataPagamento: converterDataImportacao(registro.dataPagamento),
+        dataPagamento,
         valorOriginal: registro.valorOriginal,
         valorLiquido: registro.valorLiquido,
         motivoPendencia: registro.motivoPendencia,
@@ -1921,16 +2206,43 @@ function importarCSVArquivo(event) {
         responsavel: registro.responsavel,
         banco: registro.banco,
         status: registro.status,
-      }));
+      });
+
+      // Não importa informações repetidas (do sistema ou do próprio arquivo)
+      const chaves = chavesDuplicidade(pendencia);
+      if (chaves.some(item => chavesExistentes.has(item.chave))) {
+        duplicados += 1;
+        return;
+      }
+      chaves.forEach(item => chavesExistentes.add(item.chave));
+
+      // Completa a numeração de linhas que não trouxeram a coluna "Nº"
+      if (!pendencia.numero) {
+        pendencia.numero = numeroAtual;
+        numeroAtual += 1;
+      } else if (pendencia.numero >= numeroAtual) {
+        numeroAtual = pendencia.numero + 1;
+      }
+
+      novasPendencias.push(pendencia);
     });
 
     if (!novasPendencias.length) {
-      alert('Nenhuma pendência válida encontrada no arquivo.');
+      if (duplicados) {
+        alert(
+          'Não é possível enviar informações repetidas.\n\n' +
+          `${duplicados} linha(s) do arquivo já existem no sistema e não foram importadas.`
+        );
+      } else {
+        alert(
+          'Nenhuma pendência válida encontrada no arquivo.\n\n' +
+          'Confira se cada linha tem fornecedor (ou nota/AF) e uma data de pagamento válida.'
+        );
+      }
       return;
     }
 
-    pendencias = pendencias.concat(novasPendencias);
-    salvarDados(pendencias);
+    if (!salvarDados(pendencias.concat(novasPendencias))) return;
 
     // Atualiza opções (setores, bancos, status) com valores usados nas novas pendências
     Object.keys(MAPA_LISTAS).forEach(grupo => {
@@ -1938,18 +2250,30 @@ function importarCSVArquivo(event) {
         v => v && !opcoes[grupo].some(o => o.toLowerCase() === v.toLowerCase())
       );
       if (usados.length) {
-        opcoes[grupo] = [...opcoes[grupo], ...usados];
+        opcoes[grupo] = [...opcoes[grupo], ...usados.map(v => normalizarValorOpcao(grupo, v))];
         salvarOpcoes();
       }
     });
 
     atualizarSelectsFiltros();
     atualizarSelectsModal();
+    renderizarListaOpcoes();
     renderizar();
 
-    const campoArquivo = document.getElementById('importarCSV');
-    if (campoArquivo) campoArquivo.value = '';
-    alert(`${novasPendencias.length} pendência(ões) importada(s) com sucesso!`);
+    const detalheIgnorados = ignorados
+      ? ` ${ignorados} linha(s) inválida(s) ou vazia(s) foram ignoradas.`
+      : '';
+    const detalheDuplicados = duplicados
+      ? ` ${duplicados} linha(s) repetida(s) não foram importadas (informações repetidas não são permitidas).`
+      : '';
+    alert(
+      `${novasPendencias.length} pendência(ões) importada(s) com sucesso!` +
+      `${detalheIgnorados}${detalheDuplicados}`
+    );
+  };
+
+  reader.onerror = () => {
+    alert('Não foi possível ler o arquivo CSV. Tente salvá-lo novamente e importar de novo.');
   };
 
   reader.readAsText(arquivo, 'UTF-8');
@@ -2091,3 +2415,14 @@ renderizarListaOpcoes();
 selecionarAba('dashboard');
 renderizar();
 processarDetalheUrl();
+
+// Informa quando registros repetidos foram limpos automaticamente ao abrir
+if (duplicatasRemovidasNaCarga > 0) {
+  setTimeout(() => {
+    mostrarAvisoApp(
+      `${duplicatasRemovidasNaCarga} informação(ões) duplicada(s) foi(ram) removida(s) automaticamente. ` +
+      'O sistema não permite informações repetidas.',
+      'alerta'
+    );
+  }, 500);
+}
