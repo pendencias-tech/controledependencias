@@ -2064,7 +2064,7 @@ function exportarCSV() {
   const sufixo = f.mes ? `_${labelMesAno(f.mes).replace('/', '-')}` : '_todos';
 
   a.href = url;
-  a.download = `pendencias${sufixo}.csv`;
+  a.download = `pendencias_MEDGESTAO${sufixo}.csv`;
   a.style.display = 'none';
   document.body.appendChild(a);
   a.click();
